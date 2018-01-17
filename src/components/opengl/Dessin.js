@@ -12,6 +12,10 @@ export default class Dessin {
     window.requestAnimationFrame(this.render)
   }
 
+  onResize(box) {
+    this.scene.onResize(box)
+  }
+
   render() {
     var now = new Date().getTime()
     var milli = now - this.lastFrame

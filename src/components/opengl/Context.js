@@ -10,5 +10,8 @@ export default class Context {
     this.dessin = new Dessin(this.gl)
   }
 
-  resize() {}
+  onResize(box) {
+    this.gl.viewport(0, 0, box.width, box.height)
+    this.dessin.onResize(box)
+  }
 }

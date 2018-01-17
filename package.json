@@ -32,9 +32,9 @@
     "babel-loader": "^7.1.2",
     "babel-preset-env": "^1.6.1",
     "eslint": "^4.12.1",
-    "eslint-config-prettier": "^2.9.0",
     "eslint-plugin-import": "^2.3.0",
     "eslint-plugin-jsx-a11y": "^6.0.2",
+    "eslint-plugin-prettier": "^2.4.0",
     "file-loader": "^1.1.5",
     "todo-webpack-plugin": "^1.8.0",
     "url-loader": "^0.6.2"

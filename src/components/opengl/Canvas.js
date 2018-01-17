@@ -13,7 +13,16 @@ export default class Canvas {
   }
 
   resize() {
-    this.canvas.style.height = `${window.innerHeight}px`
+    const w = document.body.offsetWidth
+    const h = window.innerHeight
+    this.canvas.style.width = `${w}px`
+    this.canvas.style.height = `${h}px`
+    this.canvas.setAttribute("width", w)
+    this.canvas.setAttribute("height", h)
+    this.context.onResize({
+      width: w,
+      height: h,
+    })
   }
 
   get() {
