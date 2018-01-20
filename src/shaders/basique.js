@@ -1,8 +1,8 @@
 const vertex = `
-attribute vec3 Position;
+attribute vec3 position;
 void main()
 {
-  gl_Position = vec4(Position, 1.0);
+  gl_Position = vec4(position, 1.0);
 }
 `
 
@@ -17,7 +17,7 @@ void main()
 const basique = {
   vertex,
   fragment,
-  attributes: ["Position"],
+  attributes: ["position"],
   uniforms: [],
 }
 

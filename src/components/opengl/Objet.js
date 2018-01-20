@@ -20,20 +20,23 @@ export default class Objet {
     )
   }
 
-  render(program) {
-    this.gl.useProgram(program)
-    this.gl.enableVertexAttribArray(program.vLoc)
-    this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.objet.position.vbo)
+  enable(program, type, nbPoint) {
+    this.gl.enableVertexAttribArray(program.locations[type])
+    this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.objet[type].vbo)
     this.gl.vertexAttribPointer(
-      program.locations.Position,
-      3,
+      program.locations[type],
+      nbPoint,
       this.gl.FLOAT,
       false,
       0,
       0,
     )
-    this.gl.drawArrays(this.modeDessin, 0, this.objet.position.count / 3)
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, null)
+  }
+
+  render(program) {
+    this.gl.useProgram(program)
+    this.gl.drawArrays(this.modeDessin, 0, this.objet.position.count / 3)
     this.gl.useProgram(null)
   }
 

@@ -1,14 +1,14 @@
 const vertex = `
-attribute vec3 Position;
-attribute vec2 Texture;
+attribute vec3 position;
+attribute vec2 texture;
 uniform mat4 projection;
 uniform mat4 model;
 uniform mat4 view;
 varying vec2 fragTexture;
 void main()
 {
-  fragTexture = Texture;
-  gl_Position = projection * view * model * vec4(Position, 1.0);
+  fragTexture = texture;
+  gl_Position = projection * view * model * vec4(position, 1.0);
 }
 `
 
@@ -25,7 +25,7 @@ void main()
 const texture = {
   vertex,
   fragment,
-  attributes: ["Position", "Texture"],
+  attributes: ["position", "texture"],
   uniforms: ["projection", "model", "view"],
 }
 
