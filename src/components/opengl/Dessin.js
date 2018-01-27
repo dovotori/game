@@ -27,4 +27,16 @@ export default class Dessin {
     }
     window.requestAnimationFrame(this.render)
   }
+
+  onMouseMove(infos) {
+    this.scene.onMouseMove(infos)
+  }
+
+  onMouseDown(infos) {
+    this.scene.onMouseDown(infos)
+  }
+
+  setDraggingInfos(infos) {
+    this.scene.setDraggingInfos(infos)
+  }
 }

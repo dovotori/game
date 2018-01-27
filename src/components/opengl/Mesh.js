@@ -1,121 +1,61 @@
+import Program from "./Program"
+import Objet from "./Objet"
+import Texture from "./Texture"
+import Spring from "../Spring"
+import Target from "../Target"
+import Mat4 from "../geometrie/Mat4"
+import glsl from "../../shaders/basique3d"
+import primitive from "../../primitives/cube"
+
 export default class Mesh {
-  constructor() {
-    this.position = new Vec3(0, 0, 0);
-    this.rotation = new Vec3(0, 0, 0);
-    this.taille = new Vec3(1, 1, 1);
-    this.ambiant = new Vec3(0, 0, 1);
-    this.diffuse = new Vec3(0.4, 0.4, 0.4);
-    this.specular = new Vec3(1.0, 1.0, 1.0);
-    this.brillance = 60.0;
-    this.opacity = 1.0;
-    this.model = new Mat4();
+  constructor(gl) {
+    this.gl = gl
+    this.texture = new Texture(this.gl)
+    // this.program = new Program(this.gl, texture)
+    this.program = new Program(this.gl, glsl)
+    this.objet = new Objet(this.gl)
+    this.objet.setIndices(primitive.indice)
+    this.objet.setPoints(primitive.position, "position")
+    // this.objet.setPoints(primitive.texture, "texture")
+    this.mat = new Mat4()
+    this.mat.identity()
+    this.angle = { x: new Spring(), y: new Spring() }
+    this.selected = false
+    this.size = new Target(1, { sampling: 0.1 })
   }
 
-  setup() {
-    this.model.identity();
+  start(camera) {
+    this.program.setBool("selected", this.selected)
+    this.program.setMatrix("model", this.mat.get())
+    this.program.setMatrix("view", camera.getView())
+    this.program.setMatrix("projection", camera.getProjection())
+    // this.program.setTexture("tex0", this.texture.get())
+    this.objet.enable(this.program.get(), "position", 3)
+    // this.objet.enable(this.program.get(), "texture", 2)
   }
 
-  draw(camera, program, objet) {
-    if (program.isReady() && objet.isReady()) {
-      this.model.push();
-      this.model.translate(this.position.x, this.position.y, this.position.z);
-      this.model.scale(this.taille.x, this.taille.y, this.taille.z);
-      this.model.rotate(this.rotation.x, 1, 0, 0);
-      this.model.rotate(this.rotation.y, 0, 1, 0);
-      this.model.rotate(this.rotation.z, 0, 0, 1); 
-
-      var normalmatrix = new Mat3();
-      normalmatrix.set(this.model.getMatrice3x3()); 
-
-      program.setMatrices(
-        camera.getProjection().transpose(),
-        this.model.transpose(),
-        camera.getView().transpose(),
-        normalmatrix.transpose(),
-      );
-      program.setCouleurs(this.ambiant.get(), this.diffuse.get(), this.specular.get());
-      program.setOpacity(this.opacity);
-      program.setBrillance(this.brillance); 
-
-      objet.draw(program.get()); 
-
-      this.model.pop();
-    }
+  render() {
+    this.objet.render(this.program.get())
   }
 
+  update() {
+    this.angle.x.update()
+    this.angle.y.update()
+    this.size.update()
 
-drawFlat(camera, program, objet) {
-  if (program.isReady() && objet.isReady()) {
-    var matID = camera.getMatriceIdentity(); 
-
-    this.model.push();
-    this.model.translate(this.position.x, this.position.y, this.position.z);
-    this.model.scale(this.taille.x, this.taille.y, this.taille.z);
-    this.model.rotate(this.rotation.x, 1, 0, 0);
-    this.model.rotate(this.rotation.y, 0, 1, 0);
-    this.model.rotate(this.rotation.z, 0, 0, 1); 
-
-    var normalmatrix = new Mat3();
-    normalmatrix.set(this.model.getMatrice3x3());
-    //normalmatrix.inverser();
-
-    program.setMatrices(
-      matID.transpose(),
-      this.model.transpose(),
-      matID.transpose(),
-      normalmatrix.get(),
-    );
-    program.setCouleurs(
-      this.ambiant.get(),
-      this.diffuse.get(),
-      this.specular.get(),
-      this.opacity,
-      this.brillance,
-    );
-
-    objet.draw(program.get()); 
-
-    this.model.pop();
+    this.mat.identity()
+    this.mat.rotate(this.angle.x.get(), 0, 1, 0)
+    this.mat.rotate(this.angle.y.get(), 1, 0, 0)
+    this.mat.scale(this.size.get())
   }
-}
 
-setPosition(x, y, z) {
-  this.position.set(x, y, z);
-}
-setTaille(x, y, z) {
-  this.taille.set(x, y, z);
-}
-setRotation(x, y, z) {
-  this.rotation.set(x, y, z);
-}
-setAmbiant(x, y, z) {
-  this.ambiant.set(x / 255, y / 255, z / 255);
-}
-setDiffuse(x, y, z) {
-  this.diffuse.set(x / 255, y / 255, z / 255);
-}
-setSpecular(x, y, z) {
-  this.specular.set(x / 255, y / 255, z / 255);
-}
-setBrillance(valeur) {
-  this.brillance = valeur;
-}
-setOpacity(valeur) {
-  this.opacity = valeur;
-}
+  setDraggingInfos(pos) {
+    this.angle.x.addToSpeed(pos.relPrevious.x * 0.1)
+    this.angle.y.addToSpeed(pos.relPrevious.y * -0.1)
+  }
 
-plusPosition(x, y, z) {
-  var ajout = new Vec3(x, y, z);
-  this.position = this.position.plus(ajout);
-}
-
-getPosition() {
-  return this.position;
-}
-getTaille() {
-  return this.taille;
-}
-getRotation() {
-  return this.rotation;
-}
+  setSelected(pixel) {
+    this.selected = pixel[0] === 255 && pixel[1] === 255 && pixel[2] === 255
+    this.size.set(this.selected ? 1.1 : 1)
+  }
 }

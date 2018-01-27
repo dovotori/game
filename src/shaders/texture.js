@@ -22,11 +22,9 @@ void main()
 }
 `
 
-const texture = {
+export default {
   vertex,
   fragment,
   attributes: ["position", "texture"],
   uniforms: ["projection", "model", "view"],
 }
-
-export default texture

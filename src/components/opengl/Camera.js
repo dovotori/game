@@ -65,7 +65,7 @@ export default class Camera {
   getProjection() {
     return this.projection.get()
   }
-  getMatriceIdentity() {
+  getIdentity() {
     return this.matIdentity.get()
   }
   getNearFar() {

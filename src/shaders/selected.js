@@ -11,9 +11,14 @@ void main()
 
 const fragment = `
 precision mediump float;
+uniform bool selected;
 void main()
 {
-  gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
+  if (selected) {
+    gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
+  } else {
+    gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
+  }
 }
 `
 
@@ -21,5 +26,5 @@ export default {
   vertex,
   fragment,
   attributes: ["position"],
-  uniforms: ["projection", "model", "view"],
+  uniforms: ["projection", "model", "view", "selected"],
 }

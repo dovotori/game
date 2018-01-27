@@ -43,15 +43,10 @@ export default class Framebuffer {
   start() {
     this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, this.buffer)
     this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT)
-    this.gl.clearColor(0.0, 0.0, 0.0, 0.0)
   }
 
   end() {
     this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, null)
-  }
-
-  switch() {
-    this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, this.buffer)
   }
 
   get() {

@@ -14,11 +14,9 @@ void main()
 }
 `
 
-const basique = {
+export default {
   vertex,
   fragment,
   attributes: ["position"],
   uniforms: [],
 }
-
-export default basique

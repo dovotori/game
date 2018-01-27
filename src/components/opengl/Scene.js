@@ -1,25 +1,24 @@
 import Camera from "./Camera"
-import Program from "./Program"
-import Objet from "./Objet"
-import Texture from "./Texture"
+// import Program from "./Program"
+// import Objet from "./Objet"
+// import Texture from "./Texture"
+// import Mat4 from "../geometrie/Mat4"
+// import texture from "../../shaders/texture"
+// import plane from "../../primitives/plane"
+import Mesh from "./Mesh"
 import Fbo from "./Fbo"
 import AssetsManager from "../AssetsManager"
-import texture from "../../shaders/texture"
-import plane from "../../primitives/plane"
 
 export default class Scene {
   constructor(gl) {
     this.gl = gl
-    this.program = new Program(this.gl, texture)
-    this.objet = new Objet(this.gl)
-    this.objet.setPoints(plane.position, "position")
-    this.objet.setPoints(plane.texture, "texture")
     this.camera = new Camera()
-    this.camera.setPosition(-2, -2, -2)
+    this.camera.setPosition(-4, -4, -4)
     this.isLoaded = false
     this.afterAssetsLoaded = this.afterAssetsLoaded.bind(this)
-    this.texture = new Texture(this.gl)
     this.fbo = new Fbo(this.gl, 1024, 1024)
+    this.box = null
+    this.mesh = new Mesh(this.gl)
 
     const paths = [
       "../../../assets/textures/snow.jpg",
@@ -37,19 +36,48 @@ export default class Scene {
 
   onResize(box) {
     this.camera.perspective(box.width, box.height)
+    this.box = box
   }
 
   render() {
-    this.camera.lookAt()
-    this.program.setMatrix("model", this.camera.getMatriceIdentity())
-    this.program.setMatrix("view", this.camera.getView())
-    this.program.setMatrix("projection", this.camera.getProjection())
-    this.program.setTexture("tex0", this.texture.get())
-    this.objet.enable(this.program.get(), "position", 3)
-    this.objet.enable(this.program.get(), "texture", 2)
+    this.update()
 
+    this.camera.lookAt()
+    this.mesh.start(this.camera)
+
+    this.mesh.render()
     // this.fbo.start()
-    this.objet.render(this.program.get())
     // this.fbo.end()
+  }
+
+  update() {
+    this.mesh.update()
+  }
+
+  onMouseMove(infos) {
+    const pixel = this.getColorPixel(infos.pos)
+    this.mesh.setSelected(pixel)
+  }
+
+  onMouseDown(infos) {}
+
+  setDraggingInfos(infos) {
+    if (this.box !== null) {
+      this.mesh.setDraggingInfos(infos)
+    }
+  }
+
+  getColorPixel(pos) {
+    const pixel = new Uint8Array(4)
+    this.gl.readPixels(
+      pos.x,
+      pos.y,
+      1,
+      1,
+      this.gl.RGBA,
+      this.gl.UNSIGNED_BYTE,
+      pixel,
+    )
+    return pixel
   }
 }

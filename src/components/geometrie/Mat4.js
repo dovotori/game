@@ -25,6 +25,10 @@ class Mat4 {
     return this.d.slice()
   }
 
+  setRaw(d) {
+    this.d = d
+  }
+
   set(a1, a2, a3, a4, b1, b2, b3, b4, c1, c2, c3, c4, d1, d2, d3, d4) {
     this.d[0] = a1
     this.d[1] = a2
@@ -127,6 +131,8 @@ class Mat4 {
   }
 
   scale(x, y, z) {
+    y = y || x
+    z = z || x
     const scale = new Mat4()
     scale.d[0] = x
     scale.d[5] = y

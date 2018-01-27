@@ -63,6 +63,12 @@ export default class Program {
     this.gl.useProgram(null)
   }
 
+  setBool(location, bool) {
+    this.gl.useProgram(this.program)
+    this.gl.uniform1i(this.program.locations[location], bool)
+    this.gl.useProgram(null)
+  }
+
   setTexture(location, texture) {
     this.gl.useProgram(this.program)
     this.gl.activeTexture(this.gl.TEXTURE0)
