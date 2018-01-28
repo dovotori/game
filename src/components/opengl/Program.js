@@ -77,6 +77,12 @@ export default class Program {
     this.gl.useProgram(null)
   }
 
+  setVector(location, value) {
+    this.gl.useProgram(this.program)
+    this.gl.uniform2fv(this.program.locations[location], value)
+    this.gl.useProgram(null)
+  }
+
   get() {
     return this.program
   }

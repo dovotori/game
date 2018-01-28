@@ -6,19 +6,23 @@ import Camera from "./Camera"
 // import texture from "../../shaders/texture"
 // import plane from "../../primitives/plane"
 import Mesh from "./Mesh"
+import Screen from "./Screen"
 import Fbo from "./Fbo"
+import PostProcess from "./PostProcess"
 import AssetsManager from "../AssetsManager"
 
 export default class Scene {
   constructor(gl) {
     this.gl = gl
     this.camera = new Camera()
-    this.camera.setPosition(-4, -4, -4)
+    this.camera.setPosition(4, 4, 4)
     this.isLoaded = false
     this.afterAssetsLoaded = this.afterAssetsLoaded.bind(this)
-    this.fbo = new Fbo(this.gl, 1024, 1024)
+    this.postProcess = new PostProcess(this.gl, 1024, 1024)
     this.box = null
     this.mesh = new Mesh(this.gl)
+    // this.fbo = new Fbo(this.gl, 1024, 1024)
+    // this.screen = new Screen(this.gl)
 
     const paths = [
       "../../../assets/textures/snow.jpg",
@@ -37,6 +41,7 @@ export default class Scene {
   onResize(box) {
     this.camera.perspective(box.width, box.height)
     this.box = box
+    this.postProcess.resize(box)
   }
 
   render() {
@@ -45,9 +50,12 @@ export default class Scene {
     this.camera.lookAt()
     this.mesh.start(this.camera)
 
+    this.postProcess.start()
     this.mesh.render()
-    // this.fbo.start()
-    // this.fbo.end()
+    this.postProcess.end()
+
+    this.gl.viewport(0, 0, this.box.width, this.box.height)
+    this.postProcess.render()
   }
 
   update() {

@@ -4,10 +4,14 @@ export default class Context {
   constructor(canvas) {
     this.gl = this.checkWebGl(canvas)
 
-    this.gl.clearColor(0.0, 0.0, 0.0, 1.0)
-    this.gl.clearDepth(1.0)
     this.gl.enable(this.gl.DEPTH_TEST)
-    this.gl.depthFunc(this.gl.LEQUAL)
+    this.gl.clearDepth(1.0)
+    this.gl.depthFunc(this.gl.LESS)
+    this.gl.cullFace(this.gl.FRONT)
+
+    this.gl.getExtension("WEBGL_depth_texture") ||
+      this.gl.getExtension("MOZ_WEBGL_depth_texture") ||
+      this.gl.getExtension("WEBKIT_WEBGL_depth_texture")
 
     this.dessin = new Dessin(this.gl)
   }
@@ -29,7 +33,6 @@ export default class Context {
   }
 
   onResize(box) {
-    this.gl.viewport(0, 0, box.width, box.height)
     this.dessin.onResize(box)
   }
 

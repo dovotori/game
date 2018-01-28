@@ -45,12 +45,6 @@ export default class Objet {
     )
   }
 
-  // render(program) {
-  //   this.gl.useProgram(program)
-  //   this.gl.drawArrays(this.modeDessin, 0, this.objet.position.count / 3)
-  //   this.gl.useProgram(null)
-  // }
-
   render(program) {
     this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, this.objet.indice.vbo)
     this.gl.drawElements(

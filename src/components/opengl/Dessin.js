@@ -21,6 +21,7 @@ export default class Dessin {
     var milli = now - this.lastFrame
 
     if (milli > this.fps) {
+      this.gl.clearColor(0.0, 0.0, 0.0, 1.0)
       this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT)
       this.scene.render()
       this.lastFrame = now
