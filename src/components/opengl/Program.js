@@ -69,17 +69,53 @@ export default class Program {
     this.gl.useProgram(null)
   }
 
-  setTexture(location, texture) {
+  setTexture(location, texture, idx) {
     this.gl.useProgram(this.program)
-    this.gl.activeTexture(this.gl.TEXTURE0)
+    switch (idx) {
+      default:
+      case 0:
+        this.gl.activeTexture(this.gl.TEXTURE0)
+        break
+      case 1:
+        this.gl.activeTexture(this.gl.TEXTURE1)
+        break
+      case 2:
+        this.gl.activeTexture(this.gl.TEXTURE2)
+        break
+      case 3:
+        this.gl.activeTexture(this.gl.TEXTURE3)
+        break
+      case 4:
+        this.gl.activeTexture(this.gl.TEXTURE4)
+        break
+    }
     this.gl.bindTexture(this.gl.TEXTURE_2D, texture)
-    this.gl.uniform1i(this.program.locations[location], 0)
+    this.gl.uniform1i(this.program.locations[location], idx)
     this.gl.useProgram(null)
   }
 
   setVector(location, value) {
     this.gl.useProgram(this.program)
-    this.gl.uniform2fv(this.program.locations[location], value)
+    switch (value.length) {
+      default:
+      case 2:
+        this.gl.uniform2fv(this.program.locations[location], value)
+        break
+      case 3:
+        this.gl.uniform3fv(this.program.locations[location], value)
+        break
+      case 4:
+        this.gl.uniform4fv(this.program.locations[location], value)
+        break
+    }
+    this.gl.useProgram(null)
+  }
+
+  enable() {
+    this.gl.useProgram(this.program)
+  }
+
+  disable() {
     this.gl.useProgram(null)
   }
 

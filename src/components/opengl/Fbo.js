@@ -12,12 +12,14 @@ export default class Framebuffer {
       this.buffer.width,
       this.buffer.height,
     )
+    this.texture.setup()
     this.screen = { width, height }
     this.depthTexture = new TextureDepth(
       this.gl,
       this.buffer.width,
       this.buffer.height,
     )
+    this.depthTexture.setup()
 
     this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, this.buffer)
     this.setup()

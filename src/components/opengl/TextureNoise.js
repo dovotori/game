@@ -1,7 +1,7 @@
 import Texture from "./Texture"
 
 export default class TextureNoise extends Texture {
-  setup() {
+  create() {
     const b = new ArrayBuffer(this.size.width * this.size.height * 4)
     const pixels = new Uint8Array(b)
     let cptRVBA = 0

@@ -4,14 +4,17 @@ export default class Texture {
     this.size = { width, height }
     this.texture = gl.createTexture()
     this.filter = gl.NEAREST // ou LINEAR affinage quand on scale par rapport à nearest mais des fois lignes blanches
-
-    this.gl.bindTexture(this.gl.TEXTURE_2D, this.texture)
     this.setup()
-    this.setupFilters()
-    this.gl.bindTexture(this.gl.TEXTURE_2D, null)
   }
 
   setup() {
+    this.gl.bindTexture(this.gl.TEXTURE_2D, this.texture)
+    this.create()
+    this.setFilters()
+    this.gl.bindTexture(this.gl.TEXTURE_2D, null)
+  }
+
+  create() {
     const b = new ArrayBuffer(this.size.width * this.size.height)
     const pixels = new Uint8Array(b)
     let cpt = 0
@@ -36,7 +39,7 @@ export default class Texture {
     )
   }
 
-  setupFilters() {
+  setFilters() {
     this.gl.texParameteri(
       this.gl.TEXTURE_2D,
       this.gl.TEXTURE_MAG_FILTER,

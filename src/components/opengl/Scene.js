@@ -1,7 +1,7 @@
 import Camera from "./Camera"
 // import Program from "./Program"
 // import Objet from "./Objet"
-// import Texture from "./Texture"
+import TextureImage from "./TextureImage"
 // import Mat4 from "../geometrie/Mat4"
 // import texture from "../../shaders/texture"
 // import plane from "../../primitives/plane"
@@ -16,26 +16,29 @@ export default class Scene {
     this.gl = gl
     this.camera = new Camera()
     this.camera.setPosition(4, 4, 4)
-    this.isLoaded = false
+    this.camera.setNearFar(1.0, 1000.0)
+    this.assetsReady = false
     this.afterAssetsLoaded = this.afterAssetsLoaded.bind(this)
     this.postProcess = new PostProcess(this.gl, 1024, 1024)
     this.box = null
-    this.mesh = new Mesh(this.gl)
-    // this.fbo = new Fbo(this.gl, 1024, 1024)
-    // this.screen = new Screen(this.gl)
+    this.mousePos = null
 
     const paths = [
-      "../../../assets/textures/snow.jpg",
-      "../../../assets/textures/land.jpg",
+      "../../../assets/textures/165.jpg",
+      "../../../assets/textures/165_norm.jpg",
+      "../../../assets/objets/sphere.obj",
     ]
 
-    this.assetsManager = new AssetsManager()
-    // this.assetsManager.getAssets(paths).then(this.afterAssetsLoaded)
+    this.assetsManager = new AssetsManager(paths, this.afterAssetsLoaded)
   }
 
   afterAssetsLoaded(assets) {
-    this.isLoaded = true
     console.log(assets)
+    this.textures = []
+    this.textures[0] = new TextureImage(this.gl, assets[0])
+    this.textures[1] = new TextureImage(this.gl, assets[1])
+    this.mesh = new Mesh(this.gl, assets[2])
+    this.assetsReady = true
   }
 
   onResize(box) {
@@ -45,17 +48,29 @@ export default class Scene {
   }
 
   render() {
-    this.update()
+    if (this.assetsReady) {
+      this.update()
 
-    this.camera.lookAt()
-    this.mesh.start(this.camera)
+      this.camera.lookAt()
+      this.mesh.startColor(this.camera)
+      this.mesh.renderColor()
 
-    this.postProcess.start()
-    this.mesh.render()
-    this.postProcess.end()
+      if (this.mousePos !== null) {
+        const pixel = this.getColorPixel(this.mousePos)
+        this.mesh.setSelected(pixel)
+      }
 
-    this.gl.viewport(0, 0, this.box.width, this.box.height)
-    this.postProcess.render()
+      this.mesh.setTexture(0, this.textures[0])
+      this.mesh.setTexture(1, this.textures[1])
+      this.mesh.start(this.camera)
+
+      this.postProcess.start()
+      this.mesh.render()
+      this.postProcess.end()
+
+      this.gl.viewport(0, 0, this.box.width, this.box.height)
+      this.postProcess.render()
+    }
   }
 
   update() {
@@ -63,8 +78,9 @@ export default class Scene {
   }
 
   onMouseMove(infos) {
-    const pixel = this.getColorPixel(infos.pos)
-    this.mesh.setSelected(pixel)
+    if (this.assetsReady) {
+      this.mousePos = infos.pos
+    }
   }
 
   onMouseDown(infos) {}

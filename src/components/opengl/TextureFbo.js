@@ -1,7 +1,7 @@
 import Texture from "./Texture"
 
 export default class TextureFbo extends Texture {
-  setup() {
+  create() {
     this.gl.texImage2D(
       this.gl.TEXTURE_2D,
       0,
@@ -15,7 +15,7 @@ export default class TextureFbo extends Texture {
     )
   }
 
-  setupFilters() {
+  setFilters() {
     this.gl.texParameteri(
       this.gl.TEXTURE_2D,
       this.gl.TEXTURE_MIN_FILTER,
