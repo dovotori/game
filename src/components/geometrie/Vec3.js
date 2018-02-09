@@ -14,6 +14,16 @@ class Vec3 {
     }
   }
 
+  getX() {
+    return this.x
+  }
+  getY() {
+    return this.y
+  }
+  getZ() {
+    return this.z
+  }
+
   limiter(max) {
     const longueurCarre = this.x * this.x + this.y * this.y + this.z * this.z
 

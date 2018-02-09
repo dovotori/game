@@ -1,15 +1,22 @@
 import PingPongBuffer from "./PingPongBuffer"
 import Fbo from "./Fbo"
 import Screen from "./Screen"
+import Program from "./Program"
+import fxaa from "../../shaders/screenFXAA"
+import rgb from "../../shaders/screenRGB"
+import screen from "../../shaders/screen"
 
 export default class PostProcess {
   constructor(gl, width = 1024, height = 1024) {
-    this.ppb = new PingPongBuffer(gl, width, height)
-    this.screen = new Screen(gl)
-    this.saveFbo = new Fbo(gl, width, height)
+    this.gl = gl
+    this.ppb = new PingPongBuffer(this.gl, width, height)
+    this.screen = new Screen(this.gl)
+    this.saveFbo = new Fbo(this.gl, width, height)
 
+    this.finalRender = new Program(this.gl, screen)
+    this.fxaa = new Program(this.gl, fxaa)
+    this.rgb = new Program(this.gl, rgb)
     // this.programTex = new Program()
-    // this.fxaa = new Program()
     // this.blurH = new Program()
     // this.blurV = new Program()
     // this.dof = new Program()
@@ -18,7 +25,7 @@ export default class PostProcess {
     // this.occlusion = new Occlusion()
   }
 
-  setup() {}
+  setup() { }
 
   start() {
     this.ppb.begin()
@@ -39,7 +46,8 @@ export default class PostProcess {
   }
 
   render() {
-    this.screen.render(this.ppb.getTexture())
+    this.finalRender.setTexture(0, this.ppb.getTexture().get())
+    this.screen.render(this.finalRender.get())
   }
 
   // setDOF(nearFar, distance) {
@@ -56,15 +64,23 @@ export default class PostProcess {
   //   }
   // }
 
-  // setFXAA() {
-  //   if (this.fxaa.isReady() && this.screen.isReady()) {
-  //     this.fxaa.setTexture(this.ppb.getTexture())
-  //     this.ppb.swap()
-  //     this.ppb.begin()
-  //     this.screen.draw(this.fxaa.get())
-  //     this.ppb.end()
-  //   }
-  // }
+  setFXAA() {
+    this.fxaa.setTexture(0, this.ppb.getTexture().get())
+    this.ppb.swap()
+    this.ppb.begin()
+    this.screen.render(this.fxaa.get())
+    this.ppb.end()
+  }
+
+  setRGB(deltaX, deltaY) {
+    console.log(deltaX);
+    this.fxaa.setTexture(0, this.ppb.getTexture().get())
+    this.ppb.swap()
+    this.ppb.begin()
+    this.rgb.setVector("delta", [deltaX, deltaY])
+    this.screen.render(this.rgb.get())
+    this.ppb.end()
+  }
 
   // setOcclusion(camera) {
   //   if (this.screen.isReady()) {

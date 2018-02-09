@@ -13,8 +13,7 @@ const fragment = `
 precision mediump float;
 varying vec2 fragTexture;
 uniform sampler2D tex0;
-void main()
-{
+void main() {
   gl_FragColor = texture2D(tex0, fragTexture);
 }
 `

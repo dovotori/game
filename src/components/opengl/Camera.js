@@ -60,13 +60,13 @@ export default class Camera {
     return this.cible
   }
   getView() {
-    return this.view.get()
+    return this.view
   }
   getProjection() {
-    return this.projection.get()
+    return this.projection
   }
   getIdentity() {
-    return this.matIdentity.get()
+    return this.matIdentity
   }
   getNearFar() {
     return [this.near, this.far]

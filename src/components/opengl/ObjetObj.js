@@ -32,7 +32,6 @@ export default class Objet {
     let decalage = 0
     Object.entries(this.steps).forEach(entry => {
       const [type, step] = entry
-      // console.log(type, decalage)
       if (program.locations[type] !== undefined) {
         this.gl.enableVertexAttribArray(program.locations[type])
         this.gl.vertexAttribPointer(

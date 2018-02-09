@@ -20,6 +20,7 @@ export default class Framebuffer {
       this.buffer.height,
     )
     this.depthTexture.setup()
+    this.clearColor = [0, 0, 0, 1.0]
 
     this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, this.buffer)
     this.setup()
@@ -50,7 +51,12 @@ export default class Framebuffer {
   start() {
     this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, this.buffer)
     this.gl.viewport(0, 0, this.buffer.width, this.buffer.height)
-    this.gl.clearColor(1.0, 0.0, 0.0, 1.0)
+    this.gl.clearColor(
+      this.clearColor[0],
+      this.clearColor[1],
+      this.clearColor[2],
+      this.clearColor[3],
+    )
     this.gl.clearDepth(1.0)
     this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT)
   }
@@ -67,5 +73,9 @@ export default class Framebuffer {
   }
   getDepthTexture() {
     return this.depthTexture
+  }
+
+  setClearColor(r, v, b, a) {
+    this.clearColor = [r, v, b, a]
   }
 }

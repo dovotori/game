@@ -1,13 +1,16 @@
 import Dessin from "./Dessin"
 
-export default class Context {
+export default class {
   constructor(canvas) {
     this.gl = this.checkWebGl(canvas)
 
     this.gl.enable(this.gl.DEPTH_TEST)
     this.gl.clearDepth(1.0)
     this.gl.depthFunc(this.gl.LESS)
+    this.gl.enable(this.gl.CULL_FACE)
     this.gl.cullFace(this.gl.FRONT)
+    this.gl.enable(this.gl.BLEND)
+    this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA)
 
     this.gl.getExtension("WEBGL_depth_texture") ||
       this.gl.getExtension("MOZ_WEBGL_depth_texture") ||

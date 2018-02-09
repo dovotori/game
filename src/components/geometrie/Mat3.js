@@ -35,7 +35,7 @@ class Mat3 {
     this.d[8] = c3
   }
 
-  set(valeur) {
+  setOneValue(valeur) {
     for (let i = 0; i < 9; i += 1) {
       this.d[i] = valeur[i]
     }

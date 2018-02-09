@@ -59,7 +59,11 @@ export default class Program {
 
   setMatrix(location, matrix) {
     this.gl.useProgram(this.program)
-    this.gl.uniformMatrix4fv(this.program.locations[location], false, matrix)
+    if (matrix.length === 16) {
+      this.gl.uniformMatrix4fv(this.program.locations[location], false, matrix)
+    } else {
+      this.gl.uniformMatrix3fv(this.program.locations[location], false, matrix)
+    }
     this.gl.useProgram(null)
   }
 
@@ -91,6 +95,12 @@ export default class Program {
     }
     this.gl.bindTexture(this.gl.TEXTURE_2D, texture)
     this.gl.uniform1i(this.program.locations[location], idx)
+    this.gl.useProgram(null)
+  }
+
+  setFloat(location, value) {
+    this.gl.useProgram(this.program)
+    this.gl.uniform1f(this.program.locations[location], value)
     this.gl.useProgram(null)
   }
 

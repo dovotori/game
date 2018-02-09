@@ -1,7 +1,7 @@
 import Context from "./Context"
 import Mouse from "../Mouse"
 
-export default class Canvas {
+export default class {
   constructor(options) {
     this.canvas = document.createElement("canvas")
     this.context = new Context(this.canvas)

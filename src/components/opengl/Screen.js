@@ -1,13 +1,10 @@
-import Program from "./Program"
-import Objet from "./Objet"
-import glsl from "../../shaders/screen"
+import ObjetPrimitive from "./ObjetPrimitive"
 import primitive from "../../primitives/plane"
 
 export default class Screen {
   constructor(gl) {
     this.gl = gl
-    this.program = new Program(this.gl, glsl)
-    this.objet = new Objet(this.gl)
+    this.objet = new ObjetPrimitive(this.gl)
     this.setupObjet()
   }
 
@@ -21,12 +18,13 @@ export default class Screen {
     }
   }
 
-  resize() {}
+  resize() { }
 
-  render(texture) {
-    this.program.setTexture("tex0", texture.get())
-    this.objet.enable(this.program.get(), "position", 3)
-    this.objet.enable(this.program.get(), "texture", 2)
-    this.objet.render(this.program.get())
+  render(program) {
+    this.objet.enable(program, "position", 3)
+    this.objet.enable(program, "texture", 2)
+    this.gl.disable(this.gl.CULL_FACE)
+    this.objet.render(program)
+    this.gl.enable(this.gl.CULL_FACE)
   }
 }

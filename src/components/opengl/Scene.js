@@ -1,39 +1,39 @@
 import Camera from "./Camera"
-// import Program from "./Program"
-// import Objet from "./Objet"
 import TextureImage from "./TextureImage"
-// import Mat4 from "../geometrie/Mat4"
-// import texture from "../../shaders/texture"
-// import plane from "../../primitives/plane"
-import Mesh from "./Mesh"
-import Screen from "./Screen"
+import Lampe from "./Lampe"
+import Mesh from "./MeshSprite"
 import Fbo from "./Fbo"
 import PostProcess from "./PostProcess"
 import AssetsManager from "../AssetsManager"
+import StateSprite from "../game/StateSprite"
+import heros from "../../sprites/heros"
 
 export default class Scene {
   constructor(gl) {
     this.gl = gl
     this.camera = new Camera()
-    this.camera.setPosition(4, 4, 4)
-    this.camera.setNearFar(1.0, 1000.0)
+    this.camera.setPosition(0, 0, 10)
+    this.camera.setNearFar(1.0, 100.0)
     this.assetsReady = false
     this.afterAssetsLoaded = this.afterAssetsLoaded.bind(this)
     this.postProcess = new PostProcess(this.gl, 1024, 1024)
     this.box = null
     this.mousePos = null
+    this.lampe = new Lampe(this.gl)
+    this.time = 0
+    this.state = new StateSprite(heros)
+    this.state.render("STAND")
 
     const paths = [
-      "../../../assets/textures/165.jpg",
-      "../../../assets/textures/165_norm.jpg",
-      "../../../assets/objets/sphere.obj",
+      "../../../assets/textures/heros.png",
+      "../../../assets/textures/101_norm.jpg",
+      "../../../assets/objets/plane.obj",
     ]
 
     this.assetsManager = new AssetsManager(paths, this.afterAssetsLoaded)
   }
 
   afterAssetsLoaded(assets) {
-    console.log(assets)
     this.textures = []
     this.textures[0] = new TextureImage(this.gl, assets[0])
     this.textures[1] = new TextureImage(this.gl, assets[1])
@@ -60,13 +60,15 @@ export default class Scene {
         this.mesh.setSelected(pixel)
       }
 
+      this.postProcess.start()
+      this.lampe.renderRepere(this.camera)
       this.mesh.setTexture(0, this.textures[0])
       this.mesh.setTexture(1, this.textures[1])
       this.mesh.start(this.camera)
-
-      this.postProcess.start()
       this.mesh.render()
       this.postProcess.end()
+
+      this.postProcess.setFXAA()
 
       this.gl.viewport(0, 0, this.box.width, this.box.height)
       this.postProcess.render()
@@ -74,7 +76,10 @@ export default class Scene {
   }
 
   update() {
+    this.time++
     this.mesh.update()
+    this.mesh.setLightPos(this.lampe.getPosition())
+    this.lampe.updateRandomPosition()
   }
 
   onMouseMove(infos) {
