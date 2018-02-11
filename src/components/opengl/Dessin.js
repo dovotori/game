@@ -17,8 +17,8 @@ export default class Dessin {
   }
 
   render() {
-    var now = new Date().getTime()
-    var milli = now - this.lastFrame
+    const now = new Date().getTime()
+    const milli = now - this.lastFrame
 
     if (milli > this.fps) {
       this.gl.clearColor(0.0, 0.0, 0.0, 1.0)

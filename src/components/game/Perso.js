@@ -1,34 +1,12 @@
-export default class Perso {
-  constructor() {
-    this.sprite = new Sprite();
-    this.cheminTexture = 'texture/tex.png';
+import StateSprite from "../game/StateSprite"
+import heros from "../../sprites/heros"
+
+export default class {
+  constructor(this.gl, texture) {
+    
   }
 
-  setup() {
-    this.sprite.setup();
-    this.sprite.setRotation(90, 0, 180);
-  }
+  render() {
 
-  draw(camera, program, objet) {
-    this.sprite.draw(camera, program, objet);
-  }
-
-  update(comportement) {
-    var position = comportement.getPositionCentree();
-    var taille = comportement.getTaille();
-    this.sprite.setPosition(position.x, position.y, position.z);
-    this.sprite.setTaille(taille.x, taille.y, taille.z);
-  }
-
-  animOrientation(isWayGauche) {
-    if (isWayGauche) {
-      this.sprite.setRotation(90, 0, 0);
-    } else {
-      this.sprite.setRotation(90, 0, 180);
-    }
-  }
-
-  setCheminTexture(chemin) {
-    this.cheminTexture = chemin;
   }
 }

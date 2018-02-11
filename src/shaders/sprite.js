@@ -4,7 +4,9 @@ attribute vec2 texture;
 uniform mat4 projection;
 uniform mat4 model;
 uniform mat4 view;
-uniform vec4 sprite;
+uniform vec2 spriteUV;
+uniform vec2 spriteGrid;
+uniform vec2 spriteSize;
 varying vec2 fragTexture;
 
 float map(float valeur, float minRef, float maxRef, float minDest, float maxDest) {
@@ -14,12 +16,11 @@ float map(float valeur, float minRef, float maxRef, float minDest, float maxDest
 }
 
 void main() {
-  vec2 spritePosition = sprite.xy;
-  vec2 spriteSize = sprite.zw;
-	float texX = map(texture.x, 0.0, 1.0, (spritePosition.x / spriteSize.x), ((spritePosition.x + 1.0)/spriteSize.x) );
-	float texY = map(texture.y, 0.0, 1.0, (spritePosition.y / spriteSize.y), ((spritePosition.y + 1.0)/spriteSize.y) );
+  vec2 grid =  spriteGrid / spriteSize;
+	float texX = map(texture.x, 0.0, 1.0, (spriteUV.x / grid.x), ((spriteUV.x + 1.0) / grid.x) );
+	float texY = map(texture.y, 0.0, 1.0, (spriteUV.y / grid.y), ((spriteUV.y + 1.0) / grid.y) );
 	fragTexture = vec2(texX, texY);
-  gl_Position = projection * view * model * vec4(position, 1.0);
+  gl_Position = projection * view * model * vec4(position.x * spriteSize.x, position.y * spriteSize.y, position.z, 1.0);
 }
 `
 
@@ -36,5 +37,13 @@ export default {
   vertex,
   fragment,
   attributes: ["position", "texture"],
-  uniforms: ["projection", "model", "view", "tex0", "sprite"],
+  uniforms: [
+    "projection",
+    "model",
+    "view",
+    "tex0",
+    "spriteUV",
+    "spriteGrid",
+    "spriteSize",
+  ],
 }

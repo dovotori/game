@@ -22,7 +22,7 @@ export default class Scene {
     this.lampe = new Lampe(this.gl)
     this.time = 0
     this.state = new StateSprite(heros)
-    this.state.render("STAND")
+    this.state.set("DIE")
 
     const paths = [
       "../../../assets/textures/heros.png",
@@ -80,6 +80,7 @@ export default class Scene {
     this.mesh.update()
     this.mesh.setLightPos(this.lampe.getPosition())
     this.lampe.updateRandomPosition()
+    this.mesh.setSprite(this.state.get())
   }
 
   onMouseMove(infos) {

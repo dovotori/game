@@ -5,8 +5,7 @@ import glsl from "../../shaders/sprite"
 export default class extends Mesh {
   constructor(gl, obj) {
     super(gl, obj)
-    this.spriteUV = [0, 0]
-    this.spriteGridSize = [1, 1]
+    this.sprite = [0, 0, 1, 1, 1, 1]
   }
 
   setup() {
@@ -14,19 +13,12 @@ export default class extends Mesh {
   }
 
   setProgram() {
-    this.program.setVector("sprite", [
-      this.spriteUV[0],
-      this.spriteUV[1],
-      this.spriteGridSize[0],
-      this.spriteGridSize[1],
-    ])
+    this.program.setVector("spriteUV", [this.sprite[0], this.sprite[1]])
+    this.program.setVector("spriteGrid", [this.sprite[2], this.sprite[3]])
+    this.program.setVector("spriteSize", [this.sprite[4], this.sprite[5]])
   }
 
-  setUV(x, y) {
-    this.spriteUV = [x, y]
-  }
-
-  setGridSize(w, h) {
-    this.spriteGridSize = [w, h]
+  setSprite(values) {
+    this.sprite = values
   }
 }
