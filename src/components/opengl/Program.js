@@ -1,4 +1,4 @@
-export default class Program {
+export default class {
   constructor(gl, config) {
     this.gl = gl
     this.config = config

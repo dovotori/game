@@ -2,8 +2,8 @@ import Mesh from "./Mesh"
 import Mat3 from "../geometrie/Mat3"
 
 export default class extends Mesh {
-  constructor(gl, obj) {
-    super(gl, obj)
+  constructor(gl) {
+    super(gl)
     this.normalMatrix = new Mat3()
   }
 

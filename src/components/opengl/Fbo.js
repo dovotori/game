@@ -1,7 +1,7 @@
 import TextureFbo from "./TextureFbo"
 import TextureDepth from "./TextureDepth"
 
-export default class Framebuffer {
+export default class {
   constructor(gl, width = 1024, height = 1024) {
     this.gl = gl
     this.buffer = this.gl.createFramebuffer()

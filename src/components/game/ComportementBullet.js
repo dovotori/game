@@ -1,69 +1,69 @@
-export default class ComportementBullet extends Comportement {
+export default class extends Comportement {
   constructor() {
-    super();
-    this.speed = 5.0;
-    this.isAim = false;
-    this.isShoot = false;
-    this.isHit = false;
-    this.direction = 1;
+    super()
+    this.speed = 5.0
+    this.isAim = false
+    this.isShoot = false
+    this.isHit = false
+    this.direction = 1
   }
 
   setup() {
-    Comportement.prototype.setup.call(this);
-    this.taille.set(1, 1, 0.1);
+    Comportement.prototype.setup.call(this)
+    this.taille.set(1, 1, 0.1)
   }
 
   update(tilemap) {
     if (!this.isAim) {
-      this.vitesse.x = this.speed * this.direction;
+      this.vitesse.x = this.speed * this.direction
       if (this.isBlockGauche || this.isBlockDroite) {
-        this.activeHit();
+        this.activeHit()
       }
     }
-    Comportement.prototype.update.call(this, tilemap);
+    Comportement.prototype.update.call(this, tilemap)
   }
 
   activeAim(isWayGauche) {
-    this.isWayGauche = isWayGauche;
-    this.isAim = true;
-    this.isShoot = false;
-    this.isHit = false;
+    this.isWayGauche = isWayGauche
+    this.isAim = true
+    this.isShoot = false
+    this.isHit = false
     if (this.isWayGauche) {
-      this.direction = -1;
+      this.direction = -1
     } else {
-      this.direction = 1;
+      this.direction = 1
     }
-    this.isBlockGauche = false;
-    this.isBlockDroite = false;
+    this.isBlockGauche = false
+    this.isBlockDroite = false
   }
 
   activeShoot() {
-    this.isShoot = true;
-    this.isAim = false;
-    this.isHit = false;
+    this.isShoot = true
+    this.isAim = false
+    this.isHit = false
   }
 
   activeHit() {
-    this.isShoot = false;
-    this.isHit = true;
+    this.isShoot = false
+    this.isHit = true
   }
 
-  collisionPerso(perso) { }
+  collisionPerso(perso) {}
 
   getAim() {
-    return this.isAim;
+    return this.isAim
   }
   getShoot() {
-    return this.isShoot;
+    return this.isShoot
   }
   getHit() {
-    return this.isHit;
+    return this.isHit
   }
 
   setAim(valeur) {
-    this.isAim = valeur;
+    this.isAim = valeur
   }
   setShoot(valeur) {
-    this.isShoot = valeur;
+    this.isShoot = valeur
   }
 }

@@ -1,9 +1,10 @@
 import LoadObj from "./LoadObj"
 
-export default class AssetsManager {
+export default class {
   constructor(paths, callback) {
     this.callback = callback
-    this.assets = []
+    this.objets = []
+    this.textures = []
     this.loadingCpt = paths.length
     // this.fetchAsset = this.fetchAsset.bind(this)
     this.loadOne = this.loadOne.bind(this)
@@ -30,19 +31,19 @@ export default class AssetsManager {
     const image = new Image()
     image.addEventListener("load", this.loadOne, false)
     image.src = path
-    this.assets.push(image)
+    this.textures.push(image)
   }
 
   loadObj(data) {
     const obj = new LoadObj(data)
-    this.assets.push(obj.getAllInOne())
+    this.objets.push(obj.getAllInOne())
     this.loadOne()
   }
 
   loadOne() {
     this.loadingCpt--
     if (this.loadingCpt == 0) {
-      this.callback(this.assets)
+      this.callback(this.textures, this.objets)
     }
   }
 

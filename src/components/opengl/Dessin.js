@@ -1,6 +1,6 @@
 import Scene from "./Scene"
 
-export default class Dessin {
+export default class {
   constructor(gl) {
     this.fps = 1000 / 50
     this.lastFrame = new Date().getTime()

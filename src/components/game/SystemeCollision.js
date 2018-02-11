@@ -1,7 +1,7 @@
-export default class SystemeCollision {
-	constructor() { }
+export default class {
+  constructor() {}
 
-	setup() { }
+  setup() {}
 
-	update() { }
+  update() {}
 }

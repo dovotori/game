@@ -1,6 +1,6 @@
 import Texture from "./Texture"
 
-export default class TextureFbo extends Texture {
+export default class extends Texture {
   create() {
     this.gl.texImage2D(
       this.gl.TEXTURE_2D,

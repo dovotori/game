@@ -3,7 +3,7 @@ import MeshRepere from "./MeshRepere"
 import Vec3 from "../geometrie/Vec3"
 import Mat4 from "../geometrie/Mat4"
 
-export default class Lampe {
+export default class {
   constructor(gl, width = 1024, height = 1024) {
     this.gl = gl
     this.fbo = new Fbo(this.gl, width, height)

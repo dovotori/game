@@ -1,6 +1,6 @@
 import Fbo from "./Fbo"
 
-export default class PingPongBuffer {
+export default class {
   constructor(gl, width = 1024, height = 1024) {
     this.fbos = []
     this.currentFbo = 0

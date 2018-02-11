@@ -2,20 +2,18 @@ import PingPongBuffer from "./PingPongBuffer"
 import Fbo from "./Fbo"
 import Screen from "./Screen"
 import Program from "./Program"
-import fxaa from "../../shaders/screenFXAA"
-import rgb from "../../shaders/screenRGB"
-import screen from "../../shaders/screen"
+import * as glsl from "../../shaders/screen"
 
-export default class PostProcess {
+export default class {
   constructor(gl, width = 1024, height = 1024) {
     this.gl = gl
     this.ppb = new PingPongBuffer(this.gl, width, height)
     this.screen = new Screen(this.gl)
     this.saveFbo = new Fbo(this.gl, width, height)
 
-    this.finalRender = new Program(this.gl, screen)
-    this.fxaa = new Program(this.gl, fxaa)
-    this.rgb = new Program(this.gl, rgb)
+    this.finalRender = new Program(this.gl, glsl.screen)
+    this.fxaa = new Program(this.gl, glsl.fxaa)
+    this.rgb = new Program(this.gl, glsl.rgb)
     // this.programTex = new Program()
     // this.blurH = new Program()
     // this.blurV = new Program()
@@ -25,7 +23,7 @@ export default class PostProcess {
     // this.occlusion = new Occlusion()
   }
 
-  setup() { }
+  setup() {}
 
   start() {
     this.ppb.begin()
@@ -73,7 +71,7 @@ export default class PostProcess {
   }
 
   setRGB(deltaX, deltaY) {
-    console.log(deltaX);
+    console.log(deltaX)
     this.fxaa.setTexture(0, this.ppb.getTexture().get())
     this.ppb.swap()
     this.ppb.begin()

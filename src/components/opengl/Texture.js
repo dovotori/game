@@ -1,4 +1,4 @@
-export default class Texture {
+export default class {
   constructor(gl, width = 4, height = 4) {
     this.gl = gl
     this.size = { width, height }

@@ -3,8 +3,8 @@ import MeshNormalMatrix from "./MeshNormalMatrix"
 import glsl from "../../shaders/phong"
 
 export default class extends MeshNormalMatrix {
-  constructor(gl, obj) {
-    super(gl, obj)
+  constructor(gl) {
+    super(gl)
     this.lightPos = null
   }
 

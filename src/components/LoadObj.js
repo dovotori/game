@@ -1,4 +1,4 @@
-export default class LoadObj {
+export default class {
   constructor(source) {
     this.addFaceIndex = this.addFaceIndex.bind(this)
     this.obj = {

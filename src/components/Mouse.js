@@ -1,6 +1,6 @@
 import { mapFromRange } from "../utils/numbers"
 
-export default class Mouse {
+export default class {
   constructor(div, callbackDrag, callbackDown, callbackMove) {
     this.div = div
     this.callbackDrag = callbackDrag

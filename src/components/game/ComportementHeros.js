@@ -1,62 +1,66 @@
-export default class ComportementHeros extends Comportement {
+export default class extends Comportement {
   constructor() {
-    super();
+    super()
 
-    this.auPlafond = false;
-    this.isDash = false;
-    this.isShoot = false;
-    this.isAim = false;
-    this.isMelee = false;
-    this.isRunned = false;
+    this.auPlafond = false
+    this.isDash = false
+    this.isShoot = false
+    this.isAim = false
+    this.isMelee = false
+    this.isRunned = false
   }
 
   setup() {
-    Comportement.prototype.setup.call(this);
-    this.taille.set(this.tailleReference, this.tailleReference, 0.1);
+    Comportement.prototype.setup.call(this)
+    this.taille.set(this.tailleReference, this.tailleReference, 0.1)
   }
 
   update(tilemap) {
-    this.rebondirPlafond();
-    this.applyGravity(); // important gravite d'abord
-    Comportement.prototype.update.call(this, tilemap);
+    this.rebondirPlafond()
+    this.applyGravity() // important gravite d'abord
+    Comportement.prototype.update.call(this, tilemap)
   }
 
   rebondirPlafond() {
     if (this.auPlafond) {
-      this.vitesse.y -= 1.0;
-      this.auPlafond = false;
+      this.vitesse.y -= 1.0
+      this.auPlafond = false
     }
   }
 
   collisionBasse(x, y, tileSize, map, mapSize) {
-    var largeur = this.taille.x;
+    var largeur = this.taille.x
     if (this.isDash) {
-      largeur = this.tailleReference * 2;
+      largeur = this.tailleReference * 2
     } // ne tombe pas lors du dash
 
-    var coinGauche, coinDroit, coinBas;
-    coinGauche = Math.floor(x / tileSize[0]);
-    coinDroit = Math.floor((x + largeur * 2) / tileSize[0]);
-    coinBas = Math.floor((y - this.taille.y * 2) / tileSize[1]) * -1.0 - 1.0;
+    var coinGauche, coinDroit, coinBas
+    coinGauche = Math.floor(x / tileSize[0])
+    coinDroit = Math.floor((x + largeur * 2) / tileSize[0])
+    coinBas = Math.floor((y - this.taille.y * 2) / tileSize[1]) * -1.0 - 1.0
 
     //var limiteMapY = ((mapSize[1]) * tileSize[1]) - (this.taille.y*2);
 
-    this.checkEtat(map[coinGauche][coinBas], map[coinDroit][coinBas], 1, 1);
+    this.checkEtat(map[coinGauche][coinBas], map[coinDroit][coinBas], 1, 1)
 
     if (map[coinGauche][coinBas] <= 0 || map[coinDroit][coinBas] <= 0) {
-      return true;
+      return true
     } else if (this.taille.x > tileSize[0] / 2) {
       // perso trop large, on calcule des points intermediaires
-      for (var i = coinGauche; i < coinDroit; i += Math.round(tileSize[0] / 4)) {
+      for (
+        var i = coinGauche;
+        i < coinDroit;
+        i += Math.round(tileSize[0] / 4)
+      ) {
         if (map[i][coinBas] <= 0) {
-          this.isAffine = true;
-          return true;
+          this.isAffine = true
+          return true
         }
       }
-      return false;
+      return false
     } else {
       // libre
-      return false;
+      return false
     }
   }
 
@@ -67,15 +71,15 @@ export default class ComportementHeros extends Comportement {
       coinBasDroit,
       coinHautGauche,
       coinHautDroit,
-    );
+    )
 
     // PLAFOND
     if (coinHautGauche <= 0 || coinHautDroit <= 0) {
       // touche
-      this.auPlafond = true;
+      this.auPlafond = true
     } else if (coinHautGauche > 0 && coinHautDroit > 0) {
       // en l'air
-      this.auPlafond = false;
+      this.auPlafond = false
     }
   }
 
@@ -84,101 +88,105 @@ export default class ComportementHeros extends Comportement {
   interaction(input) {
     if (input.getClavier(78)) {
       // melee
-      input.setClavier(78);
-      this.isMelee = true;
-      this.isAim = false;
+      input.setClavier(78)
+      this.isMelee = true
+      this.isAim = false
     } else if (input.getClavier(66)) {
       // viser
-      this.isAim = true;
-      this.isMelee = false;
-      this.vitesse.x = 0.0;
+      this.isAim = true
+      this.isMelee = false
+      this.vitesse.x = 0.0
     } else {
       if (this.isAim) {
         // shooter
-        this.isShoot = true;
+        this.isShoot = true
       } else {
-        this.isShoot = false;
-        this.gaucheDroite(input);
-        this.sauter(input);
-        this.dash(input);
+        this.isShoot = false
+        this.gaucheDroite(input)
+        this.sauter(input)
+        this.dash(input)
       }
-      this.isAim = false;
-      this.isMelee = false;
+      this.isAim = false
+      this.isMelee = false
     }
   }
 
   gaucheDroite(input) {
-    var vitesse = 0.9;
+    var vitesse = 0.9
     if (input.getClavier(37) && input.getClavier(39)) {
-      this.vitesse.x = 0;
-      this.isRunned = false;
+      this.vitesse.x = 0
+      this.isRunned = false
     } else if (input.getClavier(37)) {
-      this.vitesse.x = -vitesse;
-      this.isWayGauche = true;
+      this.vitesse.x = -vitesse
+      this.isWayGauche = true
       if (this.isAffine) {
-        this.isRunned = true;
+        this.isRunned = true
       } else {
-        this.isRunned = false;
+        this.isRunned = false
       }
     } else if (input.getClavier(39)) {
-      this.vitesse.x = vitesse;
-      this.isWayGauche = false;
+      this.vitesse.x = vitesse
+      this.isWayGauche = false
       if (this.isAffine) {
-        this.isRunned = true;
+        this.isRunned = true
       } else {
-        this.isRunned = false;
+        this.isRunned = false
       }
     } else {
-      this.vitesse.x = 0;
-      this.isRunned = false;
+      this.vitesse.x = 0
+      this.isRunned = false
     }
   }
 
   dash(input) {
-    var vitesse = 4.0;
+    var vitesse = 4.0
 
-    if (this.isAffine && input.getClavier(32) && (input.getClavier(37) || input.getClavier(39))) {
-      this.isDash = true;
+    if (
+      this.isAffine &&
+      input.getClavier(32) &&
+      (input.getClavier(37) || input.getClavier(39))
+    ) {
+      this.isDash = true
       if (input.getClavier(37)) {
-        this.vitesse.x = -vitesse;
+        this.vitesse.x = -vitesse
       }
       if (input.getClavier(39)) {
-        this.vitesse.x = vitesse;
+        this.vitesse.x = vitesse
       }
     } else {
-      this.isDash = false;
+      this.isDash = false
     }
   }
 
   sauter(input) {
     if (input.getClavier(38) && this.isAffine) {
-      input.setClavier(38);
-      this.vitesse.y += 1.7;
-      this.isAffine = false;
+      input.setClavier(38)
+      this.vitesse.y += 1.7
+      this.isAffine = false
     }
   }
 
   /*////// GETTEURS / SETTEURS ////////////////////////////////*/
   getPlafond() {
-    return this.auPlafond;
+    return this.auPlafond
   }
   getDash() {
-    return this.isDash;
+    return this.isDash
   }
   getShoot() {
-    return this.isShoot;
+    return this.isShoot
   }
   getAim() {
-    return this.isAim;
+    return this.isAim
   }
   getMelee() {
-    return this.isMelee;
+    return this.isMelee
   }
   getRun() {
-    return this.isRunned;
+    return this.isRunned
   }
 
   setDash(bool) {
-    this.isDash = bool;
+    this.isDash = bool
   }
 }

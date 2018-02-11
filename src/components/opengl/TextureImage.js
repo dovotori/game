@@ -1,7 +1,4 @@
-import Texture from "./Texture"
-
-// export default class TextureImage extends Texture {
-export default class TextureImage {
+export default class {
   constructor(gl, image) {
     // super(gl)
     this.gl = gl

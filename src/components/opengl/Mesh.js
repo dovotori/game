@@ -1,17 +1,13 @@
 import Program from "./Program"
-import Objet from "./ObjetObj"
-import Texture from "./Texture"
 import Spring from "../Spring"
 import Target from "../Target"
 import Mat4 from "../geometrie/Mat4"
 import glslColor from "../../shaders/color"
 
 export default class {
-  constructor(gl, obj) {
+  constructor(gl) {
     this.gl = gl
-    this.texture = new Texture(this.gl)
     this.programColor = new Program(this.gl, glslColor)
-    this.objet = new Objet(this.gl, obj)
     this.model = new Mat4()
     this.model.identity()
     this.angle = { x: new Spring(), y: new Spring() }
@@ -40,9 +36,9 @@ export default class {
     this.program.setVector("color", [1.0, 1.0, 1.0, 1.0])
   }
 
-  render() {
-    this.objet.enable(this.program.get())
-    this.objet.render(this.program.get())
+  render(objet) {
+    objet.enable(this.program.get())
+    objet.render(this.program.get())
   }
 
   setTexture(idx, texture) {
@@ -54,12 +50,12 @@ export default class {
     this.programColor.setMatrix("view", camera.getView().get())
     this.programColor.setMatrix("projection", camera.getProjection().get())
     this.programColor.setVector("color", [1.0, 1.0, 1.0, 1.0])
-    this.objet.enable(this.programColor.get())
   }
 
-  renderColor() {
+  renderColor(objet) {
+    objet.enable(this.programColor.get())
     this.programColor.enable()
-    this.objet.render(this.programColor.get())
+    objet.render(this.programColor.get())
     this.programColor.disable()
   }
 

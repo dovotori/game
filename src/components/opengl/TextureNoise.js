@@ -1,6 +1,6 @@
 import Texture from "./Texture"
 
-export default class TextureNoise extends Texture {
+export default class extends Texture {
   create() {
     const b = new ArrayBuffer(this.size.width * this.size.height * 4)
     const pixels = new Uint8Array(b)

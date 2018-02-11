@@ -3,8 +3,8 @@ import Mesh from "./Mesh"
 import glsl from "../../shaders/sprite"
 
 export default class extends Mesh {
-  constructor(gl, obj) {
-    super(gl, obj)
+  constructor(gl) {
+    super(gl)
     this.sprite = [0, 0, 1, 1, 1, 1]
   }
 

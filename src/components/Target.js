@@ -1,4 +1,4 @@
-export default class Target {
+export default class {
   constructor(value = 0, options = {}) {
     this.value = value
     this.target = value

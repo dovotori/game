@@ -1,7 +1,7 @@
 import ObjetPrimitive from "./ObjetPrimitive"
 import primitive from "../../primitives/plane"
 
-export default class Screen {
+export default class {
   constructor(gl) {
     this.gl = gl
     this.objet = new ObjetPrimitive(this.gl)
@@ -18,7 +18,7 @@ export default class Screen {
     }
   }
 
-  resize() { }
+  resize() {}
 
   render(program) {
     this.objet.enable(program, "position", 3)

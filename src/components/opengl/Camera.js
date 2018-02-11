@@ -1,7 +1,7 @@
 import Vec3 from "../geometrie/Vec3"
 import Mat4 from "../geometrie/Mat4"
 
-export default class Camera {
+export default class {
   constructor() {
     this.position = new Vec3(0, 0, 4)
     this.cible = new Vec3(0, 0, 0)

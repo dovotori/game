@@ -1,4 +1,4 @@
-export default class Objet {
+export default class {
   constructor(gl, obj) {
     this.gl = gl
     this.modeDessin = this.gl.TRIANGLES // gl.LINES // gl.TRIANGLES // gl.LINE_STRIP // gl.LINE_LOOP
