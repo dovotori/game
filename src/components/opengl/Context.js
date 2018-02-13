@@ -1,5 +1,3 @@
-import Dessin from "./Dessin"
-
 export default class {
   constructor(canvas) {
     this.gl = this.checkWebGl(canvas)
@@ -11,12 +9,11 @@ export default class {
     this.gl.cullFace(this.gl.FRONT)
     this.gl.enable(this.gl.BLEND)
     this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA)
+    this.gl.clearColor(0.0, 0.0, 0.0, 0.0)
 
     this.gl.getExtension("WEBGL_depth_texture") ||
       this.gl.getExtension("MOZ_WEBGL_depth_texture") ||
       this.gl.getExtension("WEBKIT_WEBGL_depth_texture")
-
-    this.dessin = new Dessin(this.gl)
   }
 
   checkWebGl(canvas) {
@@ -35,19 +32,7 @@ export default class {
     return gl
   }
 
-  onResize(box) {
-    this.dessin.onResize(box)
-  }
-
-  onMouseMove(infos) {
-    this.dessin.onMouseMove(infos)
-  }
-
-  onMouseDown(infos) {
-    this.dessin.onMouseDown(infos)
-  }
-
-  setDraggingInfos(infos) {
-    this.dessin.setDraggingInfos(infos)
+  get() {
+    return this.gl
   }
 }

@@ -44,4 +44,8 @@ export default class extends Scene {
       this.perso.setDraggingInfos(infos)
     }
   }
+
+  setInteraction(interaction) {
+    this.perso.setInteraction(interaction.perso, interaction.changed)
+  }
 }

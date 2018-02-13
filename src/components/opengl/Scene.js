@@ -33,7 +33,7 @@ export default class {
     this.assetsReady = true
   }
 
-  onResize(box) {
+  resize(box) {
     this.camera.perspective(box.width, box.height)
     this.box = box
     this.postProcess.resize(box)
@@ -45,6 +45,7 @@ export default class {
       this.lampe.updateRandomPosition()
       this.update()
 
+      this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT)
       this.renderBeforeProcess()
 
       if (this.mousePos !== null) {

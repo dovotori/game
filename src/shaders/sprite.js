@@ -4,6 +4,7 @@ attribute vec2 texture;
 uniform mat4 projection;
 uniform mat4 model;
 uniform mat4 view;
+uniform float inverseX;
 uniform vec2 spriteUV;
 uniform vec2 spriteGrid;
 uniform vec2 spriteSize;
@@ -17,7 +18,7 @@ float map(float valeur, float minRef, float maxRef, float minDest, float maxDest
 
 void main() {
   vec2 grid =  spriteGrid / spriteSize;
-	float texX = map(texture.x, 0.0, 1.0, (spriteUV.x / grid.x), ((spriteUV.x + 1.0) / grid.x) );
+	float texX = map(texture.x, 0.0 + inverseX, 1.0 - inverseX, (spriteUV.x / grid.x), ((spriteUV.x + 1.0) / grid.x) );
 	float texY = map(texture.y, 0.0, 1.0, (spriteUV.y / grid.y), ((spriteUV.y + 1.0) / grid.y) );
   fragTexture = vec2(texX, texY);
   gl_Position = projection * view * model * vec4((position.x * spriteSize.x), position.y * spriteSize.y, position.z, 1.0);
@@ -45,5 +46,6 @@ export default {
     "spriteUV",
     "spriteGrid",
     "spriteSize",
+    "inverseX",
   ],
 }

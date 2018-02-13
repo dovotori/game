@@ -86,7 +86,10 @@ class Vec3 {
   }
 
   plus(v) {
-    return new Vec3(this.x + v.x, this.y + v.y, this.z + v.z)
+    this.x += v.x
+    this.y += v.y
+    this.z + v.z
+    return this
   }
 
   plusValeur(valeur) {
@@ -102,7 +105,10 @@ class Vec3 {
   }
 
   multiplierValeur(valeur) {
-    return new Vec3(this.x * valeur, this.y * valeur, this.z * valeur)
+    this.x *= valeur
+    this.y *= valeur
+    this.z *= valeur
+    return this
   }
 
   multiplierMatrice(matrice) {

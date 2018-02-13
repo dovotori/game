@@ -1,11 +1,11 @@
-import Canvas from "./components/opengl/Canvas"
+import App from "./components/App"
 
 const setup = () => {
   const options = {
     mouse: true,
   }
-  const canvas = new Canvas(options)
-  document.querySelector("#dovotori-app").appendChild(canvas.get())
+  const app = new App(options)
+  document.querySelector("#dovotori-app").appendChild(app.getCanvas())
 }
 
 window.addEventListener("load", setup, false)
