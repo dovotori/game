@@ -1,15 +1,9 @@
-import Program from "./Program"
 import MeshNormalMatrix from "./MeshNormalMatrix"
-import glsl from "../../shaders/phong"
 
 export default class extends MeshNormalMatrix {
   constructor(gl) {
     super(gl)
     this.lightPos = null
-  }
-
-  setup() {
-    this.program = new Program(this.gl, glsl)
   }
 
   start(camera) {
@@ -21,14 +15,18 @@ export default class extends MeshNormalMatrix {
     this.program.setVector("posEye", camera.getPosition().get())
   }
 
-  setProgram() {
-    this.program.setBool("selected", this.selected)
-    this.program.setVector("ambiant", [0.5, 0, 0])
-    this.program.setVector("diffuse", [1, 0, 0])
-    this.program.setVector("specular", [1, 1, 1])
-    this.program.setFloat("brillance", 10)
+  setProgramSpecifics(program) {
+    program.setBool("selected", this.selected)
+    program.setVector("ambiant", [0.5, 0, 0])
+    program.setVector("diffuse", [1, 0, 0])
+    program.setVector("specular", [1, 1, 1])
+    program.setFloat("brillance", 10)
     if (this.lightPos !== null) {
-      this.program.setVector("posLum", this.lightPos.get())
+      program.setVector("posLum", this.lightPos.get())
     }
+  }
+
+  setLightPos(value) {
+    this.lightPos = value
   }
 }

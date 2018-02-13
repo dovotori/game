@@ -1,22 +1,16 @@
 import Camera from "./Camera"
-import TextureImage from "./TextureImage"
 import Lampe from "./Lampe"
-import Mesh from "./MeshSprite"
 import PostProcess from "./PostProcess"
 import LoadAssets from "../LoadAssets"
 import ManagerTextures from "./ManagerTextures"
 import ManagerObjets from "./ManagerObjets"
 import ManagerPrograms from "./ManagerPrograms"
-import StateSprite from "../game/StateSprite"
-import heros from "../../sprites/heros"
 import scene from "../../scenes/classic"
 
 export default class {
   constructor(gl) {
     this.gl = gl
-    this.camera = new Camera()
-    this.camera.setPosition(0, 0, 10)
-    this.camera.setNearFar(1.0, 100.0)
+    this.camera = new Camera(scene.camera)
     this.assetsReady = false
     this.afterAssetsLoaded = this.afterAssetsLoaded.bind(this)
     this.postProcess = new PostProcess(this.gl, 1024, 1024)
@@ -24,17 +18,18 @@ export default class {
     this.mousePos = null
     this.lampe = new Lampe(this.gl)
     this.time = 0
-    this.state = new StateSprite(heros)
-    this.state.set("DIE")
-    this.mesh = new Mesh(this.gl)
-    this.mngProg = new ManagerPrograms(this.gl)
+    this.mngProg = new ManagerPrograms(this.gl, scene.programs)
 
     LoadAssets(scene.assets, this.afterAssetsLoaded)
   }
 
-  afterAssetsLoaded(textures, objets) {
-    this.mngTex = new ManagerTextures(this.gl, textures)
-    this.mngObj = new ManagerObjets(this.gl, objets)
+  afterAssetsLoaded(assets) {
+    this.mngTex = new ManagerTextures(this.gl, assets.textures)
+    this.mngObj = new ManagerObjets(this.gl, assets.objets)
+
+    this.camera.lookAt()
+    this.mngProg.setCameraMatrix(this.camera)
+
     this.assetsReady = true
   }
 
@@ -46,23 +41,21 @@ export default class {
 
   render() {
     if (this.assetsReady) {
+      this.time++
+      this.lampe.updateRandomPosition()
       this.update()
 
-      this.camera.lookAt()
-      this.mesh.startColor(this.camera)
-      this.mesh.renderColor(this.mngObj.get(0))
+      this.renderBeforeProcess()
 
       if (this.mousePos !== null) {
         const pixel = this.getColorPixel(this.mousePos)
-        this.mesh.setSelected(pixel)
+        this.perso.setSelected(pixel)
       }
 
+      this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT)
       this.postProcess.start()
       this.lampe.renderRepere(this.camera)
-      this.mesh.setTexture(0, this.mngTex.get(0))
-      this.mesh.setTexture(1, this.mngTex.get(1))
-      this.mesh.start(this.camera)
-      this.mesh.render(this.mngObj.get(0))
+      this.renderToProcess()
       this.postProcess.end()
 
       this.postProcess.setFXAA()
@@ -72,13 +65,9 @@ export default class {
     }
   }
 
-  update() {
-    this.time++
-    this.mesh.update()
-    this.mesh.setLightPos(this.lampe.getPosition())
-    this.lampe.updateRandomPosition()
-    this.mesh.setSprite(this.state.get())
-  }
+  renderToProcess() {}
+
+  renderBeforeProcess() {}
 
   onMouseMove(infos) {
     if (this.assetsReady) {
@@ -90,7 +79,6 @@ export default class {
 
   setDraggingInfos(infos) {
     if (this.box !== null) {
-      this.mesh.setDraggingInfos(infos)
     }
   }
 

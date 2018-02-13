@@ -1,62 +1,39 @@
-import Program from "./Program"
 import Spring from "../Spring"
 import Target from "../Target"
 import Mat4 from "../geometrie/Mat4"
-import glslColor from "../../shaders/color"
 
 export default class {
   constructor(gl) {
     this.gl = gl
-    this.programColor = new Program(this.gl, glslColor)
     this.model = new Mat4()
     this.model.identity()
     this.angle = { x: new Spring(), y: new Spring() }
     this.selected = false
     this.size = new Target(1, { sampling: 0.1 })
-    this.setup()
   }
 
-  setup() {
-    this.program = new Program(this.gl, glslColor)
+  setProgram(program) {
+    program.setMatrix("model", this.model.get())
   }
 
-  start(camera) {
-    this.setMatrix(camera)
-    this.setProgram()
+  setProgramSpecifics(program) {
+    program.setBool("selected", this.selected)
+    program.setVector("color", [1.0, 1.0, 1.0, 1.0])
   }
 
-  setMatrix(camera) {
-    this.program.setMatrix("model", this.model.get())
-    this.program.setMatrix("view", camera.getView().get())
-    this.program.setMatrix("projection", camera.getProjection().get())
+  render(objet, program) {
+    this.setProgram(program)
+    this.setProgramSpecifics(program)
+    objet.enable(program.get())
+    objet.render(program.get())
   }
 
-  setProgram() {
-    this.program.setBool("selected", this.selected)
-    this.program.setVector("color", [1.0, 1.0, 1.0, 1.0])
-  }
-
-  render(objet) {
-    objet.enable(this.program.get())
-    objet.render(this.program.get())
-  }
-
-  setTexture(idx, texture) {
-    this.program.setTexture("tex" + idx, texture.get(), idx)
-  }
-
-  startColor(camera) {
-    this.programColor.setMatrix("model", this.model.get())
-    this.programColor.setMatrix("view", camera.getView().get())
-    this.programColor.setMatrix("projection", camera.getProjection().get())
-    this.programColor.setVector("color", [1.0, 1.0, 1.0, 1.0])
-  }
-
-  renderColor(objet) {
-    objet.enable(this.programColor.get())
-    this.programColor.enable()
-    objet.render(this.programColor.get())
-    this.programColor.disable()
+  renderColor(objet, program) {
+    this.setProgram(program)
+    program.setBool("selected", this.selected)
+    program.setVector("color", [1.0, 1.0, 1.0, 1.0])
+    objet.enable(program.get())
+    objet.render(program.get())
   }
 
   update() {
@@ -82,5 +59,10 @@ export default class {
 
   setLightPos(pos) {
     this.lightPos = pos
+  }
+
+  setTranslate(x, y, z = 0) {
+    this.model.identity()
+    this.model.translate(x, y, z)
   }
 }

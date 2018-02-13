@@ -2,8 +2,12 @@ import Vec3 from "../geometrie/Vec3"
 import Mat4 from "../geometrie/Mat4"
 
 export default class {
-  constructor() {
-    this.position = new Vec3(0, 0, 4)
+  constructor(options) {
+    this.position = new Vec3(
+      options.position.x || 0,
+      options.position.y || 0,
+      options.position.z || 4,
+    )
     this.cible = new Vec3(0, 0, 0)
 
     // MATRICES
@@ -11,10 +15,10 @@ export default class {
     this.view = new Mat4()
     this.projection = new Mat4()
 
-    this.far = 100.0
-    this.near = 1.0
+    this.near = options.near || 1.0
+    this.far = options.far || 100.0
 
-    this.angle = 50
+    this.angle = options.angle || 50
     this.matIdentity.identity()
   }
 

@@ -2,7 +2,10 @@ import Objet from "./ObjetObj"
 
 export default class {
   constructor(gl, objets) {
-    this.objets = objets.map(objet => new Objet(gl, objet))
+    this.objets = {}
+    for (let name in objets) {
+      this.objets[name] = new Objet(gl, objets[name])
+    }
   }
 
   get(id) {

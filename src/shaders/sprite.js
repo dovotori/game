@@ -19,8 +19,8 @@ void main() {
   vec2 grid =  spriteGrid / spriteSize;
 	float texX = map(texture.x, 0.0, 1.0, (spriteUV.x / grid.x), ((spriteUV.x + 1.0) / grid.x) );
 	float texY = map(texture.y, 0.0, 1.0, (spriteUV.y / grid.y), ((spriteUV.y + 1.0) / grid.y) );
-	fragTexture = vec2(texX, texY);
-  gl_Position = projection * view * model * vec4(position.x * spriteSize.x, position.y * spriteSize.y, position.z, 1.0);
+  fragTexture = vec2(texX, texY);
+  gl_Position = projection * view * model * vec4((position.x * spriteSize.x), position.y * spriteSize.y, position.z, 1.0);
 }
 `
 

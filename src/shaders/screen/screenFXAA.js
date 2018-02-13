@@ -39,21 +39,22 @@ vec4 applyFXAA(sampler2D tex, vec2 st) {
 		max(vec2(-FXAA_SPAN_MAX, -FXAA_SPAN_MAX), dir * inverseDirAdjustment)) * inverseViewportSize;
 
 	// BLUR
-	vec3 result1 = (1.0/2.0) * (
-		texture2D(tex, st + (dir * vec2(1.0/3.0 - 0.5))).xyz +
-		texture2D(tex, st + (dir * vec2(2.0/3.0 - 0.5))).xyz);
-	vec3 result2 = result1 * (1.0/2.0) + (1.0/4.0) * (
-		texture2D(tex, st + (dir * vec2(0.0/3.0 - 0.5))).xyz +
-		texture2D(tex, st + (dir * vec2(3.0/3.0 - 0.5))).xyz);
+	vec4 result1 = (1.0/2.0) * (
+		texture2D(tex, st + (dir * vec2(1.0/3.0 - 0.5))) +
+		texture2D(tex, st + (dir * vec2(2.0/3.0 - 0.5))));
+	vec4 result2 = result1 * (1.0/2.0) + (1.0/4.0) * (
+		texture2D(tex, st + (dir * vec2(0.0/3.0 - 0.5))) +
+		texture2D(tex, st + (dir * vec2(3.0/3.0 - 0.5))));
+
 	float lumaMin = min(lumaM, min(min(lumaTL, lumaTR), min(lumaBL, lumaBR)));
 	float lumaMax = max(lumaM, max(max(lumaTL, lumaTR), max(lumaBL, lumaBR)));
-	float lumaResult2 = dot(luma, result2);
+	float lumaResult2 = dot(luma, result2.xyz);
 
 	vec4 color;
 	if(lumaResult2 < lumaMin || lumaResult2 > lumaMax){ // teste si on est pas parti trop loin
-		color = vec4(result1, 1.0);
+		color = result1; // vec4(result1, 1.0);
 	} else {
-		color = vec4(result2, 1.0);
+		color = result2; // vec4(result2, 1.0);
 	}
 	return color;
 }
