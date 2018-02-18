@@ -71,7 +71,6 @@ export default class {
   }
 
   setRGB(deltaX, deltaY) {
-    console.log(deltaX)
     this.fxaa.setTexture(0, this.ppb.getTexture().get())
     this.ppb.swap()
     this.ppb.begin()

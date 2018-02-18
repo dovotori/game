@@ -9,8 +9,6 @@ export default class {
   }
 
   resize(box) {
-    this.canvas.style.width = `${box.width}px`
-    this.canvas.style.height = `${box.height}px`
     this.canvas.setAttribute("width", box.width)
     this.canvas.setAttribute("height", box.height)
   }

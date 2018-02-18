@@ -1,14 +1,22 @@
-import Tile from "./Tile"
+import Tile from "./TileNormalMatrix"
 
 export default class {
-  constructor(gl, img) {
+  constructor(gl, img, box) {
     this.context = this.setupContext(img)
     this.levelSize = { w: img.width, h: img.height }
     this.viewBox = {
       x: 0,
       y: 0,
-      w: 10,
-      h: 10,
+      w: box.w || 20,
+      h: box.h || 20,
+    }
+    this.scrollBox = {
+      w: this.viewBox.w / 2,
+      h: this.viewBox.h / 2,
+    }
+    this.smoothTilePos = {
+      x: 0,
+      y: 0,
     }
     this.tile = new Tile(gl)
   }
@@ -19,6 +27,7 @@ export default class {
     canvas.width = img.width
     canvas.height = img.height
     context.drawImage(img, 0, 0)
+    // document.body.appendChild(canvas)
     return context
   }
 
@@ -29,6 +38,10 @@ export default class {
       this.viewBox.w,
       this.viewBox.h,
     )
+  }
+
+  update(program, camera) {
+    this.tile.setNormalMatrix(program, camera)
   }
 
   render(obj, prog, tex) {
@@ -44,9 +57,14 @@ export default class {
           case "25500":
           case "00255":
           case "000":
-            const inverseY = map.height - 1 - y
+          case "02550":
+          case "150150150":
+            // const inverseY = map.height - 1 - y
             this.tile.setState(state)
-            this.tile.setTranslate(x, inverseY)
+            this.tile.setTranslate(
+              x - this.smoothTilePos.x,
+              y - this.smoothTilePos.y, // maybe add smooth for y
+            )
             this.tile.render(obj, prog, tex)
             break
           default:
@@ -57,36 +75,29 @@ export default class {
     this.cpt++
   }
 
-  renderTile(x, y) {}
+  follow(pos) {
+    let offsetX = pos[0] - this.scrollBox.w
+    if (offsetX < 0) offsetX = 0
+    if (offsetX > this.levelSize.w - this.viewBox.w)
+      offsetX = this.levelSize.w - this.viewBox.w
 
-  // var data
-  // for (var y = 0; y < image.height; y++) {
-  //   for (var x = 0; x < image.width; x++) {
-  //     data = context.getImageData(x, y, 1, 1).data
-  //     // collision
-  //     if (data[0] == 0 && data[1] == 0 && data[2] == 0) {
-  //       this.map[x][y] = 0
-  //     } else if (data[0] == 0 && data[1] == 0 && data[2] == 255) {
-  //       this.map[x][y] = -1
-  //     } else if (data[0] == 150 && data[1] == 150 && data[2] == 150) {
-  //       this.map[x][y] = -2
-  //       // deco
-  //     } else if (data[0] == 255 && data[1] == 0 && data[2] == 0) {
-  //       this.map[x][y] = 2
-  //     } else if (data[0] == 0 && data[1] == 255 && data[2] == 0) {
-  //       this.map[x][y] = 3
-  //     } else if (data[0] == 0 && data[1] == 200 && data[2] == 0) {
-  //       this.map[x][y] = 4
-  //     } else if (data[0] == 0 && data[1] == 180 && data[2] == 0) {
-  //       this.map[x][y] = 5
-  //     } else if (data[0] == 0 && data[1] == 160 && data[2] == 0) {
-  //       this.map[x][y] = 6
-  //     } else if (data[0] == 0 && data[1] == 140 && data[2] == 0) {
-  //       this.map[x][y] = 7
-  //       // rien
-  //     } else {
-  //       this.map[x][y] = 1
-  //     }
-  //   }
-  // }
+    let offsetY = pos[1] - this.scrollBox.h
+    if (offsetY < 0) offsetY = 0
+    if (offsetY > this.levelSize.h - this.viewBox.h)
+      offsetY = this.levelSize.h - this.viewBox.h
+
+    this.viewBox.x = offsetX
+    this.viewBox.y = offsetY
+
+    this.smoothTilePos.x = offsetX - Math.floor(offsetX)
+    this.smoothTilePos.y = offsetY - Math.floor(offsetY)
+  }
+
+  getViewBox() {
+    return this.viewBox
+  }
+
+  get() {
+    return this.context
+  }
 }

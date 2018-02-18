@@ -24,6 +24,36 @@ class Vec3 {
     return this.z
   }
 
+  setX(value) {
+    this.x = value
+  }
+  setY(value) {
+    this.y = value
+  }
+  setZ(value) {
+    this.z = value
+  }
+
+  addX(value) {
+    this.x += value
+  }
+  addY(value) {
+    this.y += value
+  }
+  addZ(value) {
+    this.z += value
+  }
+
+  multiplyX(value) {
+    this.x *= value
+  }
+  multiplyY(value) {
+    this.y *= value
+  }
+  multiplyZ(value) {
+    this.z *= value
+  }
+
   limiter(max) {
     const longueurCarre = this.x * this.x + this.y * this.y + this.z * this.z
 

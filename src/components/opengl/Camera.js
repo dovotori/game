@@ -1,5 +1,6 @@
 import Vec3 from "../geometrie/Vec3"
 import Mat4 from "../geometrie/Mat4"
+import Spring from "../Spring"
 
 export default class {
   constructor(options) {
@@ -8,7 +9,11 @@ export default class {
       options.position.y || 0,
       options.position.z || 4,
     )
-    this.cible = new Vec3(0, 0, 0)
+    this.cible = new Vec3(
+      options.target.x || 0,
+      options.target.y || 0,
+      options.target.z || 4,
+    )
 
     // MATRICES
     this.matIdentity = new Mat4()
@@ -20,21 +25,39 @@ export default class {
 
     this.angle = options.angle || 50
     this.matIdentity.identity()
+
+    this.rotationX = new Spring()
+    this.options = options
   }
 
   lookAt() {
     this.view.identity()
     this.view.lookAt(
-      this.position.x,
-      this.position.y,
-      this.position.z,
-      this.cible.x,
-      this.cible.y,
-      this.cible.z,
+      this.position.getX(),
+      this.position.getY(),
+      this.position.getZ(),
+      this.cible.getX(),
+      this.cible.getY(),
+      this.cible.getZ(),
       0,
       1,
       0,
     )
+  }
+
+  update() {
+    this.rotationX.update()
+    this.position.set(
+      this.options.position.x +
+        Math.sin(this.rotationX.get() * 0.01) * this.options.position.z,
+      this.options.position.y,
+      Math.cos(this.rotationX.get() * 0.01) * this.options.position.z,
+    )
+    this.lookAt()
+  }
+
+  setDraggingPosition(pos) {
+    this.rotationX.addToSpeed(pos.relPrevious.x * 0.1)
   }
 
   perspective(w, h) {

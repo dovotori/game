@@ -4,23 +4,23 @@ import heros from "../../sprites/heros"
 import Behavior from "./Behavior"
 
 export default class extends MeshSprite {
-  constructor(gl) {
+  constructor(gl, pos) {
     super(gl)
     this.state = new StateSprite(heros)
-    this.behavior = new Behavior()
     this.state.set("STAND")
-    this.inverseX = 0.0
+    this.inverseX = false
+    this.position = [pos.x || 0, pos.y || 0]
+    this.behavior = new Behavior(this.position)
   }
 
   render(objet, program, texture) {
-    this.behavior.render()
     this.model.translate(
-      this.behavior.getPosition()[0],
-      this.behavior.getPosition()[1],
-      this.behavior.getPosition()[2],
+      this.position[0],
+      this.position[1],
+      this.behavior.getZ(),
     )
     program.setTexture(0, texture.get())
-    program.setFloat("inverseX", this.inverseX)
+    program.setFloat("inverseX", this.inverseX ? 1 : 0)
     this.setSprite(this.state.get())
     super.render(objet, program)
   }
@@ -31,18 +31,19 @@ export default class extends MeshSprite {
 
   setInteraction(interaction, changed) {
     this.behavior.setInteraction(interaction)
-    if (changed) {
-      if (interaction.LEFT && interaction.RIGHT) {
-        this.state.set("STAND")
-      } else if (interaction.RIGHT) {
-        this.inverseX = 0.0
-        this.state.set("RUN")
-      } else if (interaction.LEFT) {
-        this.inverseX = 1.0
-        this.state.set("RUN")
-      } else {
-        this.state.set("STAND")
-      }
-    }
+    const state = this.behavior.getState()
+    this.inverseX = state.inverse
+    this.state.set(state.name)
+  }
+
+  update(offset, map) {
+    super.update()
+    this.behavior.setCollision(map)
+    this.position[0] = this.behavior.getX() - offset.x
+    this.position[1] = this.behavior.getY() - offset.y
+  }
+
+  getPosition() {
+    return this.behavior.getPosition()
   }
 }

@@ -1,16 +1,17 @@
 import Perso from "../game/Perso"
 import Tilemap from "../game/Tilemap"
 import Scene from "./Scene"
+import scene from "../../scenes/classic"
 
 export default class extends Scene {
   constructor(gl) {
     super(gl)
-    this.perso = new Perso(this.gl)
+    this.perso = new Perso(this.gl, scene.perso)
   }
 
   afterAssetsLoaded(assets) {
     super.afterAssetsLoaded(assets)
-    this.tilemap = new Tilemap(this.gl, assets.levels.level)
+    this.tilemap = new Tilemap(this.gl, assets.levels.level, scene.tilemap)
   }
 
   renderBeforeProcess() {
@@ -23,9 +24,12 @@ export default class extends Scene {
   }
 
   renderToProcess() {
+    this.mngProg
+      .get("spritePhong")
+      .setVector("posLum", this.lampe.getPosition().get())
     this.tilemap.render(
-      this.mngObj.get("tile"),
-      this.mngProg.get("sprite"),
+      this.mngObj.get("cubeTile"),
+      this.mngProg.get("spritePhong"),
       this.mngTex.get("tiles"),
     )
     this.perso.render(
@@ -36,16 +40,13 @@ export default class extends Scene {
   }
 
   update() {
-    this.perso.update()
+    super.update()
+    this.perso.update(this.tilemap.getViewBox(), this.tilemap.get())
+    this.tilemap.follow(this.perso.getPosition())
+    this.tilemap.update(this.mngProg.get("spritePhong"), this.camera)
   }
 
-  setDraggingInfos(infos) {
-    if (this.box !== null) {
-      this.perso.setDraggingInfos(infos)
-    }
-  }
-
-  setInteraction(interaction) {
+  setKeyboardInteraction(interaction) {
     this.perso.setInteraction(interaction.perso, interaction.changed)
   }
 }

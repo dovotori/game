@@ -25,6 +25,7 @@ export default class {
   }
 
   eventClavier(e) {
+    e.preventDefault()
     if (e.type == "keydown") {
       if (e.keyCode != this.oldFocusKey) {
         this.oldFocusKey = e.keyCode

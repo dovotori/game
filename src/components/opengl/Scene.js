@@ -19,6 +19,7 @@ export default class {
     this.lampe = new Lampe(this.gl)
     this.time = 0
     this.mngProg = new ManagerPrograms(this.gl, scene.programs)
+    this.one = false
 
     LoadAssets(scene.assets, this.afterAssetsLoaded)
   }
@@ -26,10 +27,7 @@ export default class {
   afterAssetsLoaded(assets) {
     this.mngTex = new ManagerTextures(this.gl, assets.textures)
     this.mngObj = new ManagerObjets(this.gl, assets.objets)
-
     this.camera.lookAt()
-    this.mngProg.setCameraMatrix(this.camera)
-
     this.assetsReady = true
   }
 
@@ -40,9 +38,8 @@ export default class {
   }
 
   render() {
-    if (this.assetsReady) {
+    if (this.assetsReady /*&& !this.one*/) {
       this.time++
-      this.lampe.updateRandomPosition()
       this.update()
 
       this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT)
@@ -59,11 +56,19 @@ export default class {
       this.renderToProcess()
       this.postProcess.end()
 
-      this.postProcess.setFXAA()
+      // this.postProcess.setFXAA()
+      // this.postProcess.setRGB(0.01, 0.01)
 
       this.gl.viewport(0, 0, this.box.width, this.box.height)
       this.postProcess.render()
+      this.one = true
     }
+  }
+
+  update() {
+    this.lampe.updateRandomPosition()
+    this.camera.update()
+    this.mngProg.setCameraMatrix(this.camera)
   }
 
   renderToProcess() {}
@@ -78,9 +83,8 @@ export default class {
 
   onMouseDown(infos) {}
 
-  setDraggingInfos(infos) {
-    if (this.box !== null) {
-    }
+  setMouseInteraction(infos) {
+    this.camera.setDraggingPosition(infos)
   }
 
   getColorPixel(pos) {

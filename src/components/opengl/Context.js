@@ -6,7 +6,7 @@ export default class {
     this.gl.clearDepth(1.0)
     this.gl.depthFunc(this.gl.LESS)
     this.gl.enable(this.gl.CULL_FACE)
-    this.gl.cullFace(this.gl.FRONT)
+    this.gl.cullFace(this.gl.BACK)
     this.gl.enable(this.gl.BLEND)
     this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA)
     this.gl.clearColor(0.0, 0.0, 0.0, 0.0)

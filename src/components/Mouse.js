@@ -3,9 +3,9 @@ import { mapFromRange } from "../utils/numbers"
 export default class {
   constructor(div, callbackDrag, callbackDown, callbackMove) {
     this.div = div
-    this.callbackDrag = callbackDrag
-    this.callbackDown = callbackDown
-    this.callbackMove = callbackMove
+    this.callbackDrag = callbackDrag || null
+    this.callbackDown = callbackDown || null
+    this.callbackMove = callbackMove || null
     this.isDragging = false
     this.startDraggingMousePos = { x: 0, y: 0 }
     this.oldMousePos = { x: 0, y: 0 }
@@ -47,9 +47,9 @@ export default class {
 
   onMouseMove(e) {
     const infos = this.computeInfos(e)
-    this.callbackMove(infos)
+    if (this.callbackMove !== null) this.callbackMove(infos)
     if (this.isDragging) {
-      this.callbackDrag(infos)
+      if (this.callbackDrag !== null) this.callbackDrag(infos)
       this.oldMousePos = { x: e.clientX, y: e.clientY }
     }
   }
@@ -58,7 +58,7 @@ export default class {
     this.isDragging = true
     this.startDraggingMousePos = { x: e.clientX, y: e.clientY }
     this.oldMousePos = { x: e.clientX, y: e.clientY }
-    this.callbackDown(this.computeInfos(e))
+    if (this.callbackDown !== null) this.callbackDown(this.computeInfos(e))
   }
 
   onMouseUp() {

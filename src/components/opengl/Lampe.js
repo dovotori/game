@@ -43,9 +43,10 @@ export default class {
   updateRandomPosition() {
     this.cpt++
     this.position.set(
-      Math.cos(this.cpt * 0.1) * 4,
-      Math.sin(this.cpt * 0.1) * 4,
-      Math.sin(this.cpt * 0.1) * 4,
+      10 + Math.cos(this.cpt * 0.1) * 4,
+      10 + Math.sin(this.cpt * 0.1) * 4,
+      // Math.sin(this.cpt * 0.1) * 4,
+      4,
     )
     this.repere.update(this.position)
   }

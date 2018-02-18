@@ -12,23 +12,27 @@ export default class {
     this.uv = null
     this.iteration = null
     this.nextState = null
+    this.currentState = null
   }
 
   set(state) {
-    const data = this.states[state]
-    this.uv = data.uv
-    this.setUV(0)
+    if (this.currentState !== state) {
+      const data = this.states[state]
+      this.uv = data.uv
+      this.setUV(0)
 
-    this.nbSteps = this.uv.length
-    if (this.nbSteps === 1) {
-      this.lastFrame = null
-    } else {
-      this.timeout = data.time || this.states.time
-      this.step = 0
-      this.iteration = data.iteration || null
-      this.nextState = data.next || null
-      this.lastFrame = new Date().getTime()
+      this.nbSteps = this.uv.length
+      if (this.nbSteps === 1) {
+        this.lastFrame = null
+      } else {
+        this.timeout = data.time || this.states.time
+        this.step = 0
+        this.iteration = data.iteration || null
+        this.nextState = data.next || null
+        this.lastFrame = new Date().getTime()
+      }
     }
+    this.currentState = state
   }
 
   get() {
@@ -74,5 +78,9 @@ export default class {
     } else {
       this.step = 0
     }
+  }
+
+  getName() {
+    return this.currentState
   }
 }
