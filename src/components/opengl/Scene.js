@@ -1,4 +1,4 @@
-import Camera from "./Camera"
+import Camera from "./CameraDragging"
 import Lampe from "./Lampe"
 import PostProcess from "./PostProcess"
 import LoadAssets from "../LoadAssets"
@@ -38,7 +38,8 @@ export default class {
   }
 
   render() {
-    if (this.assetsReady /*&& !this.one*/) {
+    // if (this.assetsReady && !this.one) {
+    if (this.assetsReady) {
       this.time++
       this.update()
 

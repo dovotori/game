@@ -1,43 +1,13 @@
 import Vec3 from "../geometrie/Vec3"
 
 export default class {
-  constructor(pos) {
-    this.position = new Vec3(pos[0], pos[1], 0.1)
+  constructor(constants) {
+    this.constants = constants
+    this.position = new Vec3(constants.x, constants.y, 0.1)
     this.speed = new Vec3(0, 0, 0)
     this.isLanding = false
     this.inverseSprite = false
     this.statusSprite = "STAND"
-  }
-
-  setInteraction(interaction) {
-    if (interaction.UP) {
-      this.speed.addY(0.1)
-    }
-    if (interaction.DOWN) {
-      this.speed.addY(-0.1)
-    }
-    if (interaction.RIGHT) {
-      this.speed.addX(0.1)
-      this.inverseSprite = false
-    }
-    if (interaction.LEFT) {
-      this.speed.addX(-0.1)
-      this.inverseSprite = true
-    }
-    if (this.isLanding && interaction.SPACE) {
-      this.speed.setY(1.0)
-    }
-
-    if (this.isLanding) {
-      if (interaction.RIGHT || interaction.LEFT) {
-        this.statusSprite = "RUN"
-      } else {
-        this.statusSprite = "STAND"
-      }
-      if (interaction.X) {
-        this.statusSprite = "SLASH"
-      }
-    }
   }
 
   setCollision(map) {
@@ -52,11 +22,19 @@ export default class {
 
   updateSpeed() {
     if (Math.abs(this.speed.getX()) > 0.01) {
-      this.speed.multiplyX(0.7)
+      this.speed.multiplyX(this.constants.damping)
     } else {
       this.speed.setX(0)
     }
-    this.speed.addY(-0.1)
+    this.speed.addY(-this.constants.gravity)
+    this.clamp()
+  }
+
+  clamp() {
+    if (this.speed.getX() > 1) this.speed.setX(1)
+    if (this.speed.getX() < -1) this.speed.setX(-1)
+    if (this.speed.getY() > 1) this.speed.setY(1)
+    if (this.speed.getY() < -1) this.speed.setY(-1)
   }
 
   collisionAxisX(map, newPosX) {
@@ -123,21 +101,5 @@ export default class {
 
   getZ() {
     return this.position.getZ()
-  }
-
-  getState() {
-    if (!this.isLanding) {
-      if (Math.abs(this.speed.getX()) > 0) {
-        this.statusSprite =
-          this.speed.getY() > 0 ? "RUN_JUMP_UP" : "RUN_JUMP_DOWN"
-      } else {
-        this.statusSprite = this.speed.getY() > 0 ? "JUMP_UP" : "JUMP_DOWN"
-      }
-    }
-
-    return {
-      inverse: this.inverseSprite,
-      name: this.statusSprite,
-    }
   }
 }

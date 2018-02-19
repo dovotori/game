@@ -21,7 +21,15 @@ void main() {
 	float texX = map(texture.x, 0.0 + inverseX, 1.0 - inverseX, (spriteUV.x / grid.x), ((spriteUV.x + 1.0) / grid.x) );
 	float texY = map(texture.y, 1.0, 0.0, (spriteUV.y / grid.y), ((spriteUV.y + 1.0) / grid.y) );
   fragTexture = vec2(texX, texY);
-  gl_Position = projection * view * model * vec4(position.x * spriteSize.x, position.y * spriteSize.y, position.z, 1.0);
+
+  float posWithSizeX;
+  if (inverseX ==  1.0) {
+    posWithSizeX = (position.x * spriteSize.x) + (1.0 - spriteSize.x);
+  } else {
+    posWithSizeX = position.x * spriteSize.x;
+  }
+  float posWithSizeY = (position.y * spriteSize.y) - (1.0 - spriteSize.y);
+  gl_Position = projection * view * model * vec4(posWithSizeX, posWithSizeY, position.z, 1.0);
 }
 `
 

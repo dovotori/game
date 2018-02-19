@@ -1,16 +1,16 @@
 import StateSprite from "./StateSprite"
 import MeshSprite from "../opengl/MeshSprite"
 import heros from "../../sprites/heros"
-import Behavior from "./Behavior"
+import Behavior from "./BehaviorInteraction"
 
 export default class extends MeshSprite {
-  constructor(gl, pos) {
+  constructor(gl, perso) {
     super(gl)
     this.state = new StateSprite(heros)
     this.state.set("STAND")
     this.inverseX = false
-    this.position = [pos.x || 0, pos.y || 0]
-    this.behavior = new Behavior(this.position)
+    this.position = [perso.x || 0, perso.y || 0]
+    this.behavior = new Behavior(perso)
   }
 
   render(objet, program, texture) {

@@ -14,6 +14,7 @@ export default class {
     this.loadObj = this.loadObj.bind(this)
 
     paths.forEach(path => {
+      const serverPath = `${document.URL}${path}`
       const parts = path
         .substring(path.lastIndexOf("/") + 1, path.length)
         .split(".")
@@ -24,10 +25,10 @@ export default class {
         case "jpeg":
         case "png":
         case "bmp":
-          this.loadImage(extension, name, path)
+          this.loadImage(extension, name, serverPath)
           break
         case "obj":
-          this.fetchAsset(extension, name, path)
+          this.fetchAsset(extension, name, serverPath)
           break
       }
     })

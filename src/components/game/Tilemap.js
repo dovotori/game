@@ -48,7 +48,7 @@ export default class {
     const map = this.getData()
     for (let y = 0; y < map.height; y++) {
       for (let x = 0; x < map.width; x++) {
-        const pixel = y * map.height + x
+        const pixel = y * map.width + x
         const r = map.data[pixel * 4]
         const g = map.data[pixel * 4 + 1]
         const b = map.data[pixel * 4 + 2]
@@ -80,15 +80,12 @@ export default class {
     if (offsetX < 0) offsetX = 0
     if (offsetX > this.levelSize.w - this.viewBox.w)
       offsetX = this.levelSize.w - this.viewBox.w
-
     let offsetY = pos[1] - this.scrollBox.h
     if (offsetY < 0) offsetY = 0
     if (offsetY > this.levelSize.h - this.viewBox.h)
       offsetY = this.levelSize.h - this.viewBox.h
-
     this.viewBox.x = offsetX
     this.viewBox.y = offsetY
-
     this.smoothTilePos.x = offsetX - Math.floor(offsetX)
     this.smoothTilePos.y = offsetY - Math.floor(offsetY)
   }
