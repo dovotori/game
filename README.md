@@ -1,3 +1,3 @@
 Précisions Blender obj export options
 
-Forward -Y / Up -Z
+Forward Y / Up Z

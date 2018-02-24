@@ -104,6 +104,10 @@ export default class {
     return this.viewBox
   }
 
+  getLevelSize() {
+    return this.levelSize
+  }
+
   get() {
     return this.context
   }

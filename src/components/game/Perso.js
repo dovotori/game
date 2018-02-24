@@ -60,4 +60,16 @@ export default class extends MeshSprite {
   getPosition() {
     return this.behavior.getPosition()
   }
+
+  getInverseX() {
+    return this.inverseX
+  }
+
+  getDashing() {
+    return this.behavior.getDashing()
+  }
+
+  getAiming() {
+    return this.behavior.getAiming()
+  }
 }

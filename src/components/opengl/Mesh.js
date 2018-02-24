@@ -65,6 +65,10 @@ export default class {
     this.model.identity()
   }
 
+  setRotate(angle, x, y, z) {
+    this.model.rotate(angle, x, y, z)
+  }
+
   setTranslate(x, y, z = 0) {
     this.model.translate(x, y, z)
   }

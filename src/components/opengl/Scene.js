@@ -1,4 +1,4 @@
-import Camera from "./CameraDragging"
+import Camera from "./CameraSmoothFocus"
 import Lampe from "./Lampe"
 import PostProcess from "./PostProcess"
 import LoadAssets from "../LoadAssets"
@@ -57,8 +57,7 @@ export default class {
       this.renderToProcess()
       this.postProcess.end()
 
-      // this.postProcess.setFXAA()
-      // this.postProcess.setRGB(0.01, 0.01)
+      this.effectsList()
 
       this.gl.viewport(0, 0, this.box.width, this.box.height)
       this.postProcess.render()
@@ -75,6 +74,8 @@ export default class {
   renderToProcess() {}
 
   renderBeforeProcess() {}
+
+  effectsList() {}
 
   onMouseMove(infos) {
     if (this.assetsReady) {

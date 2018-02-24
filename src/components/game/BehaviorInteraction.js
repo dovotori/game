@@ -8,8 +8,10 @@ export default class extends BehaviorGravity {
     this.isBlocking = false
     this.oldX = false
     this.oldShift = false
+    this.isDashing = false
   }
   setInteraction(interaction, changed) {
+    this.isDashing = false
     if (!this.isAnimating && !this.isBlocking) {
       this.cornerLeft = true
 
@@ -50,6 +52,7 @@ export default class extends BehaviorGravity {
           )
           this.statusSprite = "DASH"
           this.cornerLeft = false
+          this.isDashing = true
         }
         if (interaction.W) {
           this.statusSprite = "AIM"
@@ -99,5 +102,9 @@ export default class extends BehaviorGravity {
 
   getAiming() {
     return this.isBlocking
+  }
+
+  getDashing() {
+    return this.isDashing
   }
 }
