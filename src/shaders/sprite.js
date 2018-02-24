@@ -4,7 +4,8 @@ attribute vec2 texture;
 uniform mat4 projection;
 uniform mat4 model;
 uniform mat4 view;
-uniform float inverseX;
+uniform int inverseX;
+uniform int cornerLeft;
 uniform vec2 spriteUV;
 uniform vec2 spriteGrid;
 uniform vec2 spriteSize;
@@ -18,15 +19,23 @@ float map(float valeur, float minRef, float maxRef, float minDest, float maxDest
 
 void main() {
   vec2 grid =  spriteGrid / spriteSize;
-	float texX = map(texture.x, 0.0 + inverseX, 1.0 - inverseX, (spriteUV.x / grid.x), ((spriteUV.x + 1.0) / grid.x) );
+	float texX = map(texture.x, 0.0 + float(inverseX), 1.0 - float(inverseX), (spriteUV.x / grid.x), ((spriteUV.x + 1.0) / grid.x) );
 	float texY = map(texture.y, 1.0, 0.0, (spriteUV.y / grid.y), ((spriteUV.y + 1.0) / grid.y) );
   fragTexture = vec2(texX, texY);
 
   float posWithSizeX;
-  if (inverseX ==  1.0) {
-    posWithSizeX = (position.x * spriteSize.x) + (1.0 - spriteSize.x);
+  if (inverseX ==  1) {
+    if (cornerLeft == 1) {
+      posWithSizeX = (position.x * spriteSize.x) + (1.0 - spriteSize.x);
+    } else {
+      posWithSizeX = position.x * spriteSize.x;
+    }
   } else {
-    posWithSizeX = position.x * spriteSize.x;
+    if (cornerLeft == 1) {
+      posWithSizeX = position.x * spriteSize.x;
+    } else {
+      posWithSizeX = (position.x * spriteSize.x) + (1.0 - spriteSize.x);
+    }
   }
   float posWithSizeY = (position.y * spriteSize.y) - (1.0 - spriteSize.y);
   gl_Position = projection * view * model * vec4(posWithSizeX, posWithSizeY, position.z, 1.0);
@@ -55,5 +64,6 @@ export default {
     "spriteGrid",
     "spriteSize",
     "inverseX",
+    "cornerLeft",
   ],
 }

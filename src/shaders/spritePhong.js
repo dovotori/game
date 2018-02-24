@@ -39,8 +39,7 @@ varying vec2 fragTexture;
 uniform sampler2D tex0;
 varying float lightIntensity;
 void main() {
-  vec3 color = texture2D(tex0, fragTexture).xyz;
-	gl_FragColor = vec4(color * vec3(lightIntensity), 1.0);
+	gl_FragColor = texture2D(tex0, fragTexture) * vec4(vec3(lightIntensity), 1.0);
 }
 `
 

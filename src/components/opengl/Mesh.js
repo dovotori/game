@@ -37,14 +37,14 @@ export default class {
   }
 
   update() {
-    this.angle.x.update()
-    this.angle.y.update()
-    this.size.update()
+    // this.angle.x.update()
+    // this.angle.y.update()
+    // this.size.update()
 
     this.model.identity()
-    this.model.rotate(this.angle.x.get(), 0, 1, 0)
-    this.model.rotate(this.angle.y.get(), 1, 0, 0)
-    this.model.scale(this.size.get())
+    // this.model.rotate(this.angle.x.get(), 0, 1, 0)
+    // this.model.rotate(this.angle.y.get(), 1, 0, 0)
+    // this.model.scale(this.size.get())
   }
 
   setDraggingInfos(pos) {
@@ -61,8 +61,15 @@ export default class {
     this.lightPos = pos
   }
 
-  setTranslate(x, y, z = 0) {
+  reset() {
     this.model.identity()
+  }
+
+  setTranslate(x, y, z = 0) {
     this.model.translate(x, y, z)
+  }
+
+  setScale(x, y, z = 0) {
+    this.model.scale(x, y, z)
   }
 }

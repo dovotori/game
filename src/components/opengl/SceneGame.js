@@ -1,4 +1,4 @@
-import Perso from "../game/Perso"
+import Perso from "../game/Heros"
 import Tilemap from "../game/Tilemap"
 import Scene from "./Scene"
 import scene from "../../scenes/classic"
@@ -6,12 +6,12 @@ import scene from "../../scenes/classic"
 export default class extends Scene {
   constructor(gl) {
     super(gl)
-    this.perso = new Perso(this.gl, scene.perso)
+    this.perso = new Perso(this.gl)
   }
 
   afterAssetsLoaded(assets) {
     super.afterAssetsLoaded(assets)
-    this.tilemap = new Tilemap(this.gl, assets.levels.level, scene.tilemap)
+    this.tilemap = new Tilemap(this.gl, assets.levels.level1, scene.tilemap)
   }
 
   renderBeforeProcess() {
@@ -28,14 +28,15 @@ export default class extends Scene {
       .get("spritePhong")
       .setVector("posLum", this.lampe.getPosition().get())
     this.tilemap.render(
-      this.mngObj.get("cubeTile"),
       this.mngProg.get("spritePhong"),
       this.mngTex.get("tiles"),
+      this.mngObj.get("cubeTile"),
+      this.mngObj.get("tile"),
     )
     this.perso.render(
-      this.mngObj.get("tile"),
       this.mngProg.get("sprite"),
       this.mngTex.get("heros"),
+      this.mngObj.get("tile"),
     )
   }
 

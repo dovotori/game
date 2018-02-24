@@ -1,13 +1,12 @@
 import Vec3 from "../geometrie/Vec3"
 
 export default class {
-  constructor(constants) {
-    this.constants = constants
-    this.position = new Vec3(constants.x, constants.y, 0.1)
+  constructor() {
+    this.position = new Vec3(0, 0, 0)
     this.speed = new Vec3(0, 0, 0)
     this.isLanding = false
     this.inverseSprite = false
-    this.statusSprite = "STAND"
+    this.cornerLeft = true
   }
 
   setCollision(map) {
@@ -15,27 +14,11 @@ export default class {
     this.updateSpeed()
     let newPosX = this.position.getX() + this.speed.getX()
     let newPosY = this.position.getY() + this.speed.getY()
-
     newPosX = this.collisionAxisX(map, newPosX)
     this.collisionAxisY(map, newPosX, newPosY)
   }
 
-  updateSpeed() {
-    if (Math.abs(this.speed.getX()) > 0.01) {
-      this.speed.multiplyX(this.constants.damping)
-    } else {
-      this.speed.setX(0)
-    }
-    this.speed.addY(-this.constants.gravity)
-    this.clamp()
-  }
-
-  clamp() {
-    if (this.speed.getX() > 1) this.speed.setX(1)
-    if (this.speed.getX() < -1) this.speed.setX(-1)
-    if (this.speed.getY() > 1) this.speed.setY(1)
-    if (this.speed.getY() < -1) this.speed.setY(-1)
-  }
+  updateSpeed() {}
 
   collisionAxisX(map, newPosX) {
     if (this.speed.getX() < 0) {
@@ -83,8 +66,14 @@ export default class {
   isCollisionTile(x, y, map) {
     const pixel = map.getImageData(Math.floor(x), Math.floor(y), 1, 1)
     return (
-      pixel.data[0] !== 255 || pixel.data[1] !== 255 || pixel.data[2] !== 255
+      pixel.data[0] !== 255 &&
+      pixel.data[0] === pixel.data[1] &&
+      pixel.data[1] === pixel.data[2]
     )
+  }
+
+  setPosition(x, y, z = 0) {
+    return this.position.set(x, y, z)
   }
 
   getPosition() {
@@ -101,5 +90,9 @@ export default class {
 
   getZ() {
     return this.position.getZ()
+  }
+
+  getSpeedX() {
+    return this.speed.getX()
   }
 }

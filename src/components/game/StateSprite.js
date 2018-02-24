@@ -1,5 +1,5 @@
 export default class {
-  constructor(states) {
+  constructor(states, callback = null) {
     this.states = states
     this.step = 0
     this.nbSteps = 1
@@ -13,6 +13,7 @@ export default class {
     this.iteration = null
     this.nextState = null
     this.currentState = null
+    this.callbackEndOfAnimation = callback
   }
 
   set(state) {
@@ -75,6 +76,7 @@ export default class {
       } else {
         this.lastFrame = null
       }
+      this.callbackEndOfAnimation()
     } else {
       this.step = 0
     }

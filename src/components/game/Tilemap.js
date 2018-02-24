@@ -44,7 +44,7 @@ export default class {
     this.tile.setNormalMatrix(program, camera)
   }
 
-  render(obj, prog, tex) {
+  render(prog, tex, obj, flat) {
     const map = this.getData()
     for (let y = 0; y < map.height; y++) {
       for (let x = 0; x < map.width; x++) {
@@ -53,18 +53,28 @@ export default class {
         const g = map.data[pixel * 4 + 1]
         const b = map.data[pixel * 4 + 2]
         const state = r + "" + g + "" + b
+        this.tile.reset()
+        this.tile.setTranslate(
+          x - this.smoothTilePos.x,
+          y - this.smoothTilePos.y,
+        )
         switch (state) {
           case "25500":
           case "00255":
-          case "000":
-          case "02550":
-          case "150150150":
-            // const inverseY = map.height - 1 - y
             this.tile.setState(state)
-            this.tile.setTranslate(
-              x - this.smoothTilePos.x,
-              y - this.smoothTilePos.y, // maybe add smooth for y
-            )
+            this.tile.render(flat, prog, tex)
+            break
+          case "02550":
+          case "02500":
+          case "02000":
+          case "01500":
+          case "01000":
+            this.tile.setState(state)
+            this.tile.render(flat, prog, tex)
+            break
+          case "150150150":
+          case "000":
+            this.tile.setState(state)
             this.tile.render(obj, prog, tex)
             break
           default:

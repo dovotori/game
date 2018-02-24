@@ -26,7 +26,7 @@ export default {
     uv: [{ x: 6, y: 1 }, { x: 7, y: 1 }],
   },
   AIM: {
-    uv: [{ x: 7, y: 0 }],
+    uv: [{ x: 6, y: 0 }],
   },
   DIE: {
     uv: [{ x: 4, y: 2 }, { x: 2.5, y: 2, w: 2 }],
@@ -41,5 +41,11 @@ export default {
     ],
     iteration: 1,
     next: "STAND",
+  },
+  BULLET: {
+    uv: [{ x: 6, y: 3 }, { x: 7, y: 3 }],
+  },
+  BULLET_LOAD: {
+    uv: [{ x: 6, y: 4 }, { x: 7, y: 4 }],
   },
 }

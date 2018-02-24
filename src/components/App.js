@@ -35,6 +35,7 @@ export default class {
         SPACE: this.keyboard.getKey(32),
         SHIFT: this.keyboard.getKey(16),
         X: this.keyboard.getKey(88),
+        W: this.keyboard.getKey(87),
       },
     }
 
