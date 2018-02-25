@@ -19,4 +19,16 @@ export default {
     w: 20,
     h: 20,
   },
+  keyboard: {
+    38: "UP",
+    40: "DOWN",
+    37: "LEFT",
+    39: "RIGHT",
+    32: "SPACE",
+    16: "SHIFT",
+    88: "X",
+    87: "W",
+    13: "ENTER",
+    27: "ECHAP",
+  },
 }

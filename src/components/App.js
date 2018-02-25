@@ -3,21 +3,41 @@ import Scene from "./opengl/SceneGame"
 import Loop from "./Loop"
 import Keyboard from "./Keyboard"
 import Mouse from "./Mouse"
+import scene from "../scenes/classic"
 
 export default class {
   constructor(options) {
     this.canvas = new Canvas()
-    this.scene = new Scene(this.canvas.getContext())
-    this.keyboard = new Keyboard()
+    this.keyboard = new Keyboard(scene.keyboard)
 
     this.onMouseDrag = this.onMouseDrag.bind(this)
+    this.ready = this.ready.bind(this)
     this.render = this.render.bind(this)
     this.resize = this.resize.bind(this)
-    window.addEventListener("resize", this.resize, false)
-    this.resize()
+    this.ready = this.ready.bind(this)
 
+    this.scene = new Scene(this.canvas.getContext(), scene, this.ready)
     this.mouse = new Mouse(document.body, this.onMouseDrag)
     this.loop = new Loop(this.render)
+
+    this.showTitle()
+    window.addEventListener("resize", this.resize, false)
+    this.resize()
+  }
+
+  showTitle() {
+    const title = document.getElementById("title")
+    if (title) {
+      title.style.opacity = 1
+      title.style.transform = "none"
+    }
+  }
+
+  removeSplash() {
+    const splash = document.getElementById("splash")
+    if (splash) {
+      splash.style.opacity = 0
+    }
   }
 
   onMouseDrag(data) {
@@ -42,6 +62,11 @@ export default class {
     this.keyboard.render()
     this.scene.setKeyboardInteraction(interaction)
     this.scene.render()
+
+    if (this.keyboard.getKey(13)) {
+      this.scene.setStart()
+      this.removeSplash()
+    }
   }
 
   resize() {
@@ -51,6 +76,13 @@ export default class {
     }
     this.canvas.resize(box)
     this.scene.resize(box)
+  }
+
+  ready() {
+    const intro = document.getElementById("instructions")
+    const loader = document.getElementById("loader")
+    if (loader) loader.style.display = "none"
+    if (intro) intro.style.display = "block"
   }
 
   getCanvas() {

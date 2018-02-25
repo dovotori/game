@@ -1,10 +1,11 @@
 export default class {
-  constructor() {
+  constructor(inputs) {
     // code ascii 127
     // a = 65
     this.touches = new Array(127)
     this.oldFocusKey = 0
     this.isChangedKey = false
+    this.inputs = inputs
 
     this.eventClavier = this.eventClavier.bind(this)
 
@@ -25,22 +26,24 @@ export default class {
   }
 
   eventClavier(e) {
-    e.preventDefault()
-    if (e.type == "keydown") {
-      if (e.keyCode != this.oldFocusKey) {
-        this.oldFocusKey = e.keyCode
+    if (this.inputs[e.keyCode]) {
+      e.preventDefault()
+      if (e.type == "keydown") {
+        if (e.keyCode != this.oldFocusKey) {
+          this.oldFocusKey = e.keyCode
+          this.isChangedKey = true
+        }
+      } else if (e.type == "keyup") {
+        this.oldFocusKey = -1
         this.isChangedKey = true
       }
-    } else if (e.type == "keyup") {
-      this.oldFocusKey = -1
-      this.isChangedKey = true
-    }
 
-    if (this.isChangedKey) {
-      if (e.type == "keydown") {
-        this.touches[e.keyCode] = true
-      } else if (e.type == "keyup") {
-        this.touches[e.keyCode] = false
+      if (this.isChangedKey) {
+        if (e.type == "keydown") {
+          this.touches[e.keyCode] = true
+        } else if (e.type == "keyup") {
+          this.touches[e.keyCode] = false
+        }
       }
     }
   }

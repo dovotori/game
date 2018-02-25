@@ -5,10 +5,9 @@ import LoadAssets from "../LoadAssets"
 import ManagerTextures from "./ManagerTextures"
 import ManagerObjets from "./ManagerObjets"
 import ManagerPrograms from "./ManagerPrograms"
-import scene from "../../scenes/classic"
 
 export default class {
-  constructor(gl) {
+  constructor(gl, scene, ready) {
     this.gl = gl
     this.camera = new Camera(scene.camera)
     this.assetsReady = false
@@ -20,6 +19,8 @@ export default class {
     this.time = 0
     this.mngProg = new ManagerPrograms(this.gl, scene.programs)
     this.one = false
+    this.readyCallback = ready
+    this.start = false
 
     LoadAssets(scene.assets, this.afterAssetsLoaded)
   }
@@ -29,6 +30,7 @@ export default class {
     this.mngObj = new ManagerObjets(this.gl, assets.objets)
     this.camera.lookAt()
     this.assetsReady = true
+    if (this.readyCallback) this.readyCallback()
   }
 
   resize(box) {
@@ -86,7 +88,7 @@ export default class {
   onMouseDown(infos) {}
 
   setMouseInteraction(infos) {
-    this.camera.setDraggingPosition(infos)
+    // this.camera.setDraggingPosition(infos)
   }
 
   getColorPixel(pos) {
@@ -101,5 +103,9 @@ export default class {
       pixel,
     )
     return pixel
+  }
+
+  setStart() {
+    this.start = true
   }
 }

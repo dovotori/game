@@ -16,24 +16,34 @@ export default class {
   }
 
   update(pos, size, view) {
+    this.updateMountains(pos, size, view)
+    this.updateClouds(pos, size, view)
+  }
+
+  updateMountains(pos, size, view) {
     this.mountains.forEach((mesh, idx) => {
       const inverseIdx = this.mountains.length - idx
       const scale = mapFromRange(idx, 0, this.mountains.length, 4, 40)
-      const depth = mapFromRange(inverseIdx, 0, this.mountains.length, -10, -20)
-      const x = mapFromRange(pos[0], 0, size.w, view.w + scale, -scale)
+      const x = mapFromRange(
+        pos[0],
+        0,
+        size.w,
+        view.w + inverseIdx * 10,
+        -inverseIdx * 10,
+      )
       const y = 10 + scale / 2
       const color = mapFromRange(idx, 0, this.mountains.length, 255, 100)
       mesh.update()
       mesh.setScale(scale, scale, scale)
       mesh.setRotate(45, 0, 0, 1)
-      mesh.setTranslate(x, y, depth)
+      mesh.setTranslate(x, y, -idx - 10)
       mesh.setColor(color, color, color, 1)
-      // console.log(idx, depth, scale)
     })
+  }
 
+  updateClouds(pos, size, view) {
     this.clouds.forEach((mesh, idx) => {
       const scale = this.cloudData[idx].scale
-      // const color = mapFromRange(idx, 0, this.mountains.length, 255, 100)
       if (this.cloudData[idx].x < -scale) {
         this.cloudData[idx] = this.setCloud(view.w + scale)
       } else {
@@ -44,16 +54,18 @@ export default class {
       mesh.setRotate(45, 0, 0, 1)
       mesh.setTranslate(
         this.cloudData[idx].x,
-        this.cloudData[idx].y * size.w,
+        this.cloudData[idx].y,
         this.cloudData[idx].depth * 10,
       )
       mesh.setColor(255, 255, 255, 1)
-      // console.log(idx, depth, scale)
     })
   }
 
-  render(objet, program) {
-    // console.log("rendu")
+  renderMountains(objet, program) {
+    this.mountains.forEach(mesh => mesh.render(objet, program))
+  }
+
+  renderClouds(objet, program) {
     this.mountains.forEach(mesh => mesh.render(objet, program))
     this.clouds.forEach(mesh => mesh.render(objet, program))
   }
@@ -61,10 +73,10 @@ export default class {
   setCloud(x) {
     return {
       x: x || Math.random() * 10,
-      y: Math.random(),
+      y: 10,
       depth: Math.random(),
       scale: 4 + Math.random() * 4,
-      speed: 0.1 + Math.random() * 0.5,
+      speed: 0.01 + Math.random() * 0.1,
     }
   }
 }

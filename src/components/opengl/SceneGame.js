@@ -6,8 +6,8 @@ import scene from "../../scenes/classic"
 import Target from "../Target"
 
 export default class extends Scene {
-  constructor(gl, callbackLoaded = null) {
-    super(gl)
+  constructor(gl, scene, callbackLoaded = null) {
+    super(gl, scene)
     this.perso = new Perso(this.gl)
     this.background = new Background(this.gl)
     this.callbackLoaded = callbackLoaded
@@ -32,7 +32,10 @@ export default class extends Scene {
   }
 
   renderToProcess() {
-    this.background.render(this.mngObj.get("tile"), this.mngProg.get("color"))
+    this.background.renderMountains(
+      this.mngObj.get("tile"),
+      this.mngProg.get("color"),
+    )
     this.mngProg
       .get("spritePhong")
       .setVector("posLum", this.lampe.getPosition().get())
@@ -47,6 +50,10 @@ export default class extends Scene {
       this.mngTex.get("heros"),
       this.mngObj.get("tile"),
     )
+    // this.background.renderClouds(
+    //   this.mngObj.get("tile"),
+    //   this.mngProg.get("color"),
+    // )
   }
 
   update() {
@@ -67,7 +74,9 @@ export default class extends Scene {
     } else {
       this.targetRGB.set(0)
     }
-    this.perso.update(this.tilemap.getViewBox(), this.tilemap.get())
+    if (this.start) {
+      this.perso.update(this.tilemap.getViewBox(), this.tilemap.get())
+    }
     this.tilemap.follow(this.perso.getPosition())
     this.tilemap.update(this.mngProg.get("spritePhong"), this.camera)
     this.background.update(
@@ -78,7 +87,7 @@ export default class extends Scene {
   }
 
   effectsList() {
-    this.postProcess.setFXAA()
+    // this.postProcess.setFXAA()
     this.postProcess.setRGB(this.targetRGB.get(), 0)
   }
 
