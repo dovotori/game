@@ -17,127 +17,6 @@
   <meta name="theme-color" content="#333333">
   <meta name="description" content="dorian ratovo - game">
   <title>dovotori</title>
-
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      overflow: hidden;
-      font-family: sans-serif;
-    }
-
-    p {
-      margin: 0;
-    }
-
-    #dovotori-app {
-      background: linear-gradient(to left, #366a62 0%, #cddbbf 100%);
-      box-shadow: inset 0 0 10px rgba(50, 102, 88, 0.5);
-    }
-
-    #splash {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate3d(-50%, -50%, 0);
-      color: #fff;
-      transition: opacity 1000ms ease-out;
-    }
-
-    #loader {
-      position: relative;
-      width: 40px;
-      height: 10px;
-    }
-
-    #loader div {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 10px;
-      height: 10px;
-      border: solid 1px #366;
-      animation: loading 1s linear infinite;
-    }
-
-    #loader div:nth-of-type(1) {
-      animation-delay: 0s;
-    }
-
-    #loader div:nth-of-type(2) {
-      animation-delay: 0.5s;
-    }
-
-    #title {
-      letter-spacing: 2em;
-      font-size: 2em;
-      text-shadow: 1px 1px 0 #000;
-      transition: transform 1000ms ease-out, opacity 1000ms ease-out;
-      opacity: 0;
-      transform: translateY(-100%);
-    }
-
-    #instructions {
-      display: none;
-      letter-spacing: 0.1em;
-      animation: blink 1s linear infinite;
-    }
-
-    .commands {
-      margin-top: 20px;
-    }
-
-    .command {
-      font-size: 0.5em;
-      line-height: 1;
-      letter-spacing: 0.1em;
-      margin: 6px 0;
-    }
-
-    .command .key {
-      display: inline-block;
-      border: solid 1px #fff;
-      border-radius: 4px;
-      padding: 4px;
-      box-shadow: 1px 1px 0 #000;
-      text-align: center;
-    }
-
-    .command .key svg {
-      width: 8px;
-      stroke: #fff;
-      fill: none;
-    }
-
-    .command .desc {
-      display: inline-block;
-      margin-left: 4px;
-    }
-
-    @keyframes blink {
-      0% {
-        opacity: 0;
-      }
-      50% {
-        opacity: 1;
-      }
-      100% {
-        opacity: 0;
-      }
-    }
-
-    @keyframes loading {
-      0% {
-        transform: translateX(0) scale(0) rotateZ(45deg);
-      }
-      50% {
-        transform: translateX(20px) scale(1) rotateZ(45deg);
-      }
-      100% {
-        transform: translateX(40px) scale(0) rotateZ(45deg);
-      }
-    }
-  </style>
 </head>
 
 <body>
@@ -190,6 +69,13 @@
     </div>
   </div>
   <script src="http://localhost:8080/dovotori-game.js"></script>
+  <noscript>
+    <h4>In JS we trust</h4>
+    <p>Ce site utilise javascript pour s'afficher. S’il vous plaît, reconsiderez votre choix de le désactiver, pour ce site
+      en tout cas :) ou utiliser un
+      <a href="https://www.mozilla.org/fr/firefox/new/">navigateur compatible comme celui ci</a>
+    </p>
+  </noscript>
 </body>
 
 </html>

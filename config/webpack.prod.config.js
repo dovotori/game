@@ -31,6 +31,15 @@ module.exports = {
         test: /\.(jpe?g|png|gif)$/i,
         use: ["url-loader?name=/img/[name].[ext]"],
       },
+      {
+        test: /\.(css)$/,
+        exclude: /node_modules/,
+        use: [
+          {
+            loader: "css-loader",
+          },
+        ],
+      },
     ],
   },
   resolve: {

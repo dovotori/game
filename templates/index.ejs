@@ -18,22 +18,57 @@
   <title>
     <%= htmlWebpackPlugin.options.title %>
   </title>
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      overflow: hidden;
-    }
-
-    #dovotori-app {
-      background: linear-gradient(to left, #366a62 0%, #cddbbf 100%);
-      box-shadow: inset 0 0 10px rgba(50, 102, 88, 0.5);
-    }
-  </style>
 </head>
 
 <body>
   <div id="dovotori-app"></div>
+  <div id="splash">
+    <h1 id="title">The Game</h1>
+    <p id="instructions">Pressed Enter</p>
+    <div id="loader">
+      <div></div>
+      <div></div>
+    </div>
+    <div class="commands">
+      <div class="command">
+        <div class="key">
+          <p>space</p>
+        </div>
+        <p class="desc">jump</p>
+      </div>
+      <div class="command">
+        <div class="key">
+          <p>shift</p>
+        </div>
+        <p class="desc">dash</p>
+      </div>
+      <div class="command">
+        <div class="key">
+          <p>w</p>
+        </div>
+        <p class="desc">shoot</p>
+      </div>
+      <div class="command">
+        <div class="key">
+          <p>x</p>
+        </div>
+        <p class="desc">slash</p>
+      </div>
+      <div class="command">
+        <div class="key">
+          <svg viewBox="0 0 15 20">
+            <path d="M5 5 L0 10 L5 15 M5 10 L15 10" />
+          </svg>
+        </div>
+        <div class="key">
+          <svg viewBox="0 0 15 20">
+            <path d="M10 5 L15 10 L10 15 M10 10 L0 10" />
+          </svg>
+        </div>
+        <p class="desc">move</p>
+      </div>
+    </div>
+  </div>
   <noscript>
     <h4>In JS we trust</h4>
     <p>Ce site utilise javascript pour s'afficher. S’il vous plaît, reconsiderez votre choix de le désactiver, pour ce site

@@ -1,5 +1,7 @@
 import App from "./components/App"
 
+import "./style.css"
+
 const setup = () => {
   const options = {
     mouse: true,
