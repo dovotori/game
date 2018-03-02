@@ -1,6 +1,6 @@
 ## Todo
 
-* Speed > 1
+* split render by level of depth
 * nuance to sprite
 * Nuages
 * Arreter la boucle de rendu quand l'onglet du navigateur n'est plus actif

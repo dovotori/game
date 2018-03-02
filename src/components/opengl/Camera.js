@@ -9,7 +9,7 @@ export default class {
       options.position.y || 0,
       options.position.z || 4,
     )
-    this.cible = new Vec3(
+    this.target = new Vec3(
       options.target.x || 0,
       options.target.y || 0,
       options.target.z || 4,
@@ -33,9 +33,9 @@ export default class {
       this.position.getX(),
       this.position.getY(),
       this.position.getZ(),
-      this.cible.getX(),
-      this.cible.getY(),
-      this.cible.getZ(),
+      this.target.getX(),
+      this.target.getY(),
+      this.target.getZ(),
       0,
       1,
       0,
@@ -52,7 +52,7 @@ export default class {
     this.lookAt()
   }
   setCible(x, y, z) {
-    this.cible.set(x, y, z)
+    this.target.set(x, y, z)
   }
   setNearFar(near, far) {
     this.near = near
@@ -66,7 +66,7 @@ export default class {
     return this.position
   }
   getCible() {
-    return this.cible
+    return this.target
   }
   getView() {
     return this.view

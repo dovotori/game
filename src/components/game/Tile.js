@@ -1,11 +1,10 @@
 import StateSprite from "./StateSprite"
-import tiles from "../../sprites/tiles"
 import MeshSprite from "../opengl/MeshSpriteNormalMatrix"
 
 export default class extends MeshSprite {
-  constructor() {
+  constructor(sprite) {
     super()
-    this.state = new StateSprite(tiles)
+    this.state = new StateSprite(sprite)
     this.state.set("000")
   }
 

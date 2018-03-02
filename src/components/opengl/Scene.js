@@ -1,4 +1,4 @@
-import Camera from "./CameraSmoothFocus"
+import Camera from "./CameraSmooth"
 import Lampe from "./Lampe"
 import PostProcess from "./PostProcess"
 import LoadAssets from "../LoadAssets"

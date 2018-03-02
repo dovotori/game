@@ -15,7 +15,6 @@ export default class {
   setCollision(map) {
     this.isLanding = false
     this.updateSpeed()
-    // console.log(this.speed.getX())
     this.moving(this.speed.getX(), this.speed.getY(), map)
   }
 
@@ -33,7 +32,7 @@ export default class {
       return
     }
     let newPosX = this.collisionAxisX(map, speedX)
-    let newPosY = this.collisionAxisY(map, speedY)
+    let newPosY = this.collisionAxisY(map, newPosX, speedY)
     this.position.set(newPosX, newPosY, this.position.getZ())
   }
 
@@ -71,13 +70,13 @@ export default class {
     return newPosX
   }
 
-  collisionAxisY(map, speedY) {
+  collisionAxisY(map, newPosX, speedY) {
     let newPosY = this.position.getY() + speedY
     if (speedY < 0) {
       if (
-        this.isCollisionTile(this.position.getX(), newPosY, map) ||
+        this.isCollisionTile(newPosX, newPosY, map) ||
         this.isCollisionTile(
-          this.position.getX() + (this.size.getX() - this.spaceCheck),
+          newPosX + (this.size.getX() - this.spaceCheck),
           newPosY,
           map,
         )
@@ -88,13 +87,9 @@ export default class {
       }
     } else if (speedY > 0) {
       if (
+        this.isCollisionTile(newPosX, newPosY + this.size.getY(), map) ||
         this.isCollisionTile(
-          this.position.getX(),
-          newPosY + this.size.getY(),
-          map,
-        ) ||
-        this.isCollisionTile(
-          this.position.getX() + (this.size.getX() - this.spaceCheck),
+          newPosX + (this.size.getX() - this.spaceCheck),
           newPosY + this.size.getY(),
           map,
         )
@@ -137,5 +132,9 @@ export default class {
 
   getSpeedX() {
     return this.speed.getX()
+  }
+
+  addToSpeed(add) {
+    this.speed.plus(add)
   }
 }

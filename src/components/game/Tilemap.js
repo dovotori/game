@@ -1,4 +1,5 @@
 import Tile from "./TileNormalMatrix"
+import sprite from "../../sprites/tiles"
 
 export default class {
   constructor(img, box) {
@@ -18,7 +19,8 @@ export default class {
       x: 0,
       y: 0,
     }
-    this.tile = new Tile()
+    this.tile = new Tile(sprite)
+    this.sprite = sprite
   }
 
   setupContext(img) {
@@ -46,6 +48,7 @@ export default class {
 
   render(prog, tex, obj, flat) {
     const map = this.getData()
+    let cpt = 0
     for (let y = 0; y < map.height; y++) {
       for (let x = 0; x < map.width; x++) {
         const pixel = y * map.width + x
@@ -53,36 +56,56 @@ export default class {
         const g = map.data[pixel * 4 + 1]
         const b = map.data[pixel * 4 + 2]
         const state = r + "" + g + "" + b
+        let translate = {
+          x: x - this.smoothTilePos.x,
+          y: y - this.smoothTilePos.y,
+          z: 0,
+        }
+        let scale = { x: 1, y: 1, z: 1 }
+        let finalObjet = flat
         this.tile.reset()
-        this.tile.setTranslate(
-          x - this.smoothTilePos.x,
-          y - this.smoothTilePos.y,
-        )
         switch (state) {
           case "25500":
           case "00255":
-            this.tile.setState(state)
-            this.tile.render(flat, prog, tex)
             break
           case "02550":
+            scale = { x: 3, y: 3, z: 3 }
+            translate.z = -0.5
+            break
           case "02500":
+            scale = { x: 2, y: 2, z: 2 }
+            translate.z = -0.25
+            break
           case "02000":
+            scale = { x: 4, y: 4, z: 4 }
+            translate.z = 0.25
+            break
           case "01500":
+            scale = { x: 2, y: 2, z: 1 }
+            translate.z = 0.1
+            break
           case "01000":
-            this.tile.setState(state)
-            this.tile.render(flat, prog, tex)
+            scale = { x: 3, y: 3, z: 3 }
+            translate.z = 0.5
             break
           case "150150150":
           case "000":
-            this.tile.setState(state)
-            this.tile.render(obj, prog, tex)
+            finalObjet = obj
             break
           default:
             break
         }
+
+        if (this.sprite[state]) {
+          this.tile.setScale(scale.x, scale.y, scale.z)
+          translate.x -= scale.x * 0.5 - 0.5
+          translate.y += scale.y - 1
+          this.tile.setTranslate(translate.x, translate.y, translate.z)
+          this.tile.setState(state)
+          this.tile.render(finalObjet, prog, tex)
+        }
       }
     }
-    this.cpt++
   }
 
   follow(pos) {

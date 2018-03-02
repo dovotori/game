@@ -2,12 +2,14 @@ import Bullet from "./Bullet"
 import MeshSprite from "../opengl/MeshSprite"
 
 export default class extends MeshSprite {
-  constructor(viewBox, map) {
+  constructor(viewBox, map, callbackShoot) {
     super()
     this.bullets = []
     this.isAiming = false
     this.viewBox = viewBox
     this.map = map
+    this.callbackShoot = callbackShoot
+    this.recoil = 0.1
   }
 
   updateBullets(startPos, isAiming, goLeft) {
@@ -15,6 +17,7 @@ export default class extends MeshSprite {
       this.createNewOne(goLeft)
     } else if (this.isAiming && !isAiming) {
       this.shootOne(goLeft)
+      if (this.callbackShoot) this.callbackShoot(this.recoil)
     }
     let toDelete = []
     this.bullets.forEach((bullet, idx) => {

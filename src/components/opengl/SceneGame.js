@@ -63,14 +63,16 @@ export default class extends Scene {
     super.update()
     this.targetRGB.update()
     if (this.perso.getInverseX()) {
-      this.camera.setRotation(0.1)
+      this.camera.setSmoothRotation(0.1)
+      this.camera.setSmoothTarget(-4)
     } else {
-      this.camera.setRotation(-0.1)
+      this.camera.setSmoothRotation(-0.1)
+      this.camera.setSmoothTarget(4)
     }
     if (this.perso.getAiming()) {
-      this.camera.setZoom(0.9)
+      this.camera.setSmoothZoom(0.9)
     } else {
-      this.camera.setZoom(1)
+      this.camera.setSmoothZoom(1)
     }
     if (this.perso.getDashing()) {
       this.targetRGB.set(1)
@@ -86,7 +88,7 @@ export default class extends Scene {
   }
 
   effectsList() {
-    // this.postProcess.setFXAA()
+    this.postProcess.setFXAA()
     this.postProcess.setRGB(this.targetRGB.get(), 0)
   }
 
