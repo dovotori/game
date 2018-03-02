@@ -4,7 +4,7 @@ export default class extends Behavior {
   constructor(constants) {
     super()
     this.constants = constants
-    this.position.set(constants.x, constants.y, 0.1)
+    this.position.set(constants.x, constants.y, constants.z)
     this.statusSprite = "STAND"
   }
 
@@ -19,9 +19,13 @@ export default class extends Behavior {
   }
 
   clamp() {
-    if (this.speed.getX() > 1) this.speed.setX(1)
-    if (this.speed.getX() < -1) this.speed.setX(-1)
-    if (this.speed.getY() > 1) this.speed.setY(1)
-    if (this.speed.getY() < -1) this.speed.setY(-1)
+    if (this.speed.getX() > this.constants.clamp.x)
+      this.speed.setX(this.constants.clamp.x)
+    if (this.speed.getX() < -this.constants.clamp.x)
+      this.speed.setX(-this.constants.clamp.x)
+    if (this.speed.getY() > this.constants.clamp.y)
+      this.speed.setY(this.constants.clamp.y)
+    if (this.speed.getY() < -this.constants.clamp.y)
+      this.speed.setY(-this.constants.clamp.y)
   }
 }

@@ -3,8 +3,8 @@ import tiles from "../../sprites/tiles"
 import MeshSprite from "../opengl/MeshSpriteNormalMatrix"
 
 export default class extends MeshSprite {
-  constructor(gl) {
-    super(gl)
+  constructor() {
+    super()
     this.state = new StateSprite(tiles)
     this.state.set("000")
   }

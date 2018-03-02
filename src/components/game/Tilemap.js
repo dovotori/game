@@ -1,7 +1,7 @@
 import Tile from "./TileNormalMatrix"
 
 export default class {
-  constructor(gl, img, box) {
+  constructor(img, box) {
     this.context = this.setupContext(img)
     this.levelSize = { w: img.width, h: img.height }
     this.viewBox = {
@@ -18,7 +18,7 @@ export default class {
       x: 0,
       y: 0,
     }
-    this.tile = new Tile(gl)
+    this.tile = new Tile()
   }
 
   setupContext(img) {

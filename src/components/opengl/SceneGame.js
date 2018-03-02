@@ -8,15 +8,18 @@ import Target from "../Target"
 export default class extends Scene {
   constructor(gl, scene, callbackLoaded = null) {
     super(gl, scene)
-    this.perso = new Perso(this.gl)
-    this.background = new Background(this.gl)
     this.callbackLoaded = callbackLoaded
     this.targetRGB = new Target(0, 0.1)
   }
 
   afterAssetsLoaded(assets) {
     super.afterAssetsLoaded(assets)
-    this.tilemap = new Tilemap(this.gl, assets.levels.level1, scene.tilemap)
+    this.tilemap = new Tilemap(assets.levels.level1, scene.tilemap)
+    this.perso = new Perso(this.tilemap.getViewBox(), this.tilemap.get())
+    this.background = new Background(
+      this.tilemap.getViewBox(),
+      this.tilemap.getLevelSize(),
+    )
     if (this.callbackLoaded) {
       this.callbackLoaded()
     }
@@ -75,15 +78,11 @@ export default class extends Scene {
       this.targetRGB.set(0)
     }
     if (this.start) {
-      this.perso.update(this.tilemap.getViewBox(), this.tilemap.get())
+      this.perso.update()
     }
-    this.tilemap.follow(this.perso.getPosition())
+    this.tilemap.follow(this.perso.getBehaviorPosition())
     this.tilemap.update(this.mngProg.get("spritePhong"), this.camera)
-    this.background.update(
-      this.perso.getPosition(),
-      this.tilemap.getLevelSize(),
-      this.tilemap.getViewBox(),
-    )
+    this.background.update(this.perso.getBehaviorPosition())
   }
 
   effectsList() {
@@ -92,6 +91,8 @@ export default class extends Scene {
   }
 
   setKeyboardInteraction(interaction) {
-    this.perso.setInteraction(interaction.perso, interaction.changed)
+    if (this.assetsReady) {
+      this.perso.setInteraction(interaction.perso, interaction.changed)
+    }
   }
 }

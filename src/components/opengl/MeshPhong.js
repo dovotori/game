@@ -1,8 +1,8 @@
 import MeshNormalMatrix from "./MeshNormalMatrix"
 
 export default class extends MeshNormalMatrix {
-  constructor(gl) {
-    super(gl)
+  constructor() {
+    super()
     this.lightPos = null
   }
 

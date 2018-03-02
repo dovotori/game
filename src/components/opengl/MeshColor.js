@@ -1,8 +1,8 @@
 import Mesh from "./Mesh"
 
 export default class extends Mesh {
-  constructor(gl) {
-    super(gl)
+  constructor() {
+    super()
     this.color = [255, 255, 255, 1]
   }
 

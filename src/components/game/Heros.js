@@ -2,18 +2,17 @@ import Bullets from "./Bullets"
 import Perso from "./Perso"
 
 export default class extends Perso {
-  constructor(gl) {
-    super(gl)
-    this.bullets = new Bullets()
+  constructor(viewBox, map) {
+    super(viewBox, map)
+    this.bullets = new Bullets(viewBox, map)
   }
 
-  update(offset, map) {
-    super.update(offset, map)
+  update() {
+    super.update()
     this.bullets.updateBullets(
-      this.position,
+      this.behavior.getPosition(),
       this.behavior.getAiming(),
       this.inverseX,
-      map,
     )
   }
 

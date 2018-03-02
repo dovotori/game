@@ -5,8 +5,8 @@ import constants from "../../persos/heros"
 import Behavior from "./BehaviorInteraction"
 
 export default class extends MeshSprite {
-  constructor(gl) {
-    super(gl)
+  constructor(viewBox, map) {
+    super()
     this.inverseX = false
     this.cornerLeft = false
     this.position = [constants.x || 0, constants.y || 0]
@@ -17,6 +17,9 @@ export default class extends MeshSprite {
     this.behavior = new Behavior(constants, this.updateState)
     this.state = new StateSprite(states, this.setEndOfAnimation)
     this.state.set("STAND")
+
+    this.viewBox = viewBox
+    this.map = map
   }
 
   render(program, texture, objet) {
@@ -46,18 +49,18 @@ export default class extends MeshSprite {
     this.state.set(name)
   }
 
-  update(offset, map) {
+  update() {
     super.update()
-    this.behavior.setCollision(map)
-    this.position[0] = this.behavior.getX() - offset.x
-    this.position[1] = this.behavior.getY() - offset.y
+    this.behavior.setCollision(this.map)
+    this.position[0] = this.behavior.getX() - this.viewBox.x
+    this.position[1] = this.behavior.getY() - this.viewBox.y
   }
 
   setEndOfAnimation() {
     this.behavior.setEndOfAnimation()
   }
 
-  getPosition() {
+  getBehaviorPosition() {
     return this.behavior.getPosition()
   }
 

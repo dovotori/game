@@ -4,35 +4,65 @@ export default class {
   constructor() {
     this.position = new Vec3(0, 0, 0)
     this.speed = new Vec3(0, 0, 0)
+    this.size = new Vec3(1, 1, 1)
     this.isLanding = false
     this.inverseSprite = false
     this.cornerLeft = true
+    this.spaceCheck = 0.000001 // for collision, remove a little space to check if perso is not yet on next tile
+    this.tileSize = new Vec3(1, 1, 1)
   }
 
   setCollision(map) {
     this.isLanding = false
     this.updateSpeed()
-    let newPosX = this.position.getX() + this.speed.getX()
-    let newPosY = this.position.getY() + this.speed.getY()
-    newPosX = this.collisionAxisX(map, newPosX)
-    this.collisionAxisY(map, newPosX, newPosY)
+    // console.log(this.speed.getX())
+    this.moving(this.speed.getX(), this.speed.getY(), map)
   }
 
   updateSpeed() {}
 
-  collisionAxisX(map, newPosX) {
-    if (this.speed.getX() < 0) {
+  moving(speedX, speedY, map) {
+    if (
+      Math.abs(speedX) >= this.tileSize.getX() ||
+      Math.abs(speedY) >= this.tileSize.getY()
+    ) {
+      const demiSpeedX = speedX / 2
+      const demiSpeedY = speedY / 2
+      this.moving(demiSpeedX, demiSpeedY, map)
+      this.moving(demiSpeedX, demiSpeedY, map)
+      return
+    }
+    let newPosX = this.collisionAxisX(map, speedX)
+    let newPosY = this.collisionAxisY(map, speedY)
+    this.position.set(newPosX, newPosY, this.position.getZ())
+  }
+
+  collisionAxisX(map, speedX) {
+    let newPosX = this.position.getX() + speedX
+    if (speedX < 0) {
       if (
         this.isCollisionTile(newPosX, this.position.getY(), map) ||
-        this.isCollisionTile(newPosX, this.position.getY() + 0.9, map)
+        this.isCollisionTile(
+          newPosX,
+          this.position.getY() + (this.size.getY() - this.spaceCheck),
+          map,
+        )
       ) {
-        newPosX = Math.floor(newPosX) + 1
+        newPosX = Math.floor(newPosX) + this.size.getX()
         this.speed.setX(0)
       }
-    } else if (this.speed.getX() > 0) {
+    } else if (speedX > 0) {
       if (
-        this.isCollisionTile(newPosX + 1, this.position.getY(), map) ||
-        this.isCollisionTile(newPosX + 1, this.position.getY() + 0.9, map)
+        this.isCollisionTile(
+          newPosX + this.size.getX(),
+          this.position.getY(),
+          map,
+        ) ||
+        this.isCollisionTile(
+          newPosX + this.size.getX(),
+          this.position.getY() + (this.size.getY() - this.spaceCheck),
+          map,
+        )
       ) {
         newPosX = Math.floor(newPosX)
         this.speed.setX(0)
@@ -41,26 +71,39 @@ export default class {
     return newPosX
   }
 
-  collisionAxisY(map, newPosX, newPosY) {
-    if (this.speed.getY() < 0) {
+  collisionAxisY(map, speedY) {
+    let newPosY = this.position.getY() + speedY
+    if (speedY < 0) {
       if (
-        this.isCollisionTile(newPosX, newPosY, map) ||
-        this.isCollisionTile(newPosX + 0.9, newPosY, map)
+        this.isCollisionTile(this.position.getX(), newPosY, map) ||
+        this.isCollisionTile(
+          this.position.getX() + (this.size.getX() - this.spaceCheck),
+          newPosY,
+          map,
+        )
       ) {
-        newPosY = Math.floor(newPosY) + 1
+        newPosY = Math.floor(newPosY) + this.size.getY()
         this.speed.setY(0)
         this.isLanding = true
       }
-    } else if (this.speed.getY() > 0) {
+    } else if (speedY > 0) {
       if (
-        this.isCollisionTile(newPosX, newPosY + 1, map) ||
-        this.isCollisionTile(newPosX + 0.9, newPosY + 1, map)
+        this.isCollisionTile(
+          this.position.getX(),
+          newPosY + this.size.getY(),
+          map,
+        ) ||
+        this.isCollisionTile(
+          this.position.getX() + (this.size.getX() - this.spaceCheck),
+          newPosY + this.size.getY(),
+          map,
+        )
       ) {
         newPosY = Math.floor(newPosY)
         this.speed.setY(0)
       }
     }
-    this.position.set(newPosX, newPosY, this.position.getZ())
+    return newPosY
   }
 
   isCollisionTile(x, y, map) {

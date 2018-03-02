@@ -2,13 +2,15 @@ import Bullet from "./Bullet"
 import MeshSprite from "../opengl/MeshSprite"
 
 export default class extends MeshSprite {
-  constructor(gl) {
-    super(gl)
+  constructor(viewBox, map) {
+    super()
     this.bullets = []
     this.isAiming = false
+    this.viewBox = viewBox
+    this.map = map
   }
 
-  updateBullets(startPos, isAiming, goLeft, map) {
+  updateBullets(startPos, isAiming, goLeft) {
     if (!this.isAiming && isAiming) {
       this.createNewOne(goLeft)
     } else if (this.isAiming && !isAiming) {
@@ -16,7 +18,7 @@ export default class extends MeshSprite {
     }
     let toDelete = []
     this.bullets.forEach((bullet, idx) => {
-      const isCollision = bullet.setCollision(startPos, map)
+      const isCollision = bullet.setCollision(startPos, this.map)
       if (isCollision) {
         toDelete.push(idx)
       }
@@ -44,7 +46,11 @@ export default class extends MeshSprite {
   render(program, texture, objet) {
     this.bullets.forEach(bullet => {
       this.reset()
-      this.setTranslate(bullet.getX(), bullet.getY(), bullet.getZ())
+      this.setTranslate(
+        bullet.getX() - this.viewBox.x,
+        bullet.getY() - this.viewBox.y,
+        bullet.getZ(),
+      )
       program.setTexture(0, texture.get())
       program.setBool("inverseX", bullet.getSpeedX() < 0 ? 1 : 0)
       this.setSprite(bullet.getState())

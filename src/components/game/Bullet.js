@@ -23,12 +23,34 @@ export default class extends Behavior {
     }
     let newPosX = this.position.getX() + this.speed.getX()
     newPosX = this.collisionAxisX(map, newPosX)
+
     this.position.set(newPosX, this.position.getY(), this.position.getZ())
 
     if (this.speed.getX() === 0) {
       return true
     }
     return false
+  }
+
+  collisionAxisX(map, newPosX) {
+    if (this.speed.getX() < 0) {
+      if (
+        this.isCollisionTile(newPosX, this.position.getY(), map) ||
+        this.isCollisionTile(newPosX, this.position.getY() + 0.9, map)
+      ) {
+        newPosX = Math.floor(newPosX) + 1
+        this.speed.setX(0)
+      }
+    } else if (this.speed.getX() > 0) {
+      if (
+        this.isCollisionTile(newPosX + 1, this.position.getY(), map) ||
+        this.isCollisionTile(newPosX + 1, this.position.getY() + 0.9, map)
+      ) {
+        newPosX = Math.floor(newPosX)
+        this.speed.setX(0)
+      }
+    }
+    return newPosX
   }
 
   shoot(goLeft) {

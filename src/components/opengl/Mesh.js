@@ -3,8 +3,7 @@ import Target from "../Target"
 import Mat4 from "../geometrie/Mat4"
 
 export default class {
-  constructor(gl) {
-    this.gl = gl
+  constructor() {
     this.model = new Mat4()
     this.model.identity()
     this.angle = { x: new Spring(), y: new Spring() }

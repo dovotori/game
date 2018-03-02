@@ -1,5 +1,7 @@
 ## Todo
 
+* Speed > 1
+* nuance to sprite
 * Nuages
 * Arreter la boucle de rendu quand l'onglet du navigateur n'est plus actif
 * Mode pause / game-over puis retry

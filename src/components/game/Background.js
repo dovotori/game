@@ -2,33 +2,35 @@ import Mesh from "../opengl/MeshColor"
 import { mapFromRange } from "../../utils/numbers"
 
 export default class {
-  constructor(gl) {
+  constructor(viewBox, levelSize) {
     this.mountains = new Array(4)
     for (let i = 0; i < this.mountains.length; i++) {
-      this.mountains[i] = new Mesh(gl)
+      this.mountains[i] = new Mesh()
     }
     this.clouds = new Array(4)
     this.cloudData = []
     for (let i = 0; i < this.clouds.length; i++) {
-      this.clouds[i] = new Mesh(gl)
+      this.clouds[i] = new Mesh()
       this.cloudData[i] = this.setCloud()
     }
+    this.viewBox = viewBox
+    this.levelSize = levelSize
   }
 
-  update(pos, size, view) {
-    this.updateMountains(pos, size, view)
-    this.updateClouds(pos, size, view)
+  update(pos) {
+    this.updateMountains(pos)
+    this.updateClouds(pos)
   }
 
-  updateMountains(pos, size, view) {
+  updateMountains(pos) {
     this.mountains.forEach((mesh, idx) => {
       const inverseIdx = this.mountains.length - idx
       const scale = mapFromRange(idx, 0, this.mountains.length, 4, 40)
       const x = mapFromRange(
         pos[0],
         0,
-        size.w,
-        view.w + inverseIdx * 10,
+        this.levelSize.w,
+        this.viewBox.w + inverseIdx * 10,
         -inverseIdx * 10,
       )
       const y = 10 + scale / 2
@@ -41,11 +43,11 @@ export default class {
     })
   }
 
-  updateClouds(pos, size, view) {
+  updateClouds(pos) {
     this.clouds.forEach((mesh, idx) => {
       const scale = this.cloudData[idx].scale
       if (this.cloudData[idx].x < -scale) {
-        this.cloudData[idx] = this.setCloud(view.w + scale)
+        this.cloudData[idx] = this.setCloud(this.viewBox.w + scale)
       } else {
         this.cloudData[idx].x -= this.cloudData[idx].speed
       }
