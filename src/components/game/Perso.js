@@ -1,32 +1,56 @@
 import StateSprite from "./StateSprite"
 import MeshSprite from "../opengl/MeshSprite"
-import states from "../../sprites/heros"
+import Behavior from "./Behavior"
+import Vec3 from "../geometrie/Vec3"
 import constants from "../../persos/heros"
-import Behavior from "./BehaviorInteraction"
 
 export default class extends MeshSprite {
-  constructor(viewBox, map) {
+  constructor(states, viewBox, map) {
     super()
     this.inverseX = false
     this.cornerLeft = false
-    this.position = [constants.x || 0, constants.y || 0]
+    this.position = new Vec3(
+      constants.x || 0,
+      constants.y || 0,
+      constants.z || 0,
+    )
 
     this.updateState = this.updateState.bind(this)
     this.setEndOfAnimation = this.setEndOfAnimation.bind(this)
-
-    this.behavior = new Behavior(constants, this.updateState)
     this.state = new StateSprite(states, this.setEndOfAnimation)
     this.state.set("STAND")
+    this.setup()
 
     this.viewBox = viewBox
     this.map = map
   }
 
+  setup() {
+    // this.behavior = new Behavior(constants)
+  }
+
+  updateState() {}
+
+  update() {
+    super.update()
+    this.setPositionFromBehavior()
+  }
+
+  setPositionFromBehavior() {
+    this.behavior.updateSpeed()
+    this.behavior.setCollision(this.map)
+    this.position.set(
+      this.behavior.getX() - this.viewBox.x,
+      this.behavior.getY() - this.viewBox.y,
+      this.behavior.getZ(),
+    )
+  }
+
   render(program, texture, objet) {
     this.model.translate(
-      this.position[0],
-      this.position[1],
-      this.behavior.getZ(),
+      this.position.getX(),
+      this.position.getY(),
+      this.position.getZ(),
     )
     program.setTexture(0, texture.get())
     program.setBool("inverseX", this.inverseX ? 1 : 0)
@@ -39,23 +63,6 @@ export default class extends MeshSprite {
     this.state.set(state)
   }
 
-  setInteraction(interaction, changed) {
-    this.behavior.setInteraction(interaction, changed)
-  }
-
-  updateState(name, inverse, corner) {
-    this.inverseX = inverse
-    this.cornerLeft = corner
-    this.state.set(name)
-  }
-
-  update() {
-    super.update()
-    this.behavior.setCollision(this.map)
-    this.position[0] = this.behavior.getX() - this.viewBox.x
-    this.position[1] = this.behavior.getY() - this.viewBox.y
-  }
-
   setEndOfAnimation() {
     this.behavior.setEndOfAnimation()
   }
@@ -66,13 +73,5 @@ export default class extends MeshSprite {
 
   getInverseX() {
     return this.inverseX
-  }
-
-  getDashing() {
-    return this.behavior.getDashing()
-  }
-
-  getAiming() {
-    return this.behavior.getAiming()
   }
 }

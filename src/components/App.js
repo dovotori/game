@@ -1,5 +1,5 @@
 import Canvas from "./opengl/Canvas"
-import Scene from "./opengl/SceneGame"
+import Scene from "./opengl/SceneCollision"
 import Loop from "./Loop"
 import Keyboard from "./Keyboard"
 import Mouse from "./Mouse"

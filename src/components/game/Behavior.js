@@ -5,20 +5,24 @@ export default class {
     this.position = new Vec3(0, 0, 0)
     this.speed = new Vec3(0, 0, 0)
     this.size = new Vec3(1, 1, 1)
-    this.isLanding = false
     this.inverseSprite = false
     this.cornerLeft = true
     this.spaceCheck = 0.000001 // for collision, remove a little space to check if perso is not yet on next tile
     this.tileSize = new Vec3(1, 1, 1)
+    this.isCollision = {
+      left: false,
+      right: false,
+      landing: false,
+      top: false,
+    }
   }
 
   setCollision(map) {
-    this.isLanding = false
-    this.updateSpeed()
+    this.isCollision.left = false
+    this.isCollision.right = false
+    this.isCollision.landing = false
     this.moving(this.speed.getX(), this.speed.getY(), map)
   }
-
-  updateSpeed() {}
 
   moving(speedX, speedY, map) {
     if (
@@ -48,6 +52,7 @@ export default class {
         )
       ) {
         newPosX = Math.floor(newPosX) + this.size.getX()
+        this.isCollision.left = true
         this.speed.setX(0)
       }
     } else if (speedX > 0) {
@@ -64,6 +69,7 @@ export default class {
         )
       ) {
         newPosX = Math.floor(newPosX)
+        this.isCollision.right = true
         this.speed.setX(0)
       }
     }
@@ -83,7 +89,7 @@ export default class {
       ) {
         newPosY = Math.floor(newPosY) + this.size.getY()
         this.speed.setY(0)
-        this.isLanding = true
+        this.isCollision.landing = true
       }
     } else if (speedY > 0) {
       if (
@@ -130,11 +136,23 @@ export default class {
     return this.position.getZ()
   }
 
+  getSpeed() {
+    return this.speed.get()
+  }
+
   getSpeedX() {
     return this.speed.getX()
   }
 
+  getSpeedY() {
+    return this.speed.getY()
+  }
+
   addToSpeed(add) {
     this.speed.plus(add)
+  }
+
+  getCollision(direction) {
+    return this.isCollision[direction]
   }
 }

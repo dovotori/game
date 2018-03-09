@@ -61,48 +61,71 @@ export default class {
           y: y - this.smoothTilePos.y,
           z: 0,
         }
-        let scale = { x: 1, y: 1, z: 1 }
-        let finalObjet = flat
+        // let scale = { x: 1, y: 1, z: 1 }
+        // let finalObjet = flat
+        // switch (state) {
+        //   case "25500":
+        //   case "00255":
+        //     break
+        //   case "02550":
+        //     scale = { x: 3, y: 3, z: 3 }
+        //     translate.z = -0.5
+        //     break
+        //   case "02500":
+        //     scale = { x: 2, y: 2, z: 2 }
+        //     translate.z = -0.25
+        //     break
+        //   case "02000":
+        //     scale = { x: 4, y: 4, z: 4 }
+        //     translate.z = -0.1
+        //     break
+        //   case "01500":
+        //     scale = { x: 2, y: 2, z: 1 }
+        //     translate.z = -0.3
+        //     break
+        //   case "01000":
+        //     scale = { x: 3, y: 3, z: 3 }
+        //     translate.z = -0.4
+        //     break
+        //   case "150150150":
+        //   case "000":
+        //     finalObjet = obj
+        //     break
+        //   default:
+        //     break
+        // }
+
+        // if (this.sprite[state]) {
+        //   this.tile.reset()
+        //   this.tile.setScale(scale.x, scale.y, scale.z)
+        //   translate.x -= scale.x * 0.5 - 0.5
+        //   translate.y += scale.y - 1
+        //   this.tile.setTranslate(translate.x, translate.y, translate.z)
+        //   this.tile.setState(state)
+        //   this.tile.render(finalObjet, prog, tex)
+        // }
+
         this.tile.reset()
         switch (state) {
           case "25500":
           case "00255":
-            break
           case "02550":
-            scale = { x: 3, y: 3, z: 3 }
-            translate.z = -0.5
-            break
           case "02500":
-            scale = { x: 2, y: 2, z: 2 }
-            translate.z = -0.25
-            break
           case "02000":
-            scale = { x: 4, y: 4, z: 4 }
-            translate.z = 0.25
-            break
           case "01500":
-            scale = { x: 2, y: 2, z: 1 }
-            translate.z = 0.1
-            break
           case "01000":
-            scale = { x: 3, y: 3, z: 3 }
-            translate.z = 0.5
+            this.tile.setState(state)
+            this.tile.setTranslate(translate.x, translate.y, translate.z)
+            this.tile.render(flat, prog, tex)
             break
           case "150150150":
           case "000":
-            finalObjet = obj
+            this.tile.setState(state)
+            this.tile.setTranslate(translate.x, translate.y, translate.z)
+            this.tile.render(obj, prog, tex)
             break
           default:
             break
-        }
-
-        if (this.sprite[state]) {
-          this.tile.setScale(scale.x, scale.y, scale.z)
-          translate.x -= scale.x * 0.5 - 0.5
-          translate.y += scale.y - 1
-          this.tile.setTranslate(translate.x, translate.y, translate.z)
-          this.tile.setState(state)
-          this.tile.render(finalObjet, prog, tex)
         }
       }
     }
@@ -133,5 +156,9 @@ export default class {
 
   get() {
     return this.context
+  }
+
+  getSmoothTilePos() {
+    return this.smoothTilePos
   }
 }

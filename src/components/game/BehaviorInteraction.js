@@ -10,6 +10,7 @@ export default class extends BehaviorGravity {
     this.oldShift = false
     this.isDashing = false
   }
+
   setInteraction(interaction, changed) {
     this.isDashing = false
     if (!this.isAnimating && !this.isBlocking) {
@@ -23,18 +24,22 @@ export default class extends BehaviorGravity {
       }
       if (interaction.RIGHT) {
         this.speed.addX(
-          this.isLanding ? this.constants.run : this.constants.aircontrol,
+          this.isCollision.landing
+            ? this.constants.run
+            : this.constants.aircontrol,
         )
         this.inverseSprite = false
       }
       if (interaction.LEFT) {
         this.speed.addX(
-          this.isLanding ? -this.constants.run : -this.constants.aircontrol,
+          this.isCollision.landing
+            ? -this.constants.run
+            : -this.constants.aircontrol,
         )
         this.inverseSprite = true
       }
 
-      if (this.isLanding) {
+      if (this.isCollision.landing) {
         if (interaction.RIGHT || interaction.LEFT) {
           this.statusSprite = "RUN"
         } else {
@@ -79,7 +84,7 @@ export default class extends BehaviorGravity {
       }
     } else {
       if (!this.isAnimating && !this.isBlocking) {
-        if (!this.isLanding) {
+        if (!this.isCollision.landing) {
           if (Math.abs(this.speed.getX()) > 0) {
             this.statusSprite =
               this.speed.getY() > 0 ? "RUN_JUMP_UP" : "RUN_JUMP_DOWN"

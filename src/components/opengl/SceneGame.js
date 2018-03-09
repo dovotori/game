@@ -1,4 +1,5 @@
-import Perso from "../game/Heros"
+import Heros from "../game/Heros"
+import Monster from "../game/Monster"
 import Background from "../game/Background"
 import Tilemap from "../game/Tilemap"
 import Scene from "./Scene"
@@ -15,7 +16,8 @@ export default class extends Scene {
   afterAssetsLoaded(assets) {
     super.afterAssetsLoaded(assets)
     this.tilemap = new Tilemap(assets.levels.level1, scene.tilemap)
-    this.perso = new Perso(this.tilemap.getViewBox(), this.tilemap.get())
+    this.heros = new Heros(this.tilemap.getViewBox(), this.tilemap.get())
+    this.monster = new Monster(this.tilemap.getViewBox(), this.tilemap.get())
     this.background = new Background(
       this.tilemap.getViewBox(),
       this.tilemap.getLevelSize(),
@@ -26,11 +28,10 @@ export default class extends Scene {
   }
 
   renderBeforeProcess() {
-    this.perso.renderColor(this.mngObj.get("tile"), this.mngProg.get("color"))
-
+    this.heros.renderColor(this.mngObj.get("tile"), this.mngProg.get("color"))
     if (this.mousePos !== null) {
       const pixel = this.getColorPixel(this.mousePos)
-      this.perso.setSelected(pixel)
+      this.heros.setSelected(pixel)
     }
   }
 
@@ -48,7 +49,12 @@ export default class extends Scene {
       this.mngObj.get("cubeTile"),
       this.mngObj.get("tile"),
     )
-    this.perso.render(
+    this.heros.render(
+      this.mngProg.get("sprite"),
+      this.mngTex.get("heros"),
+      this.mngObj.get("tile"),
+    )
+    this.monster.render(
       this.mngProg.get("sprite"),
       this.mngTex.get("heros"),
       this.mngObj.get("tile"),
@@ -61,30 +67,37 @@ export default class extends Scene {
 
   update() {
     super.update()
+    this.tilemap.follow(this.heros.getBehaviorPosition()) // should be before perso update
+
+    if (this.start) {
+      this.afterStart()
+    }
+    // this.tilemap.follow(this.monster.getBehaviorPosition())
+    this.tilemap.update(this.mngProg.get("spritePhong"), this.camera)
+    this.background.update(this.heros.getBehaviorPosition())
+  }
+
+  afterStart() {
     this.targetRGB.update()
-    if (this.perso.getInverseX()) {
+    if (this.heros.getInverseX()) {
       this.camera.setSmoothRotation(0.1)
       this.camera.setSmoothTarget(-4)
     } else {
       this.camera.setSmoothRotation(-0.1)
       this.camera.setSmoothTarget(4)
     }
-    if (this.perso.getAiming()) {
+    if (this.heros.getAiming()) {
       this.camera.setSmoothZoom(0.9)
     } else {
       this.camera.setSmoothZoom(1)
     }
-    if (this.perso.getDashing()) {
+    if (this.heros.getDashing()) {
       this.targetRGB.set(1)
     } else {
       this.targetRGB.set(0)
     }
-    if (this.start) {
-      this.perso.update()
-    }
-    this.tilemap.follow(this.perso.getBehaviorPosition())
-    this.tilemap.update(this.mngProg.get("spritePhong"), this.camera)
-    this.background.update(this.perso.getBehaviorPosition())
+    this.heros.update()
+    this.monster.update(this.tilemap.getSmoothTilePos())
   }
 
   effectsList() {
@@ -94,7 +107,7 @@ export default class extends Scene {
 
   setKeyboardInteraction(interaction) {
     if (this.assetsReady) {
-      this.perso.setInteraction(interaction.perso, interaction.changed)
+      this.heros.setInteraction(interaction.perso, interaction.changed)
     }
   }
 }
