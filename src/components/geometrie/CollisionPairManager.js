@@ -1,13 +1,16 @@
 export default class {
   constructor() {
-    this.paires = Array()
-    this.listesAxe = Array(3)
+    this.listesAxe = Array(3) // contient les paires qui overlap sur chacun des axes
+    this.resetPairesAxes()
+  }
+
+  resetPairesAxes() {
     for (var i = 0; i < this.listesAxe.length; i++) {
       this.listesAxe[i] = Array()
     }
   }
 
-  addPaire(paire, axe) {
+  addPaireOnAxe(paire, axe) {
     var already = false
     for (var i = 0; i < this.listesAxe[axe].length; i++) {
       if (
@@ -25,42 +28,6 @@ export default class {
     }
   }
 
-  removePaire(paire) {
-    for (var i = 0; i < this.paires.length; i++) {
-      if (
-        (paire[0] == this.paires[i][0] && paire[1] == this.paires[i][1]) ||
-        (paire[1] == this.paires[i][0] && paire[0] == this.paires[i][1])
-      ) {
-        this.paires.splice(i, 1)
-        break
-      }
-    }
-  }
-
-  removeFromId(id) {
-    for (var i = 0; i < this.paires.length; i++) {
-      if (this.paires[i][0] == id || this.paires[i][1] == id) {
-        this.paires.splice(i, 1)
-        break
-      }
-    }
-  }
-
-  getPaires(axeX, axeY, axeZ) {
-    if (axeX) {
-      this.paires = this.listesAxe[0]
-      if (axeY) {
-        this.paires = this.compareListes(this.paires, this.listesAxe[1])
-        if (axeZ) {
-          this.paires = this.compareListes(this.paires, this.listesAxe[2])
-        }
-      }
-      return this.paires
-    } else {
-      return null
-    }
-  }
-
   compareListes(liste1, liste2) {
     var tmp = Array()
     for (var i = 0; i < liste1.length; i++) {
@@ -74,5 +41,21 @@ export default class {
       }
     }
     return tmp
+  }
+
+  getPaires(axeX, axeY, axeZ) {
+    let paires
+    if (axeX) {
+      paires = this.listesAxe[0]
+      if (axeY) {
+        paires = this.compareListes(paires, this.listesAxe[1])
+        if (axeZ) {
+          paires = this.compareListes(paires, this.listesAxe[2])
+        }
+      }
+      return paires
+    } else {
+      return null
+    }
   }
 }

@@ -18,7 +18,7 @@ export default class {
   }
 
   update(x, y, z, w, h, d) {
-    this.setMinMax(x, y, z, w, h, d)
+    this.setMinMax(x, y, z, x + w, y + h, z + d)
   }
 
   setMinMax(minx, miny, minz, maxx, maxy, maxz) {

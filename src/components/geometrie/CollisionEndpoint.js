@@ -15,6 +15,7 @@ export default class {
   set(v) {
     this.value = v
   }
+
   get() {
     return this.value
   }
@@ -22,6 +23,7 @@ export default class {
   getID() {
     return this.ownerId
   }
+
   isMinimum() {
     return this.isMin
   }

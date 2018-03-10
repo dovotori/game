@@ -16,8 +16,6 @@ export default class {
 
   setup(boxs) {
     this.addBoxes(boxs)
-    //for(var i = 0; i < liste.length; i++){ console.log(liste[i].get()); }
-    //for(var i = 0; i < this.listeAxe[0].length; i++){ console.log(this.listeAxe[0][i].get()); }
   }
 
   addBoxes(boxs) {
@@ -89,7 +87,6 @@ export default class {
       this.listeAxe[axe].push(e)
     }
 
-    // TRI
     this.cptEndpointPlace = 0
     this.endpointAplacer = newEndPoints[this.cptEndpointPlace]
 
@@ -130,7 +127,7 @@ export default class {
     if (!this.listeAxe[axe][i].isMinimum()) {
       // c'est un max
       for (var j = 0; j < this.activeList.length; j++) {
-        this.pm.addPaire([this.activeList[j], id], axe) // on reporte la paire comme potentiel collision
+        this.pm.addPaireOnAxe([this.activeList[j], id], axe) // on reporte la paire comme potentiel collision
       }
       this.activeList.push(id) // on ajoute dans l'active liste
     } else {
@@ -144,12 +141,24 @@ export default class {
     }
   }
 
-  update(boxs) {
-    //this.checkCollision(boxs);
-    var paires = this.pm.getPaires(true, true, false)
-    for (var i = 0; i < paires.length; i++) {
-      console.log(paires[i])
+  update(checkAxeX, checkAxeY, checkAxeZ) {
+    this.pm.resetPairesAxes()
+    this.activeList = Array()
+    if (checkAxeX) this.updateAxe(0)
+    if (checkAxeY) this.updateAxe(1)
+    if (checkAxeZ) this.updateAxe(2)
+  }
+
+  updateAxe(axe) {
+    this.listeAxe[axe].sort((a, b) => (a.value < b.value ? -1 : 1))
+    for (var i = this.listeAxe[0].length - 1; i >= 0; i--) {
+      this.loopCheckCollision(axe, i)
     }
+  }
+
+  getPaires(checkAxeX = true, checkAxeY = true, checkAxeZ = false) {
+    this.update(checkAxeX, checkAxeY, checkAxeZ)
+    return this.pm.getPaires(checkAxeX, checkAxeY, checkAxeZ)
   }
 
   removeBox(box) {
