@@ -1,6 +1,6 @@
 import SceneGame from "./SceneGame"
-import CollisionSweepPrune from "../geometrie/CollisionSweepPrune"
-import CollisionBox from "../geometrie/CollisionBox"
+import CollisionSweepPrune from "../../geometry/Collisions/CollisionSweepPrune"
+import CollisionBox from "../../geometry/Collisions/CollisionBox"
 
 export default class extends SceneGame {
   constructor(gl, scene, callbackLoaded = null) {
@@ -21,6 +21,6 @@ export default class extends SceneGame {
     const monsterPos = this.monster.getBehaviorPosition()
     this.boxes[0].update(herosPos[0], herosPos[1], herosPos[2], 1, 1, 1)
     this.boxes[1].update(monsterPos[0], monsterPos[1], monsterPos[2], 1, 1, 1)
-    console.log(this.collision.getPaires())
+    // console.log(this.collision.getPaires())
   }
 }

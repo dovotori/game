@@ -1,6 +1,6 @@
-import Spring from "../Spring"
-import Target from "../Target"
-import Mat4 from "../geometrie/Mat4"
+import Spring from "../../geometry/Spring"
+import Target from "../../geometry/Target"
+import Mat4 from "../../geometry/Mat4"
 
 export default class {
   constructor() {

@@ -1,6 +1,6 @@
-import Vec3 from "../geometrie/Vec3"
-import Mat4 from "../geometrie/Mat4"
-import Spring from "../Spring"
+import Vec3 from "../../geometry/Vec3"
+import Mat4 from "../../geometry/Mat4"
+import Spring from "../../geometry/Spring"
 
 export default class {
   constructor(options) {

@@ -1,5 +1,5 @@
-import Program from "./Program"
-import * as glsl from "../../shaders/"
+import Program from "../../opengl/Program"
+import * as glsl from "../../../constants/shaders/"
 
 export default class {
   constructor(gl, selection) {

@@ -1,9 +1,9 @@
 import Canvas from "./opengl/Canvas"
-import Scene from "./opengl/SceneCollision"
+import Scene from "./opengl/Scenes/SceneCollision"
 import Loop from "./Loop"
-import Keyboard from "./Keyboard"
-import Mouse from "./Mouse"
-import scene from "../scenes/classic"
+import Keyboard from "./io/Keyboard"
+import Mouse from "./io/Mouse"
+import scene from "../constants/scenes/classic"
 
 export default class {
   constructor(options) {

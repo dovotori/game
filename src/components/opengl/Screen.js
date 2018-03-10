@@ -1,5 +1,5 @@
 import ObjetPrimitive from "./ObjetPrimitive"
-import primitive from "../../primitives/plane"
+import primitive from "../../constants/primitives/plane"
 
 export default class {
   constructor(gl) {

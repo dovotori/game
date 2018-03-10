@@ -1,7 +1,7 @@
 import Fbo from "./Fbo"
-import MeshRepere from "./MeshRepere"
-import Vec3 from "../geometrie/Vec3"
-import Mat4 from "../geometrie/Mat4"
+import MeshRepere from "./Meshes/MeshRepere"
+import Vec3 from "../geometry/Vec3"
+import Mat4 from "../geometry/Mat4"
 
 export default class {
   constructor(gl, width = 1024, height = 1024) {

@@ -1,10 +1,10 @@
-import Heros from "../game/Heros"
-import Monster from "../game/Monster"
-import Background from "../game/Background"
-import Tilemap from "../game/Tilemap"
+import Heros from "../../game/Persos/Heros"
+import Monster from "../../game/Persos/Monster"
+import Background from "../../game/Background"
+import Tilemap from "../../game/Tilemap"
 import Scene from "./Scene"
-import scene from "../../scenes/classic"
-import Target from "../Target"
+import scene from "../../../constants/scenes/classic"
+import Target from "../../geometry/Target"
 
 export default class extends Scene {
   constructor(gl, scene, callbackLoaded = null) {

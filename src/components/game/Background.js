@@ -1,4 +1,4 @@
-import Mesh from "../opengl/MeshColor"
+import Mesh from "../opengl/Meshes/MeshColor"
 import { mapFromRange } from "../../utils/numbers"
 
 export default class {

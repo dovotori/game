@@ -1,4 +1,4 @@
-import LoadObj from "./LoadObj"
+import LoadObj from "../LoadObj"
 
 export default class {
   constructor(paths, callback) {

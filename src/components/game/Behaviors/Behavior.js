@@ -1,4 +1,4 @@
-import Vec3 from "../geometrie/Vec3"
+import Vec3 from "../../geometry/Vec3"
 
 export default class {
   constructor() {

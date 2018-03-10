@@ -1,4 +1,4 @@
-import TextureImage from "./TextureImage"
+import TextureImage from "../../opengl/Textures/TextureImage"
 
 export default class {
   constructor(gl, textures) {

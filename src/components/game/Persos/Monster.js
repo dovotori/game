@@ -1,7 +1,7 @@
 import Perso from "./Perso"
-import states from "../../sprites/monster"
-import constants from "../../persos/monster"
-import Behavior from "./BehaviorBackAndForth"
+import states from "../../../constants/sprites/monster"
+import constants from "../../../constants/persos/monster"
+import Behavior from "../Behaviors/BehaviorBackAndForth"
 
 export default class extends Perso {
   constructor(viewBox, map) {

@@ -1,8 +1,8 @@
-import Program from "./Program"
-import Objet from "./ObjetPrimitive"
-import Mat4 from "../geometrie/Mat4"
-import glsl from "../../shaders/color"
-import primitive from "../../primitives/cube"
+import Program from "../Program"
+import Objet from "../ObjetPrimitive"
+import Mat4 from "../../geometry/Mat4"
+import glsl from "../../../constants/shaders/color"
+import primitive from "../../../constants/primitives/cube"
 
 export default class {
   constructor(gl) {

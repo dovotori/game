@@ -1,6 +1,6 @@
 import StateSprite from "./StateSprite"
-import tiles from "../../sprites/tiles"
-import MeshSprite from "../opengl/MeshSpriteNormalMatrix"
+import tiles from "../../constants/sprites/tiles"
+import MeshSprite from "../opengl/Meshes/MeshSpriteNormalMatrix"
 
 export default class extends MeshSprite {
   constructor() {

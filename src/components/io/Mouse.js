@@ -1,4 +1,4 @@
-import { mapFromRange } from "../utils/numbers"
+import { mapFromRange } from "../../utils/numbers"
 
 export default class {
   constructor(div, callbackDrag, callbackDown, callbackMove) {

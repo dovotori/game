@@ -1,4 +1,4 @@
-import Target from "../Target"
+import Target from "../../geometry/Target"
 import Camera from "./Camera"
 
 export default class extends Camera {

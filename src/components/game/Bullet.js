@@ -1,6 +1,6 @@
-import Behavior from "./Behavior"
+import Behavior from "./Behaviors/Behavior"
 import StateSprite from "./StateSprite"
-import states from "../../sprites/heros"
+import states from "../../constants/sprites/heros"
 
 export default class extends Behavior {
   constructor(goLeft) {

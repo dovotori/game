@@ -1,5 +1,5 @@
 import Tile from "./TileNormalMatrix"
-import sprite from "../../sprites/tiles"
+import sprite from "../../constants/sprites/tiles"
 
 export default class {
   constructor(img, box) {

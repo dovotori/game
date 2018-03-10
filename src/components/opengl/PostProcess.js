@@ -2,7 +2,7 @@ import PingPongBuffer from "./PingPongBuffer"
 import Fbo from "./Fbo"
 import Screen from "./Screen"
 import Program from "./Program"
-import * as glsl from "../../shaders/screen"
+import * as glsl from "../../constants/shaders/screen"
 
 export default class {
   constructor(gl, width = 1024, height = 1024) {

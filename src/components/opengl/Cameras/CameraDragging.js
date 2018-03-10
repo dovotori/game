@@ -1,4 +1,4 @@
-import Spring from "../Spring"
+import Spring from "../../geometry/Spring"
 import Camera from "./Camera"
 
 export default class extends Camera {

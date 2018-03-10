@@ -1,5 +1,5 @@
 import Mesh from "./Mesh"
-import Mat3 from "../geometrie/Mat3"
+import Mat3 from "../../geometry/Mat3"
 
 export default class extends Mesh {
   constructor() {

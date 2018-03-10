@@ -1,5 +1,5 @@
 import Bullet from "./Bullet"
-import MeshSprite from "../opengl/MeshSprite"
+import MeshSprite from "../opengl/Meshes/MeshSprite"
 
 export default class extends MeshSprite {
   constructor(viewBox, map, callbackShoot) {

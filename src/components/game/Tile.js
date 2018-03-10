@@ -1,5 +1,5 @@
 import StateSprite from "./StateSprite"
-import MeshSprite from "../opengl/MeshSpriteNormalMatrix"
+import MeshSprite from "../opengl/Meshes/MeshSpriteNormalMatrix"
 
 export default class extends MeshSprite {
   constructor(sprite) {

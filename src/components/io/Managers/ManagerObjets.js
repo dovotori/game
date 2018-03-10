@@ -1,4 +1,4 @@
-import Objet from "./ObjetObj"
+import Objet from "../../opengl/ObjetObj"
 
 export default class {
   constructor(gl, objets) {

@@ -1,10 +1,10 @@
-import Camera from "./CameraSmooth"
-import Lampe from "./Lampe"
-import PostProcess from "./PostProcess"
-import LoadAssets from "../LoadAssets"
-import ManagerTextures from "./ManagerTextures"
-import ManagerObjets from "./ManagerObjets"
-import ManagerPrograms from "./ManagerPrograms"
+import Camera from "../Cameras/CameraSmooth"
+import Lampe from "../Lampe"
+import PostProcess from "../PostProcess"
+import LoadAssets from "../../io/LoadAssets"
+import ManagerTextures from "../../io/Managers/ManagerTextures"
+import ManagerObjets from "../../io/Managers/ManagerObjets"
+import ManagerPrograms from "../../io/Managers/ManagerPrograms"
 
 export default class {
   constructor(gl, scene, ready) {

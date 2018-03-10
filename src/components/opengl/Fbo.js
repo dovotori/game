@@ -1,5 +1,5 @@
-import TextureFbo from "./TextureFbo"
-import TextureDepth from "./TextureDepth"
+import TextureFbo from "./Textures/TextureFbo"
+import TextureDepth from "./Textures/TextureDepth"
 
 export default class {
   constructor(gl, width = 1024, height = 1024) {

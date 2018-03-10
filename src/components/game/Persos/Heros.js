@@ -1,13 +1,14 @@
-import Bullets from "./Bullets"
+import Bullets from "../Bullets"
 import Perso from "./Perso"
-import Vec3 from "../geometrie/Vec3"
-import Behavior from "./BehaviorInteraction"
-import states from "../../sprites/heros"
-import constants from "../../persos/heros"
+import Vec3 from "../../geometry/Vec3"
+import Behavior from "../Behaviors/BehaviorInteraction"
+import states from "../../../constants/sprites/heros"
+import constants from "../../../constants/persos/heros"
 
 export default class extends Perso {
   constructor(viewBox, map) {
     super(states, viewBox, map)
+
     this.setRecoil = this.setRecoil.bind(this)
     this.bullets = new Bullets(viewBox, map, this.setRecoil)
   }
