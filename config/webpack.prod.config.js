@@ -8,6 +8,7 @@ const BrotliPlugin = require("brotli-webpack-plugin")
 const CompressionPlugin = require("compression-webpack-plugin")
 
 module.exports = {
+  mode: "production",
   entry: "./src/index.js",
   output: {
     filename: "dovotori-game.js",

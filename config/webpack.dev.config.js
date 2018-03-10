@@ -5,6 +5,7 @@ const port = 8080
 const host = "localhost"
 
 module.exports = {
+  mode: "development",
   entry: [
     "webpack/hot/only-dev-server",
     "babel-polyfill",

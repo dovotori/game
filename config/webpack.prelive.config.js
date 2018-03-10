@@ -8,6 +8,7 @@ const ServiceWorkerWebpackPlugin = require("serviceworker-webpack-plugin")
 const CopyWebpackPlugin = require("copy-webpack-plugin")
 
 module.exports = {
+  mode: "production",
   entry: "./src/index.js",
   output: {
     filename: "dovotori-game.js",

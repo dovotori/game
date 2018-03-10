@@ -1,5 +1,5 @@
 {
-  "name": "game",
+  "name": "dovotori-game",
   "version": "1.0.0",
   "description": "Game with WebGL",
   "main": "src/index.js",
@@ -15,22 +15,22 @@
   "dependencies": {
     "babel-polyfill": "^6.26.0",
     "brotli-webpack-plugin": "^0.5.0",
-    "compression-webpack-plugin": "^1.1.10",
-    "copy-webpack-plugin": "^4.5.0",
+    "compression-webpack-plugin": "^1.1.11",
+    "copy-webpack-plugin": "^4.5.1",
     "css-loader": "^0.28.10",
-    "html-webpack-inline-source-plugin": "0.0.9",
-    "html-webpack-plugin": "^2.30.1",
+    "html-webpack-inline-source-plugin": "0.0.10",
+    "html-webpack-plugin": "^3.0.6",
     "prettier": "^1.11.1",
     "serviceworker-webpack-plugin": "^0.2.3",
-    "style-loader": "^0.20.2",
+    "style-loader": "^0.20.3",
     "uglifyjs-webpack-plugin": "^1.2.2",
-    "webpack": "^3.11.0",
-    "webpack-dev-server": "^2.11.2"
+    "webpack": "^4.1.1",
+    "webpack-dev-server": "^3.1.1"
   },
   "devDependencies": {
     "babel-core": "^6.24.1",
     "babel-eslint": "^8.2.2",
-    "babel-loader": "^7.1.3",
+    "babel-loader": "^7.1.4",
     "babel-preset-env": "^1.6.1",
     "eslint": "^4.18.2",
     "eslint-plugin-import": "^2.9.0",
@@ -38,6 +38,7 @@
     "eslint-plugin-prettier": "^2.6.0",
     "file-loader": "^1.1.11",
     "todo-webpack-plugin": "^1.8.1",
-    "url-loader": "^0.6.2"
+    "url-loader": "^1.0.1",
+    "webpack-cli": "^2.0.11"
   }
 }
