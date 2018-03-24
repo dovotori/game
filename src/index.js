@@ -3,10 +3,7 @@ import App from "./components/App"
 import "./style.css"
 
 const setup = () => {
-  const options = {
-    mouse: true,
-  }
-  const app = new App(options)
+  const app = new App()
   document.querySelector("#dovotori-app").appendChild(app.getCanvas())
 }
 

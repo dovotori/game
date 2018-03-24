@@ -14,6 +14,7 @@ export default class {
     this.finalRender = new Program(this.gl, glsl.screen)
     this.fxaa = new Program(this.gl, glsl.fxaa)
     this.rgb = new Program(this.gl, glsl.rgb)
+    this.wave = new Program(this.gl, glsl.wave)
     // this.programTex = new Program()
     // this.blurH = new Program()
     // this.blurV = new Program()
@@ -76,6 +77,17 @@ export default class {
     this.ppb.begin()
     this.rgb.setVector("delta", [deltaX, deltaY])
     this.screen.render(this.rgb.get())
+    this.ppb.end()
+  }
+
+  setWave(time, radius, center) {
+    this.fxaa.setTexture(0, this.ppb.getTexture().get())
+    this.ppb.swap()
+    this.ppb.begin()
+    this.wave.setFloat("time", time)
+    this.wave.setFloat("radius", radius)
+    this.wave.setVector("center", center)
+    this.screen.render(this.wave.get())
     this.ppb.end()
   }
 

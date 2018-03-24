@@ -11,6 +11,7 @@ export default class extends Camera {
   }
 
   update() {
+    super.update()
     this.rotationX.update()
     this.zoomZ.update()
     this.targetX.update()

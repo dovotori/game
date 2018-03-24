@@ -4,13 +4,11 @@ import Background from "../../game/Background"
 import Tilemap from "../../game/Tilemap"
 import Scene from "./Scene"
 import scene from "../../../constants/scenes/classic"
-import Target from "../../geometry/Target"
 
 export default class extends Scene {
   constructor(gl, scene, callbackLoaded = null) {
     super(gl, scene)
     this.callbackLoaded = callbackLoaded
-    this.targetRGB = new Target(0, 0.1)
   }
 
   afterAssetsLoaded(assets) {
@@ -78,34 +76,12 @@ export default class extends Scene {
   }
 
   afterStart() {
-    this.targetRGB.update()
-    if (this.heros.getInverseX()) {
-      this.camera.setSmoothRotation(0.1)
-      this.camera.setSmoothTarget(-4)
-    } else {
-      this.camera.setSmoothRotation(-0.1)
-      this.camera.setSmoothTarget(4)
-    }
-    if (this.heros.getAiming()) {
-      this.camera.setSmoothZoom(0.9)
-    } else {
-      this.camera.setSmoothZoom(1)
-    }
-    if (this.heros.getDashing()) {
-      this.targetRGB.set(1)
-    } else {
-      this.targetRGB.set(0)
-    }
     this.heros.update()
     this.monster.update(this.tilemap.getSmoothTilePos())
   }
 
-  effectsList() {
-    this.postProcess.setFXAA()
-    this.postProcess.setRGB(this.targetRGB.get(), 0)
-  }
-
   setKeyboardInteraction(interaction) {
+    super.setKeyboardInteraction()
     if (this.assetsReady) {
       this.heros.setInteraction(interaction.perso, interaction.changed)
     }

@@ -7,12 +7,12 @@ export default class {
     this.position = new Vec3(
       options.position.x || 0,
       options.position.y || 0,
-      options.position.z || 4,
+      options.position.z || -4,
     )
     this.target = new Vec3(
       options.target.x || 0,
       options.target.y || 0,
-      options.target.z || 4,
+      options.target.z || 0,
     )
 
     // MATRICES
@@ -41,6 +41,10 @@ export default class {
       0,
     )
   }
+
+  update() {}
+
+  setDraggingPosition(infos) {}
 
   perspective(w, h) {
     this.projection.identity()

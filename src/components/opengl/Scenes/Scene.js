@@ -1,4 +1,4 @@
-import Camera from "../Cameras/CameraSmooth"
+import Camera from "../Cameras/CameraCoordinatesConversion"
 import Lampe from "../Lampe"
 import PostProcess from "../PostProcess"
 import LoadAssets from "../../io/LoadAssets"
@@ -13,7 +13,7 @@ export default class {
     this.assetsReady = false
     this.afterAssetsLoaded = this.afterAssetsLoaded.bind(this)
     this.postProcess = new PostProcess(this.gl, 1024, 1024)
-    this.box = null
+    this.screenSize = null
     this.mousePos = null
     this.lampe = new Lampe(this.gl)
     this.time = 0
@@ -35,8 +35,9 @@ export default class {
 
   resize(box) {
     this.camera.perspective(box.width, box.height)
-    this.box = box
+    this.screenSize = box
     this.postProcess.resize(box)
+    this.gl.viewport(0, 0, this.screenSize.width, this.screenSize.height)
   }
 
   render() {
@@ -46,30 +47,37 @@ export default class {
       this.update()
 
       this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT)
-      this.renderBeforeProcess()
+      // this.renderBeforeProcess()
 
-      if (this.mousePos !== null) {
-        const pixel = this.getColorPixel(this.mousePos)
-        this.perso.setSelected(pixel)
-      }
+      // if (this.mousePos !== null) {
+      //   const pixel = this.getColorPixel(this.mousePos)
+      //   this.perso.setSelected(pixel)
+      // }
 
-      this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT)
-      this.postProcess.start()
+      // this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT)
+      // this.postProcess.start()
       this.lampe.renderRepere(this.camera)
-      this.renderToProcess()
-      this.postProcess.end()
+      // this.renderToProcess()
+      // this.postProcess.end()
 
-      this.effectsList()
+      // this.effectsList()
 
-      this.gl.viewport(0, 0, this.box.width, this.box.height)
-      this.postProcess.render()
+      // this.postProcess.render()
       this.one = true
+
+      const center = this.camera.get2dScreenPoint(
+        this.lampe.getPosition(),
+        this.screenSize,
+      )
+      const debug = document.getElementById("debug")
+      debug.style.left = `${center[0]}px`
+      debug.style.top = `${center[1]}px`
     }
   }
 
   update() {
     this.lampe.updateRandomPosition()
-    this.camera.update()
+    this.camera.update(this.time)
     this.mngProg.setCameraMatrix(this.camera)
   }
 
@@ -78,6 +86,8 @@ export default class {
   renderBeforeProcess() {}
 
   effectsList() {}
+
+  setKeyboardInteraction() {}
 
   onMouseMove(infos) {
     if (this.assetsReady) {
@@ -88,7 +98,7 @@ export default class {
   onMouseDown(infos) {}
 
   setMouseInteraction(infos) {
-    // this.camera.setDraggingPosition(infos)
+    this.camera.setDraggingPosition(infos)
   }
 
   getColorPixel(pos) {

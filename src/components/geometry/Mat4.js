@@ -53,16 +53,6 @@ class Mat4 {
   }
 
   getMatrice3x3() {
-    // const resultat = new Float32Array(9)
-    // resultat[0] = this.d[0]
-    // resultat[1] = this.d[1]
-    // resultat[2] = this.d[2]
-    // resultat[3] = this.d[4]
-    // resultat[4] = this.d[5]
-    // resultat[5] = this.d[6]
-    // resultat[6] = this.d[8]
-    // resultat[7] = this.d[9]
-    // resultat[8] = this.d[10]
     const mat3 = new Mat3()
     mat3.set(
       this.d[0],

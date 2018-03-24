@@ -71,6 +71,10 @@ export default class extends MeshSprite {
     return this.behavior.getPosition()
   }
 
+  getPosition() {
+    return this.position.get()
+  }
+
   getInverseX() {
     return this.inverseX
   }

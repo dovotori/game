@@ -35,10 +35,12 @@ export default class {
       )
       const y = 10 + scale / 2
       const color = mapFromRange(idx, 0, this.mountains.length, 255, 100)
+      const z = -idx - 10
+
       mesh.update()
       mesh.setScale(scale, scale, scale)
       mesh.setRotate(45, 0, 0, 1)
-      mesh.setTranslate(x, y, -idx - 10)
+      mesh.setTranslate(x, y, z)
       mesh.setColor(color, color, color, 1)
     })
   }

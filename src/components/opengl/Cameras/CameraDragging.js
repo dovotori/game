@@ -9,6 +9,7 @@ export default class extends Camera {
   }
 
   update() {
+    super.update()
     this.rotationX.update()
     this.position.set(
       this.options.position.x +

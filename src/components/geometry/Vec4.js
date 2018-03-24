@@ -25,6 +25,20 @@ class Vec4 {
     return valeurs
   }
 
+  getX() {
+    return this.x
+  }
+  getY() {
+    return this.y
+  }
+  getZ() {
+    return this.z
+  }
+
+  getW() {
+    return this.w
+  }
+
   longueur() {
     return Math.sqrt(
       this.x * this.x + this.y * this.y + this.z * this.z + this.w * this.w,

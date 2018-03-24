@@ -16,4 +16,8 @@ export default class {
   set(value) {
     this.target = value
   }
+
+  setDirect(value) {
+    this.value = value
+  }
 }

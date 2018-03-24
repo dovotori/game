@@ -1,12 +1,12 @@
 import Canvas from "./opengl/Canvas"
-import Scene from "./opengl/Scenes/SceneCollision"
+import Scene from "./opengl/Scenes/Scene"
 import Loop from "./Loop"
 import Keyboard from "./io/Keyboard"
 import Mouse from "./io/Mouse"
 import scene from "../constants/scenes/classic"
 
 export default class {
-  constructor(options) {
+  constructor() {
     this.canvas = new Canvas()
     this.keyboard = new Keyboard(scene.keyboard)
 

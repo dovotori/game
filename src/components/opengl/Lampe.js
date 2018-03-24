@@ -43,10 +43,15 @@ export default class {
   updateRandomPosition() {
     this.cpt++
     this.position.set(
-      10 + Math.cos(this.cpt * 0.1) * 4,
-      10 + Math.sin(this.cpt * 0.1) * 4,
-      // Math.sin(this.cpt * 0.1) * 4,
-      4,
+      Math.cos(this.cpt * 0.1),
+      Math.sin(this.cpt * 0.1),
+      Math.cos(this.cpt * 0.1) * 4,
+      // -10,
+      // 10,
+      // 10,
+      // 0,
+      // 0,
+      // 0,
     )
     this.repere.update(this.position)
   }
@@ -62,10 +67,10 @@ export default class {
     return this.view
   }
   getPosition() {
-    return this.position
+    return this.position.get()
   }
   getCible() {
-    return this.cible
+    return this.cible.get()
   }
 
   setPosition(x, y, z) {

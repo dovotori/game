@@ -94,17 +94,17 @@ class Vec3 {
   // ////////////////// OPERATOR ///////////////////////
 
   set(x, y, z) {
-    if (x != null) {
+    if (x !== null) {
       this.x = x
     }
-    if (y != null) {
+    if (y !== null) {
       this.y = y
-    } else if (x != null) {
+    } else if (x !== null) {
       this.y = x
     }
-    if (z != null) {
+    if (z !== null) {
       this.z = z
-    } else if (x != null) {
+    } else if (x !== null) {
       this.z = x
     }
   }
