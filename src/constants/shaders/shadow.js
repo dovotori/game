@@ -112,8 +112,8 @@ void main() {
 `
 
 export default {
-	vertex,
-	fragment,
-	attributes: ["position"],
-	uniforms: ["projection", "model", "view", "lightview", "tex0"],
+  vertex,
+  fragment,
+  attributes: ["position"],
+  uniforms: ["projection", "model", "view", "lightview", "tex0"],
 }

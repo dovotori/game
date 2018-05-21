@@ -9,3 +9,9 @@ export const mapFromRange = (valeur, minRef, maxRef, minDest, maxDest) => {
   }
   return resultat
 }
+
+export const signe = valeur => {
+  if (valeur == 0) return 0
+  else if (valeur > 0) return 1
+  else return -1
+}

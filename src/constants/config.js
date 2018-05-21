@@ -16,7 +16,7 @@ export default {
     angle: 40,
   },
   lampe: {
-    position: { x: 10, y: 10, z: 30 },
+    position: { x: 10, y: 10, z: 10 },
   },
   tilemap: {
     w: 20,

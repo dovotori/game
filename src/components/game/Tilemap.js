@@ -48,7 +48,6 @@ export default class {
 
   render(prog, tex, obj, flat) {
     const map = this.getData()
-    let cpt = 0
     for (let y = 0; y < map.height; y++) {
       for (let x = 0; x < map.width; x++) {
         const pixel = y * map.width + x

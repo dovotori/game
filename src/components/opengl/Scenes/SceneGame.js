@@ -3,12 +3,11 @@ import Monster from "../../game/Persos/Monster"
 import Background from "../../game/Background"
 import Tilemap from "../../game/Tilemap"
 import Scene from "./Scene"
-import scene from "../../../constants/scenes/classic"
 
 export default class extends Scene {
-  constructor(gl, scene, assets) {
-    super(gl, scene, assets)
-    this.tilemap = new Tilemap(assets.levels.level1, scene.tilemap)
+  constructor(gl, config, assets) {
+    super(gl, config, assets)
+    this.tilemap = new Tilemap(assets.levels.level1, config.tilemap)
     this.heros = new Heros(this.tilemap.getViewBox(), this.tilemap.get())
     this.monster = new Monster(this.tilemap.getViewBox(), this.tilemap.get())
     this.background = new Background(

@@ -1,9 +1,7 @@
 export default class {
   constructor() {}
 
-  show() {
-
-  }
+  show() {}
 
   hide() {
     const splash = document.getElementById("splash")
@@ -14,10 +12,10 @@ export default class {
 
   showTitle() {
     const title = document.getElementById("title")
-      if (title) {
-        title.style.opacity = 1
-        title.style.transform = "none"
-      }
+    if (title) {
+      title.style.opacity = 1
+      title.style.transform = "none"
+    }
   }
 
   showReady() {

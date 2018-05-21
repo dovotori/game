@@ -1,3 +1,5 @@
+import { signe } from "../utils/numbers"
+
 class Vec3 {
   constructor(x = 0, y = 0, z = 0) {
     this.x = this.y = this.z = 0

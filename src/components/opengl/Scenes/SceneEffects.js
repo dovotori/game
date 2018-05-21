@@ -2,8 +2,8 @@ import Scene from "./SceneGame"
 import Target from "../../geometry/Target"
 
 export default class extends Scene {
-  constructor(gl, scene, assets) {
-    super(gl, scene, assets)
+  constructor(gl, config, assets) {
+    super(gl, config, assets)
     this.targetRGB = new Target(0, 0.1)
     this.targetWave = new Target(Math.PI / 2, 0.1)
   }
@@ -34,13 +34,9 @@ export default class extends Scene {
   }
 
   effectsList() {
-    const center2 = this.camera.get2dPoint(this.heros.getPosition())
-    const center = [0.5, 0.5]
-    this.postProcess.setFXAA()
+    const center = this.camera.get2dPoint(this.heros.getPosition())
+    // this.postProcess.setFXAA()
     this.postProcess.setRGB(this.targetRGB.get(), 0)
     this.postProcess.setWave(this.targetWave.get(), 0.1, center)
-    const debug = document.getElementById("debug")
-    debug.style.left = `${center2[0] * this.screenSize.width}px`
-    debug.style.top = `${center2[1] * this.screenSize.height}px`
   }
 }

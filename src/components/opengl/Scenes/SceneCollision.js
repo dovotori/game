@@ -3,8 +3,8 @@ import CollisionSweepPrune from "../../geometry/Collisions/CollisionSweepPrune"
 import CollisionBox from "../../geometry/Collisions/CollisionBox"
 
 export default class extends Scene {
-  constructor(gl, scene, assets) {
-    super(gl, scene, assets)
+  constructor(gl, config, assets) {
+    super(gl, config, assets)
 
     this.collision = new CollisionSweepPrune()
     this.boxes = []

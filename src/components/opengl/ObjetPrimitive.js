@@ -45,7 +45,7 @@ export default class {
     )
   }
 
-  render(program) {
+  render() {
     this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, this.objet.indice.vbo)
     this.gl.drawElements(
       this.modeDessin,

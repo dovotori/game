@@ -1,11 +1,11 @@
 import Canvas from "./opengl/Canvas"
 import SplashScreen from "./SplashScreen"
-import Scene from "./opengl/Scenes/SceneCollision"
+import Scene from "./opengl/Scenes/SceneGame"
 import Loop from "./Loop"
 import Keyboard from "./io/Keyboard"
 import Mouse from "./io/Mouse"
 import ManagerAssets from "./io/Managers/ManagerAssets"
-import scene from "../constants/scenes/classic"
+import config from "../constants/config"
 
 export default class {
   constructor() {
@@ -21,7 +21,7 @@ export default class {
   setup() {
     this.canvas = new Canvas()
     this.splash = new SplashScreen()
-    this.keyboard = new Keyboard(scene.keyboard)
+    this.keyboard = new Keyboard(config.keyboard)
     this.mouse = new Mouse(document.body, this.onMouseDrag)
 
     this.splash.showTitle()
@@ -30,16 +30,22 @@ export default class {
       height: window.innerHeight,
     })
 
-    this.am = new ManagerAssets(scene.assets)
-    this.am.setup(scene.assets).then(this.ready)
+    this.am = new ManagerAssets(config.assets)
+    this.am.setup(config.assets).then(this.ready)
   }
 
   ready(assets) {
-    this.scene = new Scene(this.canvas.getContext(), scene, assets)
-    this.loop = new Loop(this.renderSplash)
+    this.scene = new Scene(this.canvas.getContext(), config, assets)
     window.addEventListener("resize", this.resize, false)
     this.resize()
-    this.splash.showReady()
+
+    if (config.splashscreen) {
+      this.loop = new Loop(this.renderSplash)
+      this.splash.showReady()
+    } else {
+      this.loop = new Loop(this.renderGame)
+      this.startGame()
+    }
   }
 
   onMouseDrag(data) {
@@ -51,9 +57,7 @@ export default class {
     this.scene.render()
 
     if (this.keyboard.getKey(13)) {
-      this.splash.hide()
-      this.loop.setCallback(this.renderGame)
-      this.scene.setStart()
+      this.startGame()
     }
   }
 
@@ -74,6 +78,19 @@ export default class {
     this.keyboard.render()
     this.scene.setKeyboardInteraction(interaction)
     this.scene.render()
+
+    // TEST 2D POINT
+    const center = this.scene.getTestPoint()
+    const debug = document.getElementById("debug")
+    debug.style.left = `${center[0]}px`
+    debug.style.top = `${center[1]}px`
+    debug.innerHTML = `x: ${center[0]}px / y: ${center[1]}px`
+  }
+
+  startGame() {
+    this.splash.hide()
+    this.loop.setCallback(this.renderGame)
+    this.scene.setStart()
   }
 
   resize() {

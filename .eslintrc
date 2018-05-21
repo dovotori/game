@@ -1,9 +1,14 @@
 {
+  "parser": "babel-eslint",
   "extends": [
+    "plugin:flowtype/recommended",
+    "eslint:recommended",
     "prettier"
   ],
   "plugins": [
-    "prettier"
+    "prettier",
+    "jsx-a11y",
+    "flowtype"
   ],
   "parserOptions": {
     "sourceType": "module",
@@ -28,9 +33,9 @@
         "singleQuote": false,
         "trailingComma": "all",
         "jsxBracketSameLine": false,
-        "noSemi": true,
         "semi": false
       }
-    ]
+    ],
+    "flowtype/no-types-missing-file-annotation": 0
   }
 }

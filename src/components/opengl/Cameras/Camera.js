@@ -1,6 +1,5 @@
 import Vec3 from "../../geometry/Vec3"
 import Mat4 from "../../geometry/Mat4"
-import Spring from "../../geometry/Spring"
 
 export default class {
   constructor(options) {
@@ -44,7 +43,7 @@ export default class {
 
   update() {}
 
-  setDraggingPosition(infos) {}
+  setDraggingPosition() {}
 
   perspective(w, h) {
     this.projection.identity()

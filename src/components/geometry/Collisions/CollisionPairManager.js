@@ -5,14 +5,14 @@ export default class {
   }
 
   resetPairesAxes() {
-    for (var i = 0; i < this.listesAxe.length; i++) {
+    for (let i = 0; i < this.listesAxe.length; i++) {
       this.listesAxe[i] = Array()
     }
   }
 
   addPaireOnAxe(paire, axe) {
-    var already = false
-    for (var i = 0; i < this.listesAxe[axe].length; i++) {
+    let already = false
+    for (let i = 0; i < this.listesAxe[axe].length; i++) {
       if (
         (paire[0] == this.listesAxe[axe][i][0] &&
           paire[1] == this.listesAxe[axe][i][1]) ||
@@ -29,9 +29,9 @@ export default class {
   }
 
   compareListes(liste1, liste2) {
-    var tmp = Array()
-    for (var i = 0; i < liste1.length; i++) {
-      for (var j = 0; j < liste2.length; j++) {
+    const tmp = Array()
+    for (let i = 0; i < liste1.length; i++) {
+      for (let j = 0; j < liste2.length; j++) {
         if (
           (liste1[i][0] == liste2[j][0] && liste1[i][1] == liste2[j][1]) ||
           (liste1[i][1] == liste2[j][0] && liste1[i][0] == liste2[j][1])

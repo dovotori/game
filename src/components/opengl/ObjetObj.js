@@ -47,7 +47,7 @@ export default class {
     })
   }
 
-  render(program) {
+  render() {
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.obj.vbo)
     this.gl.drawArrays(this.modeDessin, 0, this.obj.count)
     this.end()

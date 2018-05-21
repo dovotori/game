@@ -1,6 +1,5 @@
 import StateSprite from "../StateSprite"
 import MeshSprite from "../../opengl/Meshes/MeshSprite"
-import Behavior from "../Behaviors/Behavior"
 import Vec3 from "../../geometry/Vec3"
 import constants from "../../../constants/persos/heros"
 

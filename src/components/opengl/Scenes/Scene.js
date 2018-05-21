@@ -1,4 +1,4 @@
-import Camera from "../Cameras/CameraSmooth"
+import Camera from "../Cameras/CameraCoordinatesConversion"
 import Lampe from "../Lampe"
 import PostProcess from "../PostProcess"
 import ManagerTextures from "../../io/Managers/ManagerTextures"
@@ -6,15 +6,15 @@ import ManagerObjets from "../../io/Managers/ManagerObjets"
 import ManagerPrograms from "../../io/Managers/ManagerPrograms"
 
 export default class {
-  constructor(gl, scene, assets) {
+  constructor(gl, config, assets) {
     this.gl = gl
-    this.camera = new Camera(scene.camera)
+    this.camera = new Camera(config.camera)
     this.postProcess = new PostProcess(this.gl, 1024, 1024)
     this.screenSize = null
     this.mousePos = null
-    this.lampe = new Lampe(this.gl, scene.lampe)
+    this.lampe = new Lampe(this.gl, config.lampe)
     this.time = 0
-    this.mngProg = new ManagerPrograms(this.gl, scene.programs)
+    this.mngProg = new ManagerPrograms(this.gl, config.programs)
     this.one = false
     this.start = false
 
@@ -50,18 +50,10 @@ export default class {
     this.effectsList()
 
     this.postProcess.render()
-
-    const center = this.camera.get2dScreenPoint(
-      this.lampe.getPosition(),
-      this.screenSize,
-    )
-    const debug = document.getElementById("debug")
-    debug.style.left = `${center[0]}px`
-    debug.style.top = `${center[1]}px`
   }
 
   update() {
-    this.lampe.updateRandomPosition()
+    this.lampe.updateRandomPosition(this.time)
     this.camera.update()
     this.mngProg.setCameraMatrix(this.camera)
   }
@@ -78,7 +70,7 @@ export default class {
     this.mousePos = infos.pos
   }
 
-  onMouseDown(infos) {}
+  onMouseDown() {}
 
   setMouseInteraction(infos) {
     this.camera.setDraggingPosition(infos)
@@ -96,6 +88,14 @@ export default class {
       pixel,
     )
     return pixel
+  }
+
+  getTestPoint() {
+    const center = this.camera.get2dScreenPoint(
+      this.lampe.getPosition(),
+      this.screenSize,
+    )
+    return center
   }
 
   setStart() {

@@ -19,7 +19,7 @@ export default class extends Perso {
 
   setStateFromBehavior() {
     const speed = this.behavior.getSpeed()
-    const isLanding = this.behavior.getCollision("landing")
+    // const isLanding = this.behavior.getCollision("landing")
     this.state.set("RUN")
     this.inverseX = speed[0] < 0
   }

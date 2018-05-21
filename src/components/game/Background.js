@@ -45,7 +45,7 @@ export default class {
     })
   }
 
-  updateClouds(pos) {
+  updateClouds() {
     this.clouds.forEach((mesh, idx) => {
       const scale = this.cloudData[idx].scale
       if (this.cloudData[idx].x < -scale) {

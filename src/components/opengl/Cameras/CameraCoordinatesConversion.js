@@ -21,27 +21,21 @@ export default class extends Camera {
   }
 
   get2dPoint(point3D) {
-    const point = new Vec3(point3D[0], point3D[1], point3D[2])
-    const point2 = point.multiplierMatrice(this.viewProjection.getMatrice3x3())
-    let x = point2.getX() / this.position.getZ()
-    let y = point2.getY() / this.position.getZ()
+    let point = new Vec4(point3D[0], point3D[1], point3D[2], 1.0)
+    point = point.multiplierMatrice(this.viewProjectionInverse)
+    let x = point.getX() / point.getZ()
+    let y = point.getY() / point.getZ()
+    console.log(point3D, point, { x, y })
     // convert -1, 1 to 0, 0.5
     x = (x + 1) * 0.5
-    y = (y + 1) * -0.5 // inverse y
+    y = (y + 1) * 0.5 // inverse y
     return [x, y]
   }
 
   get2dScreenPoint(point3D, screenSize) {
-    let point = new Vec4(point3D[0], point3D[1], point3D[2], 1.0)
-    point = point.multiplierMatrice(this.viewProjection)
-    let x = point.getX() / point.getW()
-    let y = point.getY() / point.getW()
-    const centerScreen = {
-      x: screenSize.width * 0.5,
-      y: screenSize.height * 0.5,
-    }
-    x = centerScreen.x + x * centerScreen.x
-    y = centerScreen.y + y * -centerScreen.y // inverse Y
+    const point = this.get2dPoint(point3D)
+    const x = point[0] * screenSize.width
+    const y = point[1] * screenSize.height // inverse Y
     return [x, y]
   }
 

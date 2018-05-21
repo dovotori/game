@@ -20,9 +20,9 @@ export default class {
 
   addBoxes(boxs) {
     // on crée une liste decroisante des endpoints des nouvelles boites
-    var endpointsDecroissantsX = Array()
-    var endpointsDecroissantsY = Array()
-    for (var i = 0; i < boxs.length; i++) {
+    let endpointsDecroissantsX = Array()
+    let endpointsDecroissantsY = Array()
+    for (let i = 0; i < boxs.length; i++) {
       endpointsDecroissantsX = this.addEndpointDecroissant(
         endpointsDecroissantsX,
         boxs[i].getMin(0),
@@ -36,23 +36,23 @@ export default class {
     }
 
     // on ajoute les addpoints aux listes
-    var axe = 0
+    let axe = 0
     this.addEndPointsOnListe(axe, endpointsDecroissantsX)
     axe++
     this.addEndPointsOnListe(axe, endpointsDecroissantsY)
   }
 
   addEndpointDecroissant(liste, newMin, newMax) {
-    var e = new CollisionEndpoint()
+    const e = new CollisionEndpoint()
     e.set(-9999)
     liste.push(e)
     liste.push(e)
 
-    var endpointAplacer = newMin
-    var cptEndpointPlace = 0
+    let endpointAplacer = newMin
+    let cptEndpointPlace = 0
 
-    for (var i = liste.length - 1; i >= 0; i--) {
-      var oldListe = liste[i - (2 - cptEndpointPlace)]
+    for (let i = liste.length - 1; i >= 0; i--) {
+      const oldListe = liste[i - (2 - cptEndpointPlace)]
       if (oldListe) {
         if (oldListe.get() > endpointAplacer.get()) {
           liste[i] = endpointAplacer
@@ -81,9 +81,9 @@ export default class {
     axe,
     newEndPoints, // array des new points en sens decroissant
   ) {
-    var e = new CollisionEndpoint()
+    const e = new CollisionEndpoint()
     e.set(9999)
-    for (var i = 0; i < newEndPoints.length; i++) {
+    for (let i = 0; i < newEndPoints.length; i++) {
       this.listeAxe[axe].push(e)
     }
 
@@ -93,7 +93,7 @@ export default class {
     // COLLISION
     this.activeList = Array()
 
-    for (var i = this.listeAxe[axe].length - 1; i >= 0; i--) {
+    for (let i = this.listeAxe[axe].length - 1; i >= 0; i--) {
       this.loopTri(axe, newEndPoints, i)
       this.loopCheckCollision(axe, i)
     }
@@ -101,7 +101,7 @@ export default class {
 
   loopTri(axe, newEndPoints, i) {
     if (this.cptEndpointPlace < newEndPoints.length) {
-      var oldListe = this.listeAxe[axe][
+      const oldListe = this.listeAxe[axe][
         i - (newEndPoints.length - this.cptEndpointPlace)
       ]
       if (oldListe) {
@@ -123,16 +123,16 @@ export default class {
   }
 
   loopCheckCollision(axe, i) {
-    var id = this.listeAxe[axe][i].getID()
+    const id = this.listeAxe[axe][i].getID()
     if (!this.listeAxe[axe][i].isMinimum()) {
       // c'est un max
-      for (var j = 0; j < this.activeList.length; j++) {
+      for (let j = 0; j < this.activeList.length; j++) {
         this.pm.addPaireOnAxe([this.activeList[j], id], axe) // on reporte la paire comme potentiel collision
       }
       this.activeList.push(id) // on ajoute dans l'active liste
     } else {
       // c'est un min
-      for (var j = 0; j < this.activeList.length; j++) {
+      for (let j = 0; j < this.activeList.length; j++) {
         if (this.activeList[j] == id) {
           this.activeList.splice(j, 1)
           break // on retire de l'active liste
@@ -151,7 +151,7 @@ export default class {
 
   updateAxe(axe) {
     this.listeAxe[axe].sort((a, b) => (a.value < b.value ? -1 : 1))
-    for (var i = this.listeAxe[0].length - 1; i >= 0; i--) {
+    for (let i = this.listeAxe[0].length - 1; i >= 0; i--) {
       this.loopCheckCollision(axe, i)
     }
   }
