@@ -1,50 +1,63 @@
 import Canvas from "./opengl/Canvas"
-import Scene from "./opengl/Scenes/Scene"
+import SplashScreen from "./SplashScreen"
+import Scene from "./opengl/Scenes/SceneCollision"
 import Loop from "./Loop"
 import Keyboard from "./io/Keyboard"
 import Mouse from "./io/Mouse"
+import ManagerAssets from "./io/Managers/ManagerAssets"
 import scene from "../constants/scenes/classic"
 
 export default class {
   constructor() {
-    this.canvas = new Canvas()
-    this.keyboard = new Keyboard(scene.keyboard)
-
     this.onMouseDrag = this.onMouseDrag.bind(this)
-    this.ready = this.ready.bind(this)
-    this.render = this.render.bind(this)
+    this.renderGame = this.renderGame.bind(this)
+    this.renderSplash = this.renderSplash.bind(this)
     this.resize = this.resize.bind(this)
     this.ready = this.ready.bind(this)
 
-    this.scene = new Scene(this.canvas.getContext(), scene, this.ready)
-    this.mouse = new Mouse(document.body, this.onMouseDrag)
-    this.loop = new Loop(this.render)
+    this.setup()
+  }
 
-    this.showTitle()
+  setup() {
+    this.canvas = new Canvas()
+    this.splash = new SplashScreen()
+    this.keyboard = new Keyboard(scene.keyboard)
+    this.mouse = new Mouse(document.body, this.onMouseDrag)
+
+    this.splash.showTitle()
+    this.canvas.resize({
+      width: document.body.offsetWidth,
+      height: window.innerHeight,
+    })
+
+    this.am = new ManagerAssets(scene.assets)
+    this.am.setup(scene.assets).then(this.ready)
+  }
+
+  ready(assets) {
+    this.scene = new Scene(this.canvas.getContext(), scene, assets)
+    this.loop = new Loop(this.renderSplash)
     window.addEventListener("resize", this.resize, false)
     this.resize()
-  }
-
-  showTitle() {
-    const title = document.getElementById("title")
-    if (title) {
-      title.style.opacity = 1
-      title.style.transform = "none"
-    }
-  }
-
-  removeSplash() {
-    const splash = document.getElementById("splash")
-    if (splash) {
-      splash.style.opacity = 0
-    }
+    this.splash.showReady()
   }
 
   onMouseDrag(data) {
     this.scene.setMouseInteraction(data)
   }
 
-  render() {
+  renderSplash() {
+    this.keyboard.render()
+    this.scene.render()
+
+    if (this.keyboard.getKey(13)) {
+      this.splash.hide()
+      this.loop.setCallback(this.renderGame)
+      this.scene.setStart()
+    }
+  }
+
+  renderGame() {
     const interaction = {
       changed: this.keyboard.hasChanged(),
       perso: {
@@ -58,15 +71,9 @@ export default class {
         W: this.keyboard.getKey(87),
       },
     }
-
     this.keyboard.render()
     this.scene.setKeyboardInteraction(interaction)
     this.scene.render()
-
-    if (this.keyboard.getKey(13)) {
-      this.scene.setStart()
-      this.removeSplash()
-    }
   }
 
   resize() {
@@ -76,13 +83,6 @@ export default class {
     }
     this.canvas.resize(box)
     this.scene.resize(box)
-  }
-
-  ready() {
-    const intro = document.getElementById("instructions")
-    const loader = document.getElementById("loader")
-    if (loader) loader.style.display = "none"
-    if (intro) intro.style.display = "block"
   }
 
   getCanvas() {

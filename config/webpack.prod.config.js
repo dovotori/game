@@ -6,6 +6,7 @@ const UglifyJSPlugin = require("uglifyjs-webpack-plugin")
 const CopyWebpackPlugin = require("copy-webpack-plugin")
 const BrotliPlugin = require("brotli-webpack-plugin")
 const CompressionPlugin = require("compression-webpack-plugin")
+const ServiceWorkerWebpackPlugin = require("serviceworker-webpack-plugin")
 
 module.exports = {
   mode: "production",
@@ -83,6 +84,9 @@ module.exports = {
         },
         comments: false,
       },
+    }),
+    new ServiceWorkerWebpackPlugin({
+      entry: path.resolve(__dirname, "../src/utils/serviceWorker.js")
     }),
     new CopyWebpackPlugin([{ from: "./assets/", to: "./assets/" }]),
     new BrotliPlugin({

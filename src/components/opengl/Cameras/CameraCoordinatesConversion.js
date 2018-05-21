@@ -1,4 +1,4 @@
-import Camera from "./CameraSmooth"
+import Camera from "./Camera"
 import Vec3 from "../../geometry/Vec3"
 import Vec4 from "../../geometry/Vec4"
 import Mat4 from "../../geometry/Mat4"
@@ -8,19 +8,13 @@ export default class extends Camera {
     super(options)
     this.viewProjection = new Mat4()
     this.viewProjectionInverse = new Mat4()
+
+    this.lookAt()
   }
 
-  update(time) {
-    super.update()
-    // this.target.set(
-    //   Math.cos(time * 0.1) * 1,
-    //   this.target.getY(),
-    //   this.target.getZ(),
-    // )
-    // this.lookAt()
-
-    this.viewProjection.egale(this.projection)
-    this.viewProjection.multiplier(this.view)
+  update() {
+    this.viewProjection.egale(this.view)
+    this.viewProjection.multiplier(this.projection)
 
     this.viewProjectionInverse.egale(this.viewProjection)
     this.viewProjectionInverse.inverser()
@@ -39,10 +33,9 @@ export default class extends Camera {
 
   get2dScreenPoint(point3D, screenSize) {
     let point = new Vec4(point3D[0], point3D[1], point3D[2], 1.0)
-    const point2 = point.multiplierMatrice(this.viewProjection)
-    const w = this.position.getZ() - this.target.getZ() - point.getZ()
-    let x = point2.getX() / w
-    let y = point2.getY() / w
+    point = point.multiplierMatrice(this.viewProjection)
+    let x = point.getX() / point.getW()
+    let y = point.getY() / point.getW()
     const centerScreen = {
       x: screenSize.width * 0.5,
       y: screenSize.height * 0.5,

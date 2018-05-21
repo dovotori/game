@@ -1,7 +1,7 @@
 export default {
   x: 10,
   y: 40,
-  z: 0.01,
+  z: 0.04,
   run: 0.1,
   jump: 0.6,
   aircontrol: 0.05,

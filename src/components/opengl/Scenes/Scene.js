@@ -1,36 +1,25 @@
-import Camera from "../Cameras/CameraCoordinatesConversion"
+import Camera from "../Cameras/CameraSmooth"
 import Lampe from "../Lampe"
 import PostProcess from "../PostProcess"
-import LoadAssets from "../../io/LoadAssets"
 import ManagerTextures from "../../io/Managers/ManagerTextures"
 import ManagerObjets from "../../io/Managers/ManagerObjets"
 import ManagerPrograms from "../../io/Managers/ManagerPrograms"
 
 export default class {
-  constructor(gl, scene, ready) {
+  constructor(gl, scene, assets) {
     this.gl = gl
     this.camera = new Camera(scene.camera)
-    this.assetsReady = false
-    this.afterAssetsLoaded = this.afterAssetsLoaded.bind(this)
     this.postProcess = new PostProcess(this.gl, 1024, 1024)
     this.screenSize = null
     this.mousePos = null
-    this.lampe = new Lampe(this.gl)
+    this.lampe = new Lampe(this.gl, scene.lampe)
     this.time = 0
     this.mngProg = new ManagerPrograms(this.gl, scene.programs)
     this.one = false
-    this.readyCallback = ready
     this.start = false
 
-    LoadAssets(scene.assets, this.afterAssetsLoaded)
-  }
-
-  afterAssetsLoaded(assets) {
     this.mngTex = new ManagerTextures(this.gl, assets.textures)
     this.mngObj = new ManagerObjets(this.gl, assets.objets)
-    this.camera.lookAt()
-    this.assetsReady = true
-    if (this.readyCallback) this.readyCallback()
   }
 
   resize(box) {
@@ -41,43 +30,39 @@ export default class {
   }
 
   render() {
-    // if (this.assetsReady && !this.one) {
-    if (this.assetsReady) {
-      this.time++
-      this.update()
+    this.time++
+    this.update()
 
-      this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT)
-      // this.renderBeforeProcess()
+    this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT)
+    this.renderBeforeProcess()
 
-      // if (this.mousePos !== null) {
-      //   const pixel = this.getColorPixel(this.mousePos)
-      //   this.perso.setSelected(pixel)
-      // }
+    // if (this.mousePos !== null) {
+    //   const pixel = this.getColorPixel(this.mousePos)
+    //   this.perso.setSelected(pixel)
+    // }
 
-      // this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT)
-      // this.postProcess.start()
-      this.lampe.renderRepere(this.camera)
-      // this.renderToProcess()
-      // this.postProcess.end()
+    this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT)
+    this.postProcess.start()
+    this.lampe.renderRepere(this.camera)
+    this.renderToProcess()
+    this.postProcess.end()
 
-      // this.effectsList()
+    this.effectsList()
 
-      // this.postProcess.render()
-      this.one = true
+    this.postProcess.render()
 
-      const center = this.camera.get2dScreenPoint(
-        this.lampe.getPosition(),
-        this.screenSize,
-      )
-      const debug = document.getElementById("debug")
-      debug.style.left = `${center[0]}px`
-      debug.style.top = `${center[1]}px`
-    }
+    const center = this.camera.get2dScreenPoint(
+      this.lampe.getPosition(),
+      this.screenSize,
+    )
+    const debug = document.getElementById("debug")
+    debug.style.left = `${center[0]}px`
+    debug.style.top = `${center[1]}px`
   }
 
   update() {
     this.lampe.updateRandomPosition()
-    this.camera.update(this.time)
+    this.camera.update()
     this.mngProg.setCameraMatrix(this.camera)
   }
 
@@ -90,9 +75,7 @@ export default class {
   setKeyboardInteraction() {}
 
   onMouseMove(infos) {
-    if (this.assetsReady) {
-      this.mousePos = infos.pos
-    }
+    this.mousePos = infos.pos
   }
 
   onMouseDown(infos) {}

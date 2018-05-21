@@ -6,13 +6,8 @@ import Scene from "./Scene"
 import scene from "../../../constants/scenes/classic"
 
 export default class extends Scene {
-  constructor(gl, scene, callbackLoaded = null) {
-    super(gl, scene)
-    this.callbackLoaded = callbackLoaded
-  }
-
-  afterAssetsLoaded(assets) {
-    super.afterAssetsLoaded(assets)
+  constructor(gl, scene, assets) {
+    super(gl, scene, assets)
     this.tilemap = new Tilemap(assets.levels.level1, scene.tilemap)
     this.heros = new Heros(this.tilemap.getViewBox(), this.tilemap.get())
     this.monster = new Monster(this.tilemap.getViewBox(), this.tilemap.get())
@@ -40,7 +35,7 @@ export default class extends Scene {
     )
     this.mngProg
       .get("spritePhong")
-      .setVector("posLum", this.lampe.getPosition().get())
+      .setVector("posLum", this.lampe.getPosition())
     this.tilemap.render(
       this.mngProg.get("spritePhong"),
       this.mngTex.get("tiles"),
@@ -82,8 +77,6 @@ export default class extends Scene {
 
   setKeyboardInteraction(interaction) {
     super.setKeyboardInteraction()
-    if (this.assetsReady) {
-      this.heros.setInteraction(interaction.perso, interaction.changed)
-    }
+    this.heros.setInteraction(interaction.perso, interaction.changed)
   }
 }

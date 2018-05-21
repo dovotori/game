@@ -1,73 +1,104 @@
 import LoadObj from "../LoadObj"
 
 export default class {
-  constructor(paths, callback) {
-    this.callback = callback
+  constructor() {
+    this.loadObjet = this.loadObjet.bind(this)
+    this.loadImage = this.loadImage.bind(this)
+
     this.assets = {
       textures: {},
       objets: {},
       levels: {},
     }
-    this.loadingCpt = paths.length
-    // this.fetchAsset = this.fetchAsset.bind(this)
-    this.loadOne = this.loadOne.bind(this)
-    this.loadObj = this.loadObj.bind(this)
+  }
 
-    paths.forEach(path => {
-      const serverPath = `${document.URL}${path}`
-      const parts = path
-        .substring(path.lastIndexOf("/") + 1, path.length)
-        .split(".")
-      const name = parts[0]
-      const extension = parts[1].toLowerCase()
-      switch (extension) {
+  async setup(paths) {
+    const promesses = await paths.map(async path => {
+      const info = this.getAssetInfo(path)
+      switch (info.ext) {
         case "jpg":
         case "jpeg":
         case "png":
         case "bmp":
-          this.loadImage(extension, name, serverPath)
-          break
+          return await this.loadImage(path, info)
         case "obj":
-          this.fetchAsset(extension, name, serverPath)
+          return await this.loadObjet(path, info)
+        default:
           break
+      }
+    })
+    return await Promise.all(promesses).then(data => {
+      data.forEach(item => {
+        switch (item.info.ext) {
+          case "jpg":
+          case "jpeg":
+          case "png":
+            this.assets.textures[item.info.name] = item.data
+            break
+          case "bmp":
+            this.assets.levels[item.info.name] = item.data
+            break
+          case "obj":
+            this.assets.objets[item.info.name] = item.data
+            break
+          default:
+            break
+        }
+      })
+      return this.assets
+    })
+  }
+
+  loadImg(path) {
+    return new Promise((resolve, reject) => {
+      let img = new Image()
+      img.onload = () => resolve(img)
+      img.onerror = reject
+      img.src = path
+    })
+  }
+
+  getAssetInfo(path) {
+    const parts = path
+      .substring(path.lastIndexOf("/") + 1, path.length)
+      .split(".")
+    return { name: parts[0], ext: parts[1].toLowerCase() }
+  }
+
+  loadObjet(path, info) {
+    return fetch(path)
+      .then(response => response.text())
+      .then(response => {
+        const obj = new LoadObj(response)
+        return { data: obj.getAllInOne(), info }
+      })
+  }
+
+  loadImage(path, info) {
+    return new Promise((resolve, reject) => {
+      let img = new Image()
+      img.onload = () => resolve({ data: img, info })
+      img.onerror = reject
+      img.src = path
+    })
+  }
+
+  async getAssets(assets) {
+    return await assets.map(async asset => {
+      const info = this.getAssetInfo(asset)
+      switch (info.ext) {
+        case "jpg":
+        case "jpeg":
+        case "png":
+        case "bmp":
+          return await this.loadImage(asset, info)
+        case "obj":
+          return await this.loadObjet(asset, info)
       }
     })
   }
 
-  loadImage(extension, name, path) {
-    const image = new Image()
-    image.addEventListener("load", this.loadOne, false)
-    image.src = path
-    if (extension !== "bmp") {
-      this.assets.textures[name] = image
-    } else {
-      this.assets.levels[name] = image
-    }
-  }
-
-  loadObj(name, data) {
-    const obj = new LoadObj(data)
-    this.assets.objets[name] = obj.getAllInOne()
-    this.loadOne()
-  }
-
-  loadOne() {
-    this.loadingCpt--
-    if (this.loadingCpt == 0) {
-      this.callback(this.assets)
-    }
-  }
-
-  fetchAsset(extension, name, path) {
-    return fetch(path)
-      .then(response => response.text())
-      .then(response => {
-        switch (extension) {
-          default:
-          case "obj":
-            this.loadObj(name, response)
-            break
-        }
-      })
+  get() {
+    return this.assets
   }
 }

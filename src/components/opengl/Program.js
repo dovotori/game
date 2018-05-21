@@ -13,7 +13,7 @@ export default class {
     this.gl.linkProgram(this.program)
     this.gl.useProgram(this.program)
     if (!this.gl.getProgramParameter(this.program, this.gl.LINK_STATUS)) {
-      console.log("Erreur: ne peux pas lier le shader au program")
+      console.error("Erreur: ne peux pas lier le shader au program")
       this.gl.deleteProgram(this.program)
       return
     }
@@ -29,7 +29,7 @@ export default class {
     this.gl.compileShader(shader)
 
     if (!this.gl.getShaderParameter(shader, this.gl.COMPILE_STATUS)) {
-      console.log(
+      console.error(
         `Peux pas compiler ${type} shader: ${this.gl.getShaderInfoLog(shader)}`,
       )
       this.gl.deleteShader(shader)

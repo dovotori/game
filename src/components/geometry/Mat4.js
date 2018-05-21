@@ -117,7 +117,7 @@ class Mat4 {
       }
       this.empilement--
     } else {
-      console.log("pop de trop")
+      console.error("pop de trop")
     }
   }
 
@@ -187,28 +187,27 @@ class Mat4 {
 
   perspective(angle, ratio, near, far) {
     const fieldOfViewYInRadians = angle * (Math.PI / 180)
-    const f = Math.tan(Math.PI * 0.5 - 0.5 * fieldOfViewYInRadians)
-    const rangeInv = 1.0 / (near - far)
+    var f = 1.0 / Math.tan(fieldOfViewYInRadians / 2)
+    var rangeInv = 1 / (near - far)
 
-    this.d[0] = f / ratio
-    this.d[1] = 0
-    this.d[2] = 0
-    this.d[3] = 0
-
-    this.d[4] = 0
-    this.d[5] = f
-    this.d[6] = 0
-    this.d[7] = 0
-
-    this.d[8] = 0
-    this.d[9] = 0
-    this.d[10] = (near + far) * rangeInv
-    this.d[11] = -1
-
-    this.d[12] = 0
-    this.d[13] = 0
-    this.d[14] = near * far * rangeInv * 2
-    this.d[15] = 0
+    this.set(
+      f / ratio,
+      0,
+      0,
+      0,
+      0,
+      f,
+      0,
+      0,
+      0,
+      0,
+      (near + far) * rangeInv,
+      -1,
+      0,
+      0,
+      near * far * rangeInv * 2,
+      0,
+    )
   }
 
   lookAt(e0, e1, e2, c0, c1, c2, a0, a1, a2) {
@@ -234,12 +233,11 @@ class Mat4 {
       vz.y,
       vz.z,
       0,
-      eye.x,
-      eye.y,
-      eye.z,
+      -vx.produitScalaire(eye),
+      -vy.produitScalaire(eye),
+      -vz.produitScalaire(eye),
       1,
     )
-    this.inverser()
   }
 
   transpose() {

@@ -4,10 +4,10 @@ import Vec3 from "../geometry/Vec3"
 import Mat4 from "../geometry/Mat4"
 
 export default class {
-  constructor(gl, width = 1024, height = 1024) {
+  constructor(gl, config, width = 1024, height = 1024) {
     this.gl = gl
     this.fbo = new Fbo(this.gl, width, height)
-    this.position = new Vec3(0, 4, 0)
+    this.position = new Vec3(config.position.x, config.position.y, config.position.z)
     this.cible = new Vec3(0, 0, 0)
     this.view = new Mat4()
     this.repere = new MeshRepere(this.gl)
@@ -45,13 +45,11 @@ export default class {
     this.position.set(
       Math.cos(this.cpt * 0.1),
       Math.sin(this.cpt * 0.1),
-      Math.cos(this.cpt * 0.1) * 4,
-      // -10,
-      // 10,
-      // 10,
+      0, //Math.cos(this.cpt * 0.1),
+      //10,
       // 0,
       // 0,
-      // 0,
+      // this.cpt * 0.01,
     )
     this.repere.update(this.position)
   }

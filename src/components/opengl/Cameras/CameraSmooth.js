@@ -1,5 +1,5 @@
 import Target from "../../geometry/Target"
-import Camera from "./Camera"
+import Camera from "./CameraCoordinatesConversion"
 
 export default class extends Camera {
   constructor(options) {

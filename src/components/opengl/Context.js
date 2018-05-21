@@ -23,7 +23,7 @@ export default class {
       try {
         gl = canvas.getContext(contexts[i], { preserveDrawingBuffer: true })
       } catch (e) {
-        console.log(e)
+        console.error(e)
       }
       if (gl) {
         break

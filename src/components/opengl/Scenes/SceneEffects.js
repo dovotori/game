@@ -1,9 +1,9 @@
-import Scene from "./SceneCollision"
+import Scene from "./SceneGame"
 import Target from "../../geometry/Target"
 
 export default class extends Scene {
-  constructor(gl, scene, callbackLoaded = null) {
-    super(gl, scene, callbackLoaded)
+  constructor(gl, scene, assets) {
+    super(gl, scene, assets)
     this.targetRGB = new Target(0, 0.1)
     this.targetWave = new Target(Math.PI / 2, 0.1)
   }

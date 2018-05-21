@@ -1,6 +1,11 @@
 import App from "./components/App"
+import setupServiceWorker from "./utils/setupServiceWorker"
 
 import "./style.css"
+
+if (process.env.NODE_ENV === "production") {
+  setupServiceWorker();
+}
 
 const setup = () => {
   const app = new App()

@@ -57,7 +57,6 @@ export default class {
 
   addPoints(type, coor) {
     let finalCoor = type === "vt" && coor.length === 3 ? coor.slice(0, 2) : coor
-    // if (type === "vt") console.log(finalCoor)
     finalCoor.forEach(c => this.obj[type].points.push(parseFloat(c, 10)))
   }
 

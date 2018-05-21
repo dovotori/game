@@ -17,4 +17,12 @@ export default class {
     }
     window.requestAnimationFrame(this.render)
   }
+
+  setCallback(callback) {
+    this.callback = callback
+  }
+
+  setFps(fps) {
+    this.fps = fps
+  }
 }

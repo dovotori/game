@@ -86,7 +86,7 @@ class Mat3 {
       }
       this.empilement--
     } else {
-      console.log("pop de trop")
+      console.error("pop de trop")
     }
   }
 
@@ -116,7 +116,7 @@ class Mat3 {
 
     if (Math.abs(det) < 0.0005) {
       this.identity()
-      console.log("Inversement impossible de la matrice")
+      console.error("Inversement impossible de la matrice")
       return
     }
 
