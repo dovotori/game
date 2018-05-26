@@ -26,7 +26,7 @@ export default class {
     this.camera.perspective(box.width, box.height)
     this.screenSize = box
     this.postProcess.resize(box)
-    this.gl.viewport(0, 0, this.screenSize.width, this.screenSize.height)
+    // this.gl.viewport(0, 0, this.screenSize.width, this.screenSize.height)
   }
 
   render() {
@@ -93,6 +93,7 @@ export default class {
   getTestPoint() {
     const center = this.camera.get2dScreenPoint(
       this.lampe.getPosition(),
+      this.lampe.getModel(),
       this.screenSize,
     )
     return center

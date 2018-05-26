@@ -21,21 +21,33 @@ export default class extends Camera {
   }
 
   get2dPoint(point3D) {
-    let point = new Vec4(point3D[0], point3D[1], point3D[2], 1.0)
-    point = point.multiplierMatrice(this.viewProjectionInverse)
+    // model * view * projection * perspectie division * screen
+    let point = new Vec4(point3D[0], point3D[1], point3D[2], point3D[2])
+    point = point.multiplierMatrice(this.viewProjection)
     let x = point.getX() / point.getZ()
     let y = point.getY() / point.getZ()
-    console.log(point3D, point, { x, y })
     // convert -1, 1 to 0, 0.5
-    x = (x + 1) * 0.5
-    y = (y + 1) * 0.5 // inverse y
+    x = (2 * x + 1) * 0.5
+    y = (2 * y + 1) * 0.5 // inverse y
     return [x, y]
   }
 
-  get2dScreenPoint(point3D, screenSize) {
-    const point = this.get2dPoint(point3D)
-    const x = point[0] * screenSize.width
-    const y = point[1] * screenSize.height // inverse Y
+  get2dScreenPoint(point3D, model, screenSize) {
+    let point = new Vec4(point3D[0], point3D[1], point3D[2], point3D[2])
+    // this.viewProjection.egale(model)
+    // this.viewProjection.multiplier(this.view)
+    // this.viewProjection.multiplier(this.projection)
+    // point.multiplierMatrice(this.viewProjection)
+    // point.multiplierMatrice(model)
+    point.multiplierMatrice(this.view)
+    point.multiplierMatrice(this.projection)
+    point.diviserValeur(point.getZ())
+    console.log(point.getX())
+    let x = point.getX()
+    // x /= point.getZ()
+    x /= point.getW()
+    x = 300 + x * 300
+    const y = 300
     return [x, y]
   }
 

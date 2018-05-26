@@ -1,4 +1,4 @@
-import { signe } from "../utils/numbers"
+import { signe } from "../../utils/numbers"
 
 class Vec3 {
   constructor(x = 0, y = 0, z = 0) {

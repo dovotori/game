@@ -30,4 +30,8 @@ export default class {
     this.model.scale(0.1, 0.1, 0.1)
     this.model.translate(pos.getX(), pos.getY(), pos.getZ())
   }
+
+  getModel() {
+    return this.model
+  }
 }

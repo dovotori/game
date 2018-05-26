@@ -46,8 +46,8 @@ export default class {
 
   updateRandomPosition(time) {
     this.position.set(
-      this.position.x + Math.cos(time * 0.1) * 0.1,
-      this.position.y + Math.sin(time * 0.1) * 0.1,
+      10 + Math.cos(time * 0.05) * 6.0,
+      this.position.y, // + Math.cos(time * 0.1) * 0.3,
       this.position.z,
       // 10,
       // 10,
@@ -71,6 +71,9 @@ export default class {
   }
   getCible() {
     return this.cible.get()
+  }
+  getModel() {
+    return this.repere.getModel()
   }
 
   setPosition(x, y, z) {

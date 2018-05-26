@@ -4,7 +4,6 @@ export default class {
   constructor() {
     this.canvas = document.createElement("canvas")
     this.resize = this.resize.bind(this)
-    this.canvas.style.width = "100%"
     this.context = new Context(this.canvas)
   }
 
