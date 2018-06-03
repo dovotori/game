@@ -24,6 +24,8 @@ export default class {
 
     this.angle = options.angle || 50
     this.matIdentity.identity()
+
+    this.lookAt()
   }
 
   lookAt() {

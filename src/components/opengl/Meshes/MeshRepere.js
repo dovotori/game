@@ -27,7 +27,7 @@ export default class {
 
   update(pos) {
     this.model.identity()
-    this.model.scale(0.1, 0.1, 0.1)
+    // this.model.scale(0.1, 0.1, 0.1)
     this.model.translate(pos.getX(), pos.getY(), pos.getZ())
   }
 

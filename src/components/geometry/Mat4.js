@@ -185,13 +185,37 @@ class Mat4 {
     this.d[15] = 1.0
   }
 
-  perspective(angle, ratio, near, far) {
-    const fieldOfViewYInRadians = angle * (Math.PI / 180)
-    var f = 1.0 / Math.tan(fieldOfViewYInRadians / 2)
-    var rangeInv = 1 / (near - far)
+  // perspective(angle, ratio, near, far) {
+  //   const fieldOfViewYInRadians = angle * (Math.PI / 180)
+  //   var f = 1.0 / Math.tan(fieldOfViewYInRadians / 2)
+  //   var rangeInv = 1 / (near - far)
 
+  //   this.set(
+  //     f / ratio,
+  //     0,
+  //     0,
+  //     0,
+  //     0,
+  //     f,
+  //     0,
+  //     0,
+  //     0,
+  //     0,
+  //     (near + far) * rangeInv,
+  //     -1,
+  //     0,
+  //     0,
+  //     near * far * rangeInv * 2,
+  //     0,
+  //   )
+  // }
+
+  perspective(fovy, aspect, near, far) {
+    const fieldOfViewYInRadians = fovy * (Math.PI / 180)
+    const f = 1.0 / Math.tan(fieldOfViewYInRadians / 2)
+    const nf = 1 / (near - far)
     this.set(
-      f / ratio,
+      f / aspect,
       0,
       0,
       0,
@@ -201,11 +225,11 @@ class Mat4 {
       0,
       0,
       0,
-      (near + far) * rangeInv,
+      (far + near) * nf,
       -1,
       0,
       0,
-      near * far * rangeInv * 2,
+      2 * far * near * nf,
       0,
     )
   }
