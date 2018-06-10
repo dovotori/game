@@ -1,13 +1,13 @@
 export const mapFromRange = (valeur, minRef, maxRef, minDest, maxDest) => {
-  let resultat =
+  let result =
     minDest + (valeur - minRef) * (maxDest - minDest) / (maxRef - minRef)
-  if (resultat < Math.min(minDest, maxDest)) {
-    resultat = Math.min(minDest, maxDest)
+  if (result < Math.min(minDest, maxDest)) {
+    result = Math.min(minDest, maxDest)
   }
-  if (resultat > Math.max(minDest, maxDest)) {
-    resultat = Math.max(minDest, maxDest)
+  if (result > Math.max(minDest, maxDest)) {
+    result = Math.max(minDest, maxDest)
   }
-  return resultat
+  return result
 }
 
 export const signe = valeur => {

@@ -1,10 +1,9 @@
-import Camera from "../Cameras/Camera"
+import Camera from "../Cameras/CameraCoordinatesConversion"
 import ManagerTextures from "../../io/Managers/ManagerTextures"
 import ManagerObjets from "../../io/Managers/ManagerObjets"
 import ManagerPrograms from "../../io/Managers/ManagerPrograms"
 import MeshRepere from "../Meshes/MeshRepere"
-import Vec3 from "../../geometry/Vec3"
-import Mat4 from "../../geometry/Mat4"
+import { Vec3 } from "../../geometry"
 
 export default class {
   constructor(gl, config, assets) {
@@ -13,12 +12,11 @@ export default class {
     this.screenSize = null
     this.mousePos = null
     this.time = 0
-    this.start = false
     this.mngProg = new ManagerPrograms(this.gl, config.programs)
     this.mngTex = new ManagerTextures(this.gl, assets.textures)
     this.mngObj = new ManagerObjets(this.gl, assets.objets)
     this.repere = new MeshRepere(this.gl)
-    this.position = new Vec3(10, 10, 10)
+    this.position = new Vec3(0, 0, 0)
   }
 
   resize(box) {
@@ -30,19 +28,15 @@ export default class {
   render() {
     this.time++
     this.update()
+    this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT)
     this.repere.render(this.camera)
   }
 
   update() {
-    // this.camera.update()
+    this.position.setX(Math.cos(this.time * 0.01) * 10)
+    this.position.setY(Math.sin(this.time * 0.01) * 10)
     this.repere.update(this.position)
   }
-
-  renderToProcess() {}
-
-  renderBeforeProcess() {}
-
-  effectsList() {}
 
   setKeyboardInteraction() {}
 
@@ -71,10 +65,8 @@ export default class {
   }
 
   getTestPoint() {
-    return [0, 0]
+    return this.camera.get2dScreenPoint(this.position, this.screenSize)
   }
 
-  setStart() {
-    this.start = true
-  }
+  afterStart() {}
 }

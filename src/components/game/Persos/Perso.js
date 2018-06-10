@@ -74,6 +74,10 @@ export default class extends MeshSprite {
     return this.position.get()
   }
 
+  getPositionVec3() {
+    return this.position
+  }
+
   getInverseX() {
     return this.inverseX
   }

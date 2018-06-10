@@ -149,7 +149,7 @@ export default class {
   }
 
   addToSpeed(add) {
-    this.speed.plus(add)
+    this.speed.add(add)
   }
 
   getCollision(direction) {

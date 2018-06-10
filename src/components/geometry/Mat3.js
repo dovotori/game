@@ -5,7 +5,6 @@ class Mat3 {
     this.d = new Float32Array(9)
     this.sauvegardePrecedente
     this.empilement
-
     this.init()
   }
 
@@ -15,6 +14,7 @@ class Mat3 {
     }
     this.sauvegardePrecedente = []
     this.empilement = 0
+    return this
   }
 
   get() {
@@ -33,6 +33,7 @@ class Mat3 {
     this.d[6] = c1
     this.d[7] = c2
     this.d[8] = c3
+    return this
   }
 
   setOneValue(valeur) {
@@ -43,26 +44,28 @@ class Mat3 {
 
   //////////////////////OPERATIONS//////////////////////
 
-  multiplier(matrice2) {
-    const resultat = new Mat3()
+  multiply(matrice2) {
+    const result = new Mat3()
     for (let k = 0; k < 3; k += 1) {
       for (let j = 0; j < 3; j += 1) {
         for (let i = 0; i < 3; i += 1) {
-          resultat.d[3 * j + k] += this.d[3 * j + i] * matrice2.d[3 * i + k]
+          result.d[3 * j + k] += this.d[3 * j + i] * matrice2.d[3 * i + k]
         }
       }
     }
 
     for (let i = 0; i < 9; i += 1) {
-      this.d[i] = resultat.d[i]
+      this.d[i] = result.d[i]
     }
+    return this
   }
 
-  egale(matrice2) {
+  equal(matrice2) {
     for (let i = 0; i < 9; i += 1) {
       this.d[i] = matrice2.d[i]
       this.sauvegardePrecedente[i] = matrice2.sauvegardePrecedente[i]
     }
+    return this
   }
 
   ////////////////////// IMBRICATION //////////////////////
@@ -74,6 +77,7 @@ class Mat3 {
       this.sauvegardePrecedente[i] = this.d[cpt]
       cpt += 1
     }
+    return this
   }
 
   pop() {
@@ -88,6 +92,7 @@ class Mat3 {
     } else {
       console.error("pop de trop")
     }
+    return this
   }
 
   ////////////////////// MODIFICATIONS //////////////////////
@@ -97,6 +102,7 @@ class Mat3 {
     this.d[0] = 1.0
     this.d[4] = 1.0
     this.d[8] = 1.0
+    return this
   }
 
   transpose() {
@@ -110,7 +116,7 @@ class Mat3 {
     return ordre
   }
 
-  inverser() {
+  inverse() {
     const copie = new Array(9)
     const det = this.getDeterminant()
 
@@ -135,6 +141,7 @@ class Mat3 {
     for (let i = 0; i < 9; i += 1) {
       this.d[i] = copie[i]
     }
+    return this
   }
 
   getDeterminant() {
@@ -150,7 +157,7 @@ class Mat3 {
     angle *= Math.PI / 180
 
     const axe = new Vec3(x, y, z)
-    axe.normaliser()
+    axe.normalise()
 
     rotation.d[0] = axe.x * axe.x * (1 - Math.cos(angle)) + Math.cos(angle)
     rotation.d[1] =
@@ -170,7 +177,8 @@ class Mat3 {
       axe.y * axe.z * (1 - Math.cos(angle)) + axe.x * Math.sin(angle)
     rotation.d[8] = axe.z * axe.z * (1 - Math.cos(angle)) + Math.cos(angle)
 
-    this.multiplier(rotation)
+    this.multiply(rotation)
+    return this
   }
 }
 

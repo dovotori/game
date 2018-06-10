@@ -1,6 +1,5 @@
-import Camera from "../Cameras/CameraCoordinatesConversion"
+import Camera from "../Cameras/CameraSmooth"
 import Lampe from "../Lampe"
-import PostProcess from "../PostProcess"
 import ManagerTextures from "../../io/Managers/ManagerTextures"
 import ManagerObjets from "../../io/Managers/ManagerObjets"
 import ManagerPrograms from "../../io/Managers/ManagerPrograms"
@@ -9,60 +8,42 @@ export default class {
   constructor(gl, config, assets) {
     this.gl = gl
     this.camera = new Camera(config.camera)
-    this.postProcess = new PostProcess(this.gl, 1024, 1024)
     this.screenSize = null
     this.mousePos = null
     this.lampe = new Lampe(this.gl, config.lampe)
     this.mngProg = new ManagerPrograms(this.gl, config.programs)
+    this.mngTex = new ManagerTextures(this.gl, assets.textures)
+    this.mngObj = new ManagerObjets(this.gl, assets.objets)
     this.one = false
     this.start = false
     this.time = 0
-
-    this.mngTex = new ManagerTextures(this.gl, assets.textures)
-    this.mngObj = new ManagerObjets(this.gl, assets.objets)
   }
 
   resize(box) {
     this.camera.perspective(box.width, box.height)
     this.screenSize = box
-    this.postProcess.resize(box)
-    // this.gl.viewport(0, 0, this.screenSize.width, this.screenSize.height)
+    this.gl.viewport(0, 0, this.screenSize.width, this.screenSize.height)
   }
 
   render() {
     this.time++
     this.update()
-
     this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT)
-    this.renderBeforeProcess()
+    this.renderMain()
+  }
 
-    // if (this.mousePos !== null) {
-    //   const pixel = this.getColorPixel(this.mousePos)
-    //   this.perso.setSelected(pixel)
-    // }
-
-    this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT)
-    this.postProcess.start()
+  renderMain() {
     this.lampe.renderRepere(this.camera)
-    this.renderToProcess()
-    this.postProcess.end()
-
-    this.effectsList()
-
-    this.postProcess.render()
   }
 
   update() {
     this.lampe.updateRandomPosition(this.time)
     this.camera.update()
     this.mngProg.setCameraMatrix(this.camera)
+    if (this.start) {
+      this.afterStart()
+    }
   }
-
-  renderToProcess() {}
-
-  renderBeforeProcess() {}
-
-  effectsList() {}
 
   setKeyboardInteraction() {}
 
@@ -91,15 +72,15 @@ export default class {
   }
 
   getTestPoint() {
-    const center = this.camera.get2dScreenPoint(
-      this.lampe.getPosition(),
-      this.lampe.getModel(),
+    return this.camera.get2dScreenPoint(
+      this.lampe.getPositionVec3(),
       this.screenSize,
     )
-    return center
   }
 
   setStart() {
     this.start = true
   }
+
+  afterStart() {}
 }

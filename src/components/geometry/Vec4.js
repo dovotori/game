@@ -1,47 +1,45 @@
 class Vec4 {
   constructor(x = 0, y = 0, z = 0, w = 0) {
-    this.x = this.y = this.z = 0
-    this.w = 0
+    this.d = new Float32Array(4)
+    this.d[0] = this.d[1] = this.d[2] = this.d[3] = 0
     this.set(x, y, z, w)
   }
 
-  normaliser() {
-    const longueur = this.longueur()
-
-    if (longueur != 0.0) {
-      this.x /= longueur
-      this.y /= longueur
-      this.z /= longueur
-      this.w /= longueur
+  normalise() {
+    const length = this.length()
+    if (length != 0.0) {
+      this.d[0] /= length
+      this.d[1] /= length
+      this.d[2] /= length
+      this.d[3] /= length
     }
+    return this
   }
 
   get() {
-    const valeurs = new Array(4)
-    valeurs[0] = this.x
-    valeurs[1] = this.y
-    valeurs[2] = this.z
-    valeurs[3] = this.w
-    return valeurs
+    return this.d
   }
 
   getX() {
-    return this.x
+    return this.d[0]
   }
   getY() {
-    return this.y
+    return this.d[1]
   }
   getZ() {
-    return this.z
+    return this.d[2]
   }
 
   getW() {
-    return this.w
+    return this.d[3]
   }
 
-  longueur() {
+  length() {
     return Math.sqrt(
-      this.x * this.x + this.y * this.y + this.z * this.z + this.w * this.w,
+      this.d[0] * this.d[0] +
+        this.d[1] * this.d[1] +
+        this.d[2] * this.d[2] +
+        this.d[3] * this.d[3],
     )
   }
 
@@ -49,136 +47,116 @@ class Vec4 {
 
   set(x, y, z, w) {
     if (x != null) {
-      this.x = x
+      this.d[0] = x
     }
     if (y != null) {
-      this.y = y
+      this.d[1] = y
     } else if (x != null) {
-      this.y = x
+      this.d[1] = x
     }
     if (z != null) {
-      this.z = z
+      this.d[2] = z
     } else if (x != null) {
-      this.z = x
+      this.d[2] = x
     }
     if (w != null) {
-      this.w = w
+      this.d[3] = w
     } else if (x != null) {
-      this.w = x
+      this.d[3] = x
     }
-  }
-
-  egale(v) {
-    this.x = v.x
-    this.y = v.y
-    this.z = v.z
-    this.w = v.w
     return this
   }
 
-  plus(v) {
-    const resultat = new Vec4()
-    resultat.x = this.x + v.x
-    resultat.y = this.y + v.y
-    resultat.z = this.z + v.z
-    resultat.w = this.w + v.w
-    return resultat
+  equal(v) {
+    this.d[0] = v.d[0]
+    this.d[1] = v.d[1]
+    this.d[2] = v.d[2]
+    this.d[3] = v.d[3]
+    return this
   }
 
-  plusValeur(valeur) {
-    const resultat = new Vec4()
-    resultat.x = this.x + valeur
-    resultat.y = this.y + valeur
-    resultat.z = this.z + valeur
-    resultat.w = this.w + valeur
-    return resultat
+  add(v) {
+    this.d[0] += v.d[0]
+    this.d[1] += v.d[1]
+    this.d[2] += v.d[2]
+    this.d[3] += v.d[3]
+    return this
   }
 
-  moins(v) {
-    const resultat = new Vec4()
-    resultat.x = this.x - v.x
-    resultat.y = this.y - v.y
-    resultat.z = this.z - v.z
-    resultat.w = this.w - v.w
-    return resultat
+  addNumber(valeur) {
+    this.d[0] += valeur
+    this.d[1] += valeur
+    this.d[2] += valeur
+    this.d[3] += valeur
+    return this
   }
 
-  moinsValeur(valeur) {
-    const resultat = new Vec4()
-    resultat.x = this.x - valeur
-    resultat.y = this.y - valeur
-    resultat.z = this.z - valeur
-    resultat.w = this.w - valeur
-    return resultat
+  minus(v) {
+    this.d[0] -= v.d[0]
+    this.d[1] -= v.d[1]
+    this.d[2] -= v.d[2]
+    this.d[3] -= v.d[3]
+    return this
   }
 
-  multiplierValeur(valeur) {
-    const resultat = new Vec4()
-    resultat.x = this.x * valeur
-    resultat.y = this.y * valeur
-    resultat.z = this.z * valeur
-    resultat.w = this.w * valeur
-    return resultat
+  minusNumber(valeur) {
+    this.d[0] -= valeur
+    this.d[1] -= valeur
+    this.d[2] -= valeur
+    this.d[3] -= valeur
+    return this
   }
 
-  multiplierMatrice(matrice) {
-    const resultat = new Vec4()
-    resultat.x =
-      matrice.d[0] * this.x +
-      matrice.d[1] * this.y +
-      matrice.d[2] * this.z +
-      matrice.d[3] * this.w
-    resultat.y =
-      matrice.d[4] * this.x +
-      matrice.d[5] * this.y +
-      matrice.d[6] * this.z +
-      matrice.d[7] * this.w
-    resultat.z =
-      matrice.d[8] * this.x +
-      matrice.d[9] * this.y +
-      matrice.d[10] * this.z +
-      matrice.d[11] * this.w
-    resultat.w =
-      matrice.d[12] * this.x +
-      matrice.d[13] * this.y +
-      matrice.d[14] * this.z +
-      matrice.d[15] * this.w
-    return resultat
+  multiplyNumber(valeur) {
+    this.d[0] *= valeur
+    this.d[1] *= valeur
+    this.d[2] *= valeur
+    this.d[3] *= valeur
+    return this
   }
 
-  multiplier(v) {
-    const resultat = new Vec4()
-    resultat.x = this.x * v.x
-    resultat.y = this.y * v.y
-    resultat.z = this.z * v.z
-    resultat.w = this.w * v.w
-    return resultat
+  multiplyMatrix(m) {
+    const x = this.d[0]
+    const y = this.d[1]
+    const z = this.d[2]
+    const w = this.d[3]
+    this.d[0] = m.d[0] * x + m.d[4] * y + m.d[8] * z + m.d[12] * w
+    this.d[1] = m.d[1] * x + m.d[5] * y + m.d[9] * z + m.d[13] * w
+    this.d[2] = m.d[2] * x + m.d[6] * y + m.d[10] * z + m.d[14] * w
+    this.d[3] = m.d[3] * x + m.d[7] * y + m.d[11] * z + m.d[15] * w
+    return this
   }
 
-  diviserValeur(valeur) {
-    const resultat = new Vec4()
-    resultat.x = this.x / valeur
-    resultat.y = this.y / valeur
-    resultat.z = this.z / valeur
-    resultat.w = this.w / valeur
-    return resultat
+  multiply(v) {
+    this.d[0] *= v.d[0]
+    this.d[1] *= v.d[1]
+    this.d[2] *= v.d[2]
+    this.d[3] *= v.d[3]
+    return this
   }
 
-  diviser(v) {
-    const resultat = new Vec4()
-    resultat.x = this.x / v.x
-    resultat.y = this.y / v.y
-    resultat.z = this.z / v.z
-    resultat.w = this.w / v.w
-    return resultat
+  divideNumber(valeur) {
+    this.d[0] /= valeur
+    this.d[1] /= valeur
+    this.d[2] /= valeur
+    this.d[3] /= valeur
+    return this
   }
 
-  distance(vec42) {
+  divide(v) {
+    this.d[0] /= v.d[0]
+    this.d[1] /= v.d[1]
+    this.d[2] /= v.d[2]
+    this.d[3] /= v.d[3]
+    return this
+  }
+
+  distance(vec) {
     return Math.sqrt(
-      (vec42.x - this.x) * (vec42.x - this.x) +
-        (vec42.y - this.y) * (vec42.y - this.y) +
-        (vec42.z - this.z) * (vec42.z - this.z) +
-        (vec42.w - this.w) * (vec42.w - this.w),
+      (vec.d[0] - this.d[0]) * (vec.d[0] - this.d[0]) +
+        (vec.d[1] - this.d[1]) * (vec.d[1] - this.d[1]) +
+        (vec.d[2] - this.d[2]) * (vec.d[2] - this.d[2]) +
+        (vec.d[3] - this.d[3]) * (vec.d[3] - this.d[3]),
     )
   }
 }

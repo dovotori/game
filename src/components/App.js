@@ -1,6 +1,6 @@
 import Canvas from "./opengl/Canvas"
 import SplashScreen from "./SplashScreen"
-import Scene from "./opengl/Scenes/SceneGame"
+import Scene from "./opengl/Scenes/SceneEffects"
 import Loop from "./Loop"
 import Keyboard from "./io/Keyboard"
 import Mouse from "./io/Mouse"
@@ -84,7 +84,9 @@ export default class {
     const debug = document.getElementById("debug")
     debug.style.left = `${center[0]}px`
     debug.style.top = `${center[1]}px`
-    debug.innerHTML = `x: ${center[0]}px / y: ${center[1]}px`
+    debug.innerHTML = `x: ${Math.round(center[0])}px / y: ${Math.round(
+      center[1],
+    )}px`
   }
 
   startGame() {

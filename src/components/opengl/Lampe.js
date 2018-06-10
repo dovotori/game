@@ -20,18 +20,19 @@ export default class {
   }
 
   lookAt() {
-    this.view.identity()
-    this.view.lookAt(
-      this.position.x,
-      this.position.y,
-      this.position.z,
-      this.cible.x,
-      this.cible.y,
-      this.cible.z,
-      0,
-      1,
-      0,
-    )
+    this.view
+      .identity()
+      .lookAt(
+        this.position.getX(),
+        this.position.getY(),
+        this.position.getZ(),
+        this.cible.getX(),
+        this.cible.getY(),
+        this.cible.getZ(),
+        0,
+        1,
+        0,
+      )
   }
 
   start() {
@@ -46,12 +47,9 @@ export default class {
 
   updateRandomPosition(time) {
     this.position.set(
-      10 + Math.cos(time * 0.05) * 6.0,
-      this.position.y, // + Math.cos(time * 0.1) * 0.3,
-      this.position.z,
-      // 10,
-      // 10,
-      // 10,
+      10 + Math.cos(time * 0.01) * 6,
+      10 + Math.sin(time * 0.01) * 6,
+      this.position.getZ(),
     )
     this.repere.update(this.position)
   }
@@ -69,6 +67,9 @@ export default class {
   getPosition() {
     return this.position.get()
   }
+  getPositionVec3() {
+    return this.position
+  }
   getCible() {
     return this.cible.get()
   }
@@ -84,6 +85,6 @@ export default class {
     this.cible.set(x, y, z)
   }
   setCibleVec3(Vec3) {
-    this.cible.egale(Vec3)
+    this.cible.equal(Vec3)
   }
 }

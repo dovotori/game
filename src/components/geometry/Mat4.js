@@ -6,7 +6,6 @@ class Mat4 {
     this.d = new Float32Array(16)
     this.sauvegardePrecedente
     this.empilement
-
     this.init()
   }
 
@@ -14,16 +13,18 @@ class Mat4 {
     this.reset()
     this.sauvegardePrecedente = []
     this.empilement = 0
+    return this
   }
 
   reset() {
     for (let i = 0; i < 16; i += 1) {
       this.d[i] = 0.0
     }
+    return this
   }
 
   get() {
-    return this.d.slice()
+    return this.d
   }
 
   setRaw(d) {
@@ -50,6 +51,7 @@ class Mat4 {
     this.d[13] = d2
     this.d[14] = d3
     this.d[15] = d4
+    return this
   }
 
   getMatrice3x3() {
@@ -68,31 +70,29 @@ class Mat4 {
     return mat3
   }
 
-  //////////////////////OPERATIONS//////////////////////
-
-  multiplier(matrice2) {
-    const resultat = new Mat4()
+  multiply(matrice) {
+    const result = new Mat4()
     for (let k = 0; k < 4; k += 1) {
       for (let j = 0; j < 4; j += 1) {
         for (let i = 0; i < 4; i += 1) {
-          resultat.d[4 * j + k] += this.d[4 * j + i] * matrice2.d[4 * i + k]
+          result.d[4 * j + k] += this.d[4 * j + i] * matrice.d[4 * i + k]
         }
       }
     }
 
     for (let i = 0; i < 16; i += 1) {
-      this.d[i] = resultat.d[i]
+      this.d[i] = result.d[i]
     }
+    return this
   }
 
-  egale(matrice2) {
+  equal(matrice2) {
     for (let i = 0; i < 16; i += 1) {
       this.d[i] = matrice2.d[i]
       this.sauvegardePrecedente[i] = matrice2.sauvegardePrecedente[i]
     }
+    return this
   }
-
-  ////////////////////// IMBRICATION //////////////////////
 
   push() {
     this.empilement += 1
@@ -101,6 +101,7 @@ class Mat4 {
       this.sauvegardePrecedente[i] = this.d[cpt]
       cpt += 1
     }
+    return this
   }
 
   pop() {
@@ -119,9 +120,8 @@ class Mat4 {
     } else {
       console.error("pop de trop")
     }
+    return this
   }
-
-  //////////////////////TRANSFORMATIONS//////////////////////
 
   translate(x, y, z) {
     const translation = new Mat4()
@@ -129,7 +129,7 @@ class Mat4 {
     translation.d[12] = x
     translation.d[13] = y
     translation.d[14] = z
-    this.multiplier(translation)
+    this.multiply(translation)
     return this
   }
 
@@ -141,41 +141,52 @@ class Mat4 {
     scale.d[5] = y
     scale.d[10] = z
     scale.d[15] = 1.0
-    this.multiplier(scale)
+    this.multiply(scale)
     return this
   }
 
   rotate(angle, x, y, z) {
     const rotation = new Mat4()
-    angle *= Math.PI / 180
+    const angleInRadians = angle * (Math.PI / 180)
 
     const axe = new Vec3(x, y, z)
-    axe.normaliser()
+    axe.normalise()
 
-    rotation.d[0] = axe.x * axe.x * (1 - Math.cos(angle)) + Math.cos(angle)
+    rotation.d[0] =
+      axe.d[0] * axe.d[0] * (1 - Math.cos(angleInRadians)) +
+      Math.cos(angleInRadians)
     rotation.d[1] =
-      axe.x * axe.y * (1 - Math.cos(angle)) - axe.z * Math.sin(angle)
+      axe.d[0] * axe.d[1] * (1 - Math.cos(angleInRadians)) -
+      axe.d[2] * Math.sin(angleInRadians)
     rotation.d[2] =
-      axe.x * axe.z * (1 - Math.cos(angle)) + axe.y * Math.sin(angle)
+      axe.d[0] * axe.d[2] * (1 - Math.cos(angleInRadians)) +
+      axe.d[1] * Math.sin(angleInRadians)
 
     rotation.d[4] =
-      axe.x * axe.y * (1 - Math.cos(angle)) + axe.z * Math.sin(angle)
-    rotation.d[5] = axe.y * axe.y * (1 - Math.cos(angle)) + Math.cos(angle)
+      axe.d[0] * axe.d[1] * (1 - Math.cos(angleInRadians)) +
+      axe.d[2] * Math.sin(angleInRadians)
+    rotation.d[5] =
+      axe.d[1] * axe.d[1] * (1 - Math.cos(angleInRadians)) +
+      Math.cos(angleInRadians)
     rotation.d[6] =
-      axe.y * axe.z * (1 - Math.cos(angle)) - axe.x * Math.sin(angle)
+      axe.d[1] * axe.d[2] * (1 - Math.cos(angleInRadians)) -
+      axe.d[0] * Math.sin(angleInRadians)
 
     rotation.d[8] =
-      axe.x * axe.z * (1 - Math.cos(angle)) - axe.y * Math.sin(angle)
+      axe.d[0] * axe.d[2] * (1 - Math.cos(angleInRadians)) -
+      axe.d[1] * Math.sin(angleInRadians)
     rotation.d[9] =
-      axe.y * axe.z * (1 - Math.cos(angle)) + axe.x * Math.sin(angle)
-    rotation.d[10] = axe.z * axe.z * (1 - Math.cos(angle)) + Math.cos(angle)
+      axe.d[1] * axe.d[2] * (1 - Math.cos(angleInRadians)) +
+      axe.d[0] * Math.sin(angleInRadians)
+    rotation.d[10] =
+      axe.d[2] * axe.d[2] * (1 - Math.cos(angleInRadians)) +
+      Math.cos(angleInRadians)
 
     rotation.d[15] = 1.0
 
-    this.multiplier(rotation)
+    this.multiply(rotation)
+    return this
   }
-
-  //////////////////////MODIFICATIONS//////////////////////
 
   identity() {
     this.init()
@@ -183,39 +194,16 @@ class Mat4 {
     this.d[5] = 1.0
     this.d[10] = 1.0
     this.d[15] = 1.0
+    return this
   }
 
-  // perspective(angle, ratio, near, far) {
-  //   const fieldOfViewYInRadians = angle * (Math.PI / 180)
-  //   var f = 1.0 / Math.tan(fieldOfViewYInRadians / 2)
-  //   var rangeInv = 1 / (near - far)
+  perspective(angle, ratio, near, far) {
+    const fieldOfViewYInRadians = angle * (Math.PI / 180)
+    var f = 1.0 / Math.tan(fieldOfViewYInRadians / 2)
+    var rangeInv = 1 / (near - far)
 
-  //   this.set(
-  //     f / ratio,
-  //     0,
-  //     0,
-  //     0,
-  //     0,
-  //     f,
-  //     0,
-  //     0,
-  //     0,
-  //     0,
-  //     (near + far) * rangeInv,
-  //     -1,
-  //     0,
-  //     0,
-  //     near * far * rangeInv * 2,
-  //     0,
-  //   )
-  // }
-
-  perspective(fovy, aspect, near, far) {
-    const fieldOfViewYInRadians = fovy * (Math.PI / 180)
-    const f = 1.0 / Math.tan(fieldOfViewYInRadians / 2)
-    const nf = 1 / (near - far)
     this.set(
-      f / aspect,
+      f / ratio,
       0,
       0,
       0,
@@ -225,13 +213,14 @@ class Mat4 {
       0,
       0,
       0,
-      (far + near) * nf,
+      (near + far) * rangeInv,
       -1,
       0,
       0,
-      2 * far * near * nf,
+      near * far * rangeInv * 2,
       0,
     )
+    return this
   }
 
   lookAt(e0, e1, e2, c0, c1, c2, a0, a1, a2) {
@@ -239,29 +228,34 @@ class Mat4 {
     const cible = new Vec3(c0, c1, c2)
     const axe = new Vec3(a0, a1, a2)
 
-    const vz = eye.moins(cible)
-    vz.normaliser()
-    const vx = axe.produitVectoriel(vz)
-    vx.normaliser()
-    const vy = vz.produitVectoriel(vx)
+    const vz = new Vec3()
+    vz
+      .equal(eye)
+      .minus(cible)
+      .normalise()
+    const vx = new Vec3()
+    vx.equal(axe.cross(vz)).normalise()
+    const vy = new Vec3()
+    vy.equal(vz.cross(vx))
     this.set(
-      vx.x,
-      vx.y,
-      vx.z,
+      vx.d[0],
+      vx.d[1],
+      vx.d[2],
       0,
-      vy.x,
-      vy.y,
-      vy.z,
+      vy.d[0],
+      vy.d[1],
+      vy.d[2],
       0,
-      vz.x,
-      vz.y,
-      vz.z,
+      vz.d[0],
+      vz.d[1],
+      vz.d[2],
       0,
-      -vx.produitScalaire(eye),
-      -vy.produitScalaire(eye),
-      -vz.produitScalaire(eye),
+      -vx.dot(eye),
+      -vy.dot(eye),
+      -vz.dot(eye),
       1,
     )
+    return this
   }
 
   transpose() {
@@ -276,7 +270,7 @@ class Mat4 {
     return ordre
   }
 
-  inverser() {
+  inverse() {
     // get cofactors of minor matrices
     const cofactor0 = this.getCofacteur(
       this.d[5],
@@ -486,6 +480,7 @@ class Mat4 {
     this.d[13] = invDeterminant * cofactor7
     this.d[14] = -invDeterminant * cofactor11
     this.d[15] = invDeterminant * cofactor15
+    return this
   }
 
   getDeterminant() {

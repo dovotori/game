@@ -10,9 +10,9 @@ export default class extends Mesh {
   setNormalMatrix(program /*, camera*/) {
     // transpose inverse de modelview
     // const view = camera.getView()
-    this.normalMatrix.egale(this.model.getMatrice3x3())
-    // this.normalMatrix.multiplier(view.getMatrice3x3()) // commenter pour que la camera n'influe pas la lumiere
-    this.normalMatrix.inverser()
+    this.normalMatrix.equal(this.model.getMatrice3x3())
+    // this.normalMatrix.multiply(view.getMatrice3x3()) // commenter pour que la camera n'influe pas la lumiere
+    this.normalMatrix.inverse()
     program.setMatrix("normalmatrix", this.normalMatrix.transpose())
   }
 }

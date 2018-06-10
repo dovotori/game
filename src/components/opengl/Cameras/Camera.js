@@ -29,27 +29,31 @@ export default class {
   }
 
   lookAt() {
-    this.view.identity()
-    this.view.lookAt(
-      this.position.getX(),
-      this.position.getY(),
-      this.position.getZ(),
-      this.target.getX(),
-      this.target.getY(),
-      this.target.getZ(),
-      0,
-      1,
-      0,
-    )
+    this.view
+      .identity()
+      .lookAt(
+        this.position.getX(),
+        this.position.getY(),
+        this.position.getZ(),
+        this.target.getX(),
+        this.target.getY(),
+        this.target.getZ(),
+        0,
+        1,
+        0,
+      )
   }
 
-  update() {}
+  update() {
+    this.lookAt()
+  }
 
   setDraggingPosition() {}
 
   perspective(w, h) {
-    this.projection.identity()
-    this.projection.perspective(this.angle, w / h, this.near, this.far)
+    this.projection
+      .identity()
+      .perspective(this.angle, w / h, this.near, this.far)
   }
 
   setPosition(x, y, z) {

@@ -19,15 +19,16 @@ export default class extends Scene {
     }
   }
 
-  renderBeforeProcess() {
-    this.heros.renderColor(this.mngObj.get("tile"), this.mngProg.get("color"))
-    if (this.mousePos !== null) {
-      const pixel = this.getColorPixel(this.mousePos)
-      this.heros.setSelected(pixel)
-    }
-  }
+  // renderBeforeProcess() {
+  //   this.heros.renderColor(this.mngObj.get("tile"), this.mngProg.get("color"))
+  //   if (this.mousePos !== null) {
+  //     const pixel = this.getColorPixel(this.mousePos)
+  //     this.heros.setSelected(pixel)
+  //   }
+  // }
 
-  renderToProcess() {
+  renderMain() {
+    super.renderMain()
     this.background.renderMountains(
       this.mngObj.get("tile"),
       this.mngProg.get("color"),
@@ -60,18 +61,19 @@ export default class extends Scene {
   update() {
     super.update()
     this.tilemap.follow(this.heros.getBehaviorPosition()) // should be before perso update
-
-    if (this.start) {
-      this.afterStart()
-    }
     // this.tilemap.follow(this.monster.getBehaviorPosition())
     this.tilemap.update(this.mngProg.get("spritePhong"), this.camera)
     this.background.update(this.heros.getBehaviorPosition())
   }
 
   afterStart() {
+    super.afterStart()
     this.heros.update()
     this.monster.update(this.tilemap.getSmoothTilePos())
+    // if (this.mousePos !== null) {
+    //   const pixel = this.getColorPixel(this.mousePos)
+    //   this.perso.setSelected(pixel)
+    // }
   }
 
   setKeyboardInteraction(interaction) {

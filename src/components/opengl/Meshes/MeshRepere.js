@@ -1,6 +1,6 @@
 import Program from "../Program"
 import Objet from "../ObjetPrimitive"
-import Mat4 from "../../geometry/Mat4"
+import { Mat4 } from "../../geometry"
 import glsl from "../../../constants/shaders/color"
 import primitive from "../../../constants/primitives/cube"
 
@@ -26,9 +26,10 @@ export default class {
   }
 
   update(pos) {
-    this.model.identity()
-    // this.model.scale(0.1, 0.1, 0.1)
-    this.model.translate(pos.getX(), pos.getY(), pos.getZ())
+    this.model
+      .identity()
+      .scale(0.1, 0.1, 0.1)
+      .translate(pos.getX(), pos.getY(), pos.getZ())
   }
 
   getModel() {

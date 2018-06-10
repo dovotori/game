@@ -13,16 +13,14 @@ export default class {
     this.rayon.set(relX, relY, -1.0, 1.0) // -1 en z pour pointer "devant"
 
     var proj = new Mat4()
-    proj.egale(camera.getProjection())
-    proj.inverser()
-    this.rayon.egale(this.rayon.multiplierMatrice(proj))
-    this.rayon.set(this.rayon.x, this.rayon.y, -1.0, 0.0)
+    proj.equal(camera.getProjection()).inverse()
+    this.rayon
+      .equal(this.rayon.multiplyMatrix(proj))
+      .set(this.rayon.x, this.rayon.y, -1.0, 0.0)
 
     var view = new Mat4()
-    view.egale(camera.getView())
-    view.inverser()
-    this.rayon.egale(this.rayon.multiplierMatrice(view))
-    this.rayon.normaliser()
+    view.equal(camera.getView()).inverse()
+    this.rayon.equal(this.rayon.multiplyMatrix(view)).normalise()
     return this.rayon
   }
 }

@@ -12,9 +12,9 @@ uniform vec2 spriteSize;
 varying vec2 fragTexture;
 
 float map(float valeur, float minRef, float maxRef, float minDest, float maxDest) {
-  float resultat = minDest + (valeur - minRef) * (maxDest - minDest) / (maxRef - minRef);
-  if(resultat > maxDest){ resultat = maxDest; } else if(resultat < minDest){ resultat = minDest; }
-  return resultat;
+  float result = minDest + (valeur - minRef) * (maxDest - minDest) / (maxRef - minRef);
+  if(result > maxDest){ result = maxDest; } else if(result < minDest){ result = minDest; }
+  return result;
 }
 
 void main() {

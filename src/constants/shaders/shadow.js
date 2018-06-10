@@ -59,14 +59,14 @@ float smoothShadow(vec2 shad, float compare, vec2 texelSize) {
 
 float softShadowPCR(vec2 shad, float compare, vec2 texelSize) {
   // on regarde les voisin et on calcule la quantite de lumiere
-  float resultat = 0.0;
+  float result = 0.0;
   for(float y = -1.0; y <= 1.0; y += 1.0) {
     for(float x = -1.0; x <= 1.0; x += 1.0) {
       vec2 coorOffset = vec2(x, y) * texelSize;
-      resultat += smoothShadow(shad + coorOffset, compare, texelSize);
+      result += smoothShadow(shad + coorOffset, compare, texelSize);
     }
   }
-  return resultat / 9.0;
+  return result / 9.0;
 }
 
 void main() {

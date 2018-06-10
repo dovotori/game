@@ -9,14 +9,14 @@ export default {
   ],
   programs: ["color", "sprite", "spritePhong"],
   camera: {
-    position: { x: 10, y: 10, z: 30 },
+    position: { x: 10, y: 10, z: 40 },
     target: { x: 10, y: 10, z: 0 },
     near: 1,
     far: 1000,
     angle: 40,
   },
   lampe: {
-    position: { x: 10, y: 10, z: 10 },
+    position: { x: 0, y: 0, z: 10 },
   },
   tilemap: {
     w: 20,
